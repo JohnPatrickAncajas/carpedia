@@ -371,11 +371,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Subaru+Impreza+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Subaru+Impreza+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Subaru+Impreza+Rear",
+        setName: "Gold",
+        front: "/assets/images/sedans/subaru-impreza/gold/sedan-impreza-gold-front.png",
+        side: "/assets/images/sedans/subaru-impreza/gold/sedan-impreza-gold-side.png",
+        rear: "/assets/images/sedans/subaru-impreza/gold/sedan-impreza-gold-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/sedans/subaru-impreza/gold/sedan-impreza-gold-front.png",
+      "/assets/images/sedans/subaru-impreza/gold/sedan-impreza-gold-side.png",
+      "/assets/images/sedans/subaru-impreza/gold/sedan-impreza-gold-rear.png"
     ],
     funFacts: [
       "Subaru Impreza features standard all-wheel drive for better traction.",
@@ -403,11 +408,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Toyota+Corolla+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Toyota+Corolla+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Toyota+Corolla+Rear",
+        setName: "Black",
+        front: "/assets/images/sedans/toyota-corolla/black/sedan-corolla-black-front.png",
+        side: "/assets/images/sedans/toyota-corolla/black/sedan-corolla-black-side.png",
+        rear: "/assets/images/sedans/toyota-corolla/black/sedan-corolla-black-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/sedans/toyota-corolla/black/sedan-corolla-black-front.png",
+      "/assets/images/sedans/toyota-corolla/black/sedan-corolla-black-side.png",
+      "/assets/images/sedans/toyota-corolla/black/sedan-corolla-black-rear.png"
     ],
     funFacts: [
       "The Toyota Corolla is the best-selling car of all time worldwide.",
@@ -437,11 +447,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Toyota+Fortuner+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Toyota+Fortuner+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Toyota+Fortuner+Rear",
+        setName: "Gray",
+        front: "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-front.png",
+        side: "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-side.png",
+        rear: "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-front.png",
+      "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-side.png",
+      "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-rear.png"
     ],
     funFacts: [
       "The Toyota Fortuner is one of the most popular SUVs in the Philippines.",
