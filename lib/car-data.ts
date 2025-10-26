@@ -558,11 +558,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Hyundai+Tucson+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Hyundai+Tucson+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Hyundai+Tucson+Rear",
+        setName: "Black",
+        front: "/assets/images/suv/hyundai-tucson/black/suv-tucson-black-front.png",
+        side: "/assets/images/suv/hyundai-tucson/black/suv-tucson-black-side.png",
+        rear: "/assets/images/suv/hyundai-tucson/black/suv-tucson-black-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/suv/hyundai-tucson/black/suv-tucson-black-front.png",
+      "/assets/images/suv/hyundai-tucson/black/suv-tucson-black-side.png",
+      "/assets/images/suv/hyundai-tucson/black/suv-tucson-black-rear.png"
     ],
     funFacts: [
       "Hyundai Tucson offers a 7-year warranty on all models.",
@@ -590,11 +595,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Kia+Sorento+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Kia+Sorento+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Kia+Sorento+Rear",
+        setName: "Black",
+        front: "/assets/images/suv/kia-sorento/black/suv-sorento-black-front.png",
+        side: "/assets/images/suv/kia-sorento/black/suv-sorento-black-side.png",
+        rear: "/assets/images/suv/kia-sorento/black/suv-sorento-black-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/suv/kia-sorento/black/suv-sorento-black-front.png",
+      "/assets/images/suv/kia-sorento/black/suv-sorento-black-side.png",
+      "/assets/images/suv/kia-sorento/black/suv-sorento-black-rear.png"
     ],
     funFacts: [
       "Kia Sorento offers excellent value with a 7-year warranty.",
@@ -622,11 +632,14 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Nissan+X-Trail+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Nissan+X-Trail+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Nissan+X-Trail+Rear",
+        setName: "Gray",
+        front: "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-front.png",
+        side: "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-side.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-front.png",
+      "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-side.png",
     ],
     funFacts: [
       "The Nissan X-Trail is known for its reliability and durability.",
@@ -654,11 +667,14 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Mazda+CX-5+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Mazda+CX-5+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Mazda+CX-5+Rear",
+        setName: "Gray",
+        front: "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-front.png",
+        side: "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-side.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-front.png",
+      "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-side.png",
     ],
     funFacts: [
       "Mazda CX-5 is known for its 'Zoom-Zoom' driving experience.",
