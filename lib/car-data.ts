@@ -225,11 +225,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Blue",
-        front: "/assets/images/sedans/hyundai-accent/blue/sedan-accent-blue-front.png",
-        side: "https://via.placeholder.com/400x300.png?text=Nissan+Almera+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Nissan+Almera+Rear",
+        setName: "Silver",
+        front: "/assets/images/sedans/nissan-almera/silver/sedan-almera-silver-front.png",
+        side: "/assets/images/sedans/nissan-almera/silver/sedan-almera-silver-side.png",
+        rear: "/assets/images/sedans/nissan-almera/silver/sedan-almera-silver-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/sedans/nissan-almera/silver/sedan-almera-silver-front.png",
+      "/assets/images/sedans/nissan-almera/silver/sedan-almera-silver-side.png",
+      "/assets/images/sedans/nissan-almera/silver/sedan-almera-silver-rear.png"
     ],
     funFacts: [
       "The Nissan Almera is known for its durability and low maintenance costs.",
@@ -257,16 +262,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Mazda+2+Sedan+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Mazda+2+Sedan+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Mazda+2+Sedan+Rear",
+        setName: "Quartz",
+        front: "/assets/images/sedans/mazda2/quartz/sedan-mazda2-quartz-front.png",
+        side: "/assets/images/sedans/mazda2/quartz/sedan-mazda2-quartz-side.png",
+        rear: "/assets/images/sedans/mazda2/quartz/sedan-mazda2-quartz-rear.png",
       },
     ],
     galleryImages: [
-        "https://via.placeholder.com/400x300.png?text=Mazda+2+Sedan+Front",
-        "https://via.placeholder.com/400x300.png?text=Mazda+2+Sedan+Front",
-        "https://via.placeholder.com/400x300.png?text=Mazda+2+Sedan+Front",
+      "/assets/images/sedans/mazda2/quartz/sedan-mazda2-quartz-front.png",
+      "/assets/images/sedans/mazda2/quartz/sedan-mazda2-quartz-side.png",
+      "/assets/images/sedans/mazda2/quartz/sedan-mazda2-quartz-rear.png"
     ],
     funFacts: [
       "Mazda 2 is known for its 'Zoom-Zoom' driving experience.",
@@ -294,11 +299,14 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Kia+Soluto+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Kia+Soluto+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Kia+Soluto+Rear",
+        setName: "Red",
+        front: "/assets/images/sedans/kia-soluto/red/sedan-soluto-red-front.png",
+        rear: "/assets/images/sedans/kia-soluto/red/sedan-soluto-red-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/sedans/kia-soluto/red/sedan-soluto-red-front.png",
+      "/assets/images/sedans/kia-soluto/red/sedan-soluto-red-rear.png"
     ],
     funFacts: [
       "Kia Soluto offers excellent value with a 7-year warranty.",
@@ -326,11 +334,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Lancer+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Lancer+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Lancer+Rear",
+        setName: "White",
+        front: "/assets/images/sedans/mitsubishi-lancer/white/sedan-lancer-white-front.png",
+        side: "/assets/images/sedans/mitsubishi-lancer/white/sedan-lancer-white-side.png",
+        rear: "/assets/images/sedans/mitsubishi-lancer/white/sedan-lancer-white-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/sedans/mitsubishi-lancer/white/sedan-lancer-white-front.png",
+      "/assets/images/sedans/mitsubishi-lancer/white/sedan-lancer-white-side.png",
+      "/assets/images/sedans/mitsubishi-lancer/white/sedan-lancer-white-rear.png"
     ],
     funFacts: [
       "The Mitsubishi Lancer has a legendary racing heritage.",
