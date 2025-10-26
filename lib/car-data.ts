@@ -448,15 +448,15 @@ export const carsData: Car[] = [
     imageSets: [
       {
         setName: "Gray",
-        front: "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-front.png",
-        side: "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-side.png",
-        rear: "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-rear.png",
+        front: "/assets/images/suv/toyota-fortuner/gray/suv-fortuner-gray-front.png",
+        side: "/assets/images/suv/toyota-fortuner/gray/suv-fortuner-gray-side.png",
+        rear: "/assets/images/suv/toyota-fortuner/gray/suv-fortuner-gray-rear.png",
       },
     ],
     galleryImages: [
-      "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-front.png",
-      "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-side.png",
-      "/assets/images/sedans/toyota-fortuner/gray/sedan-fortuner-gray-rear.png"
+      "/assets/images/suv/toyota-fortuner/gray/suv-fortuner-gray-front.png",
+      "/assets/images/suv/toyota-fortuner/gray/suv-fortuner-gray-side.png",
+      "/assets/images/suv/toyota-fortuner/gray/suv-fortuner-gray-rear.png"
     ],
     funFacts: [
       "The Toyota Fortuner is one of the most popular SUVs in the Philippines.",
@@ -484,11 +484,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Honda+CR-V+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Honda+CR-V+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Honda+CR-V+Rear",
+        setName: "Blue",
+        front: "/assets/images/suv/honda-crv/blue/suv-crv-blue-front.png",
+        side: "/assets/images/suv/honda-crv/blue/suv-crv-blue-side.png",
+        rear: "/assets/images/suv/honda-crv/blue/suv-crv-blue-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/suv/honda-crv/blue/suv-crv-blue-front.png",
+      "/assets/images/suv/honda-crv/blue/suv-crv-blue-side.png",
+      "/assets/images/suv/honda-crv/blue/suv-crv-blue-rear.png"
     ],
     funFacts: [
       "The Honda CR-V is one of the best-selling SUVs globally.",
@@ -516,11 +521,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Montero+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Montero+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Montero+Rear",
+        setName: "Gray",
+        front: "/assets/images/suv/mitsubishi-montero/black/suv-montero-black-front.png",
+        side: "/assets/images/suv/mitsubishi-montero/black/suv-montero-black-side.png",
+        rear: "/assets/images/suv/mitsubishi-montero/black/suv-montero-black-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/suv/mitsubishi-montero/black/suv-montero-black-front.png",
+      "/assets/images/suv/mitsubishi-montero/black/suv-montero-black-side.png",
+      "/assets/images/suv/mitsubishi-montero/black/suv-montero-black-rear.png"
     ],
     funFacts: [
       "The Mitsubishi Montero is a legendary off-road SUV.",
