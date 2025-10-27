@@ -784,11 +784,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Mirage+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Mirage+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Mitsubishi+Mirage+Rear",
+        setName: "Gray",
+        front: "/assets/images/hatchbacks/mitsubishi-mirage/gray/hatchback-mirage-gray-front.png",
+        side: "/assets/images/hatchbacks/mitsubishi-mirage/gray/hatchback-mirage-gray-side.png",
+        rear: "/assets/images/hatchbacks/mitsubishi-mirage/gray/hatchback-mirage-gray-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/mitsubishi-mirage/gray/hatchback-mirage-gray-front.png",
+      "/assets/images/hatchbacks/mitsubishi-mirage/gray/hatchback-mirage-gray-side.png",
+      "/assets/images/hatchbacks/mitsubishi-mirage/gray/hatchback-mirage-gray-rear.png"
     ],
     funFacts: [
       "The Mirage is one of the most affordable new cars in the Philippines.",
@@ -816,11 +821,14 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Mazda+2+Hatchback+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Mazda+2+Hatchback+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Mazda+2+Hatchback+Rear",
+        setName: "White",
+        front: "/assets/images/hatchbacks/mazda2/white/hatchback-mazda2-white-front.png",
+        rear: "/assets/images/hatchbacks/mazda2/white/hatchback-mazda2-white-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/mazda2/white/hatchback-mazda2-white-front.png",
+      "/assets/images/hatchbacks/mazda2/white/hatchback-mazda2-white-rear.png"
     ],
     funFacts: [
       "Mazda 2 is known for its 'Zoom-Zoom' driving experience.",
@@ -848,11 +856,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Hyundai+i10+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Hyundai+i10+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Hyundai+i10+Rear",
+        setName: "Blue",
+        front: "/assets/images/hatchbacks/hyundai-i10/blue/hatchback-i10-blue-front.png",
+        side: "/assets/images/hatchbacks/hyundai-i10/blue/hatchback-i10-blue-side.png",
+        rear: "/assets/images/hatchbacks/hyundai-i10/blue/hatchback-i10-blue-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/hyundai-i10/blue/hatchback-i10-blue-front.png",
+      "/assets/images/hatchbacks/hyundai-i10/blue/hatchback-i10-blue-side.png",
+      "/assets/images/hatchbacks/hyundai-i10/blue/hatchback-i10-blue-rear.png"
     ],
     funFacts: [
       "Hyundai i10 offers excellent value with a 7-year warranty.",
@@ -880,11 +893,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Kia+Picanto+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Kia+Picanto+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Kia+Picanto+Rear",
+        setName: "Red",
+        front: "/assets/images/hatchbacks/kia-picanto/red/hatchback-picanto-red-front.png",
+        side: "/assets/images/hatchbacks/kia-picanto/red/hatchback-picanto-red-side.png",
+        rear: "/assets/images/hatchbacks/kia-picanto/red/hatchback-picanto-red-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/kia-picanto/red/hatchback-picanto-red-front.png",
+      "/assets/images/hatchbacks/kia-picanto/red/hatchback-picanto-red-side.png",
+      "/assets/images/hatchbacks/kia-picanto/red/hatchback-picanto-red-rear.png"
     ],
     funFacts: [
       "Kia Picanto offers excellent value with a 7-year warranty.",
@@ -912,11 +930,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Toyota+Wigo+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Toyota+Wigo+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Toyota+Wigo+Rear",
+        setName: "Red",
+        front: "/assets/images/hatchbacks/toyota-wigo/red/hatchback-wigo-red-front.png",
+        side: "/assets/images/hatchbacks/toyota-wigo/red/hatchback-wigo-red-side.png",
+        rear: "/assets/images/hatchbacks/toyota-wigo/red/hatchback-wigo-red-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/toyota-wigo/red/hatchback-wigo-red-front.png",
+      "/assets/images/hatchbacks/toyota-wigo/red/hatchback-wigo-red-side.png",
+      "/assets/images/hatchbacks/toyota-wigo/red/hatchback-wigo-red-rear.png"
     ],
     funFacts: [
       "The Toyota Wigo is one of the most affordable new cars in the Philippines.",
@@ -944,11 +967,14 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Honda+Jazz+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Honda+Jazz+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Honda+Jazz+Rear",
+        setName: "Gray",
+        front: "/assets/images/hatchbacks/honda-jazz/gray/hatchback-jazz-gray-front.png",
+        side: "/assets/images/hatchbacks/honda-jazz/gray/hatchback-jazz-gray-side.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/honda-jazz/gray/hatchback-jazz-gray-front.png",
+      "/assets/images/hatchbacks/honda-jazz/gray/hatchback-jazz-gray-side.png",
     ],
     funFacts: [
       "The Honda Jazz is known for its spacious interior and versatile cargo space.",
@@ -976,11 +1002,12 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Nissan+March+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Nissan+March+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Nissan+March+Rear",
+        setName: "Blue",
+        front: "/assets/images/hatchbacks/nissan-march/blue/hatchback-march-blue-front.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/nissan-march/blue/hatchback-march-blue-front.png",
     ],
     funFacts: [
       "The Nissan March is known for its reliability and fuel efficiency.",
@@ -1008,11 +1035,14 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Suzuki+Swift+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Suzuki+Swift+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Suzuki+Swift+Rear",
+        setName: "Blue",
+        front: "/assets/images/hatchbacks/suzuki-swift/Blue/hatchback-swift-Blue-front.png",
+        rear: "/assets/images/hatchbacks/suzuki-swift/Blue/hatchback-swift-Blue-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/suzuki-swift/Blue/hatchback-swift-Blue-front.png",
+      "/assets/images/hatchbacks/suzuki-swift/Blue/hatchback-swift-Blue-rear.png"
     ],
     funFacts: [
       "The Suzuki Swift is known for its fun driving dynamics and agility.",
@@ -1040,11 +1070,34 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Volkswagen+Polo+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Volkswagen+Polo+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Volkswagen+Polo+Rear",
+        setName: "White",
+        front: "/assets/images/hatchbacks/volkswagen-polo/white/hatchback-polo-white-front.png",
+        side: "/assets/images/hatchbacks/volkswagen-polo/white/hatchback-polo-white-side.png",
+        rear: "/assets/images/hatchbacks/volkswagen-polo/white/hatchback-polo-white-rear.png",
       },
+      {
+        setName: "Red",
+        front: "/assets/images/hatchbacks/volkswagen-polo/red/hatchback-polo-red-front.png",
+        side: "/assets/images/hatchbacks/volkswagen-polo/red/hatchback-polo-red-side.png",
+        rear: "/assets/images/hatchbacks/volkswagen-polo/red/hatchback-polo-red-rear.png",
+      },
+      {
+        setName: "Blue",
+        front: "/assets/images/hatchbacks/volkswagen-polo/blue/hatchback-polo-blue-front.png",
+        side: "/assets/images/hatchbacks/volkswagen-polo/blue/hatchback-polo-blue-side.png",
+        rear: "/assets/images/hatchbacks/volkswagen-polo/blue/hatchback-polo-blue-rear.png",
+      },
+    ],
+    galleryImages: [
+      "/assets/images/hatchbacks/volkswagen-polo/white/hatchback-polo-white-front.png",
+      "/assets/images/hatchbacks/volkswagen-polo/white/hatchback-polo-white-side.png",
+      "/assets/images/hatchbacks/volkswagen-polo/white/hatchback-polo-white-rear.png",
+      "/assets/images/hatchbacks/volkswagen-polo/red/hatchback-polo-red-front.png",
+      "/assets/images/hatchbacks/volkswagen-polo/red/hatchback-polo-red-side.png",
+      "/assets/images/hatchbacks/volkswagen-polo/red/hatchback-polo-red-rear.png",
+      "/assets/images/hatchbacks/volkswagen-polo/blue/hatchback-polo-blue-front.png",
+      "/assets/images/hatchbacks/volkswagen-polo/blue/hatchback-polo-blue-side.png",
+      "/assets/images/hatchbacks/volkswagen-polo/blue/hatchback-polo-blue-rear.png"
     ],
     funFacts: [
       "Volkswagen Polo is known for its German engineering and quality.",
@@ -1074,11 +1127,14 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Toyota+Avanza+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Toyota+Avanza+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Toyota+Avanza+Rear",
+        setName: "Black",
+        front: "/assets/images/mpv/toyota-avanza/black/mpv-avanza-black-front.png",
+        rear: "/assets/images/mpv/toyota-avanza/black/mpv-avanza-black-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/mpv/toyota-avanza/black/mpv-avanza-black-front.png",
+      "/assets/images/mpv/toyota-avanza/black/mpv-avanza-black-rear.png"
     ],
     funFacts: [
       "The Toyota Avanza is one of the most popular MPVs in the Philippines.",
@@ -1106,11 +1162,34 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Honda+Odyssey+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Honda+Odyssey+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Honda+Odyssey+Rear",
+        setName: "Silver",
+        front: "/assets/images/mpv/honda-odyssey/silver/mpv-odyssey-silver-front.png",
+        side: "/assets/images/mpv/honda-odyssey/silver/mpv-odyssey-silver-side.png",
+        rear: "/assets/images/mpv/honda-odyssey/silver/mpv-odyssey-silver-rear.png",
       },
+      {
+        setName: "Red",
+        front: "/assets/images/mpv/honda-odyssey/red/mpv-odyssey-red-front.png",
+        side: "/assets/images/mpv/honda-odyssey/red/mpv-odyssey-red-side.png",
+        rear: "/assets/images/mpv/honda-odyssey/red/mpv-odyssey-red-rear.png",
+      },
+      {
+        setName: "Blue",
+        front: "/assets/images/mpv/honda-odyssey/blue/mpv-odyssey-blue-front.png",
+        side: "/assets/images/mpv/honda-odyssey/blue/mpv-odyssey-blue-side.png",
+        rear: "/assets/images/mpv/honda-odyssey/blue/mpv-odyssey-blue-rear.png",
+      },
+    ],
+    galleryImages: [
+      "/assets/images/mpv/honda-odyssey/silver/mpv-odyssey-silver-front.png",
+      "/assets/images/mpv/honda-odyssey/silver/mpv-odyssey-silver-side.png",
+      "/assets/images/mpv/honda-odyssey/silver/mpv-odyssey-silver-rear.png",
+      "/assets/images/mpv/honda-odyssey/red/mpv-odyssey-red-front.png",
+      "/assets/images/mpv/honda-odyssey/red/mpv-odyssey-red-side.png",
+      "/assets/images/mpv/honda-odyssey/red/mpv-odyssey-red-rear.png",
+      "/assets/images/mpv/honda-odyssey/blue/mpv-odyssey-blue-front.png",
+      "/assets/images/mpv/honda-odyssey/blue/mpv-odyssey-blue-side.png",
+      "/assets/images/mpv/honda-odyssey/blue/mpv-odyssey-blue-rear.png"
     ],
     funFacts: [
       "The Honda Odyssey is known for its premium features and comfort.",
@@ -1138,11 +1217,12 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Nissan+Serena+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Nissan+Serena+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Nissan+Serena+Rear",
+        setName: "White",
+        front: "/assets/images/mpv/nissan-serena/white/mpv-serena-white-front.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/mpv/nissan-serena/white/mpv-serena-white-front.png",
     ],
     funFacts: [
       "The Nissan Serena is known for its spacious interior and comfort.",
@@ -1170,11 +1250,12 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Hyundai+Starex+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Hyundai+Starex+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Hyundai+Starex+Rear",
+        setName: "Black",
+        front: "/assets/images/mpv/hyundai-starex/black/mpv-starex-black-front.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/mpv/hyundai-starex/black/mpv-starex-black-front.png",
     ],
     funFacts: [
       "Hyundai Starex offers excellent value with a 7-year warranty.",
@@ -1202,11 +1283,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Kia+Carnival+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Kia+Carnival+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Kia+Carnival+Rear",
+        setName: "Blue",
+        front: "/assets/images/mpv/kia-carnival/blue/mpv-carnival-blue-front.png",
+        side: "/assets/images/mpv/kia-carnival/blue/mpv-carnival-blue-side.png",
+        rear: "/assets/images/mpv/kia-carnival/blue/mpv-carnival-blue-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/mpv/kia-carnival/blue/mpv-carnival-blue-front.png",
+      "/assets/images/mpv/kia-carnival/blue/mpv-carnival-blue-side.png",
+      "/assets/images/mpv/kia-carnival/blue/mpv-carnival-blue-rear.png"
     ],
     funFacts: [
       "Kia Carnival offers premium features and luxury comfort.",
