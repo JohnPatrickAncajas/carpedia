@@ -667,14 +667,14 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Gray",
-        front: "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-front.png",
-        side: "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-side.png",
+        setName: "White",
+        front: "/assets/images/suv/mazda-cx5/white/suv-cx5-white-front.png",
+        side: "/assets/images/suv/mazda-cx5/white/suv-cx5-white-side.png",
       },
     ],
     galleryImages: [
-      "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-front.png",
-      "/assets/images/suv/nissan-xtrail/gray/suv-xtrail-gray-side.png",
+      "/assets/images/suv/mazda-cx5/white/suv-cx5-white-front.png",
+      "/assets/images/suv/mazda-cx5/white/suv-cx5-white-side.png",
     ],
     funFacts: [
       "Mazda CX-5 is known for its 'Zoom-Zoom' driving experience.",
@@ -702,11 +702,22 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Isuzu+MU-X+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Isuzu+MU-X+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Isuzu+MU-X+Rear",
+        setName: "White",
+        front: "/assets/images/suv/isuzu-mux/white/suv-mux-white-front.png",
       },
+      {
+        setName: "Black",
+        front: "/assets/images/suv/isuzu-mux/black/suv-mux-black-front.png",
+      },
+      {
+        setName: "Gray",
+        front: "/assets/images/suv/isuzu-mux/gray/suv-mux-gray-front.png",
+      },
+    ],
+    galleryImages: [
+      "/assets/images/suv/isuzu-mux/white/suv-mux-white-front.png",
+      "/assets/images/suv/isuzu-mux/black/suv-mux-black-front.png",
+      "/assets/images/suv/isuzu-mux/gray/suv-mux-gray-front.png",
     ],
     funFacts: [
       "The Isuzu MU-X is known for its durability and off-road capability.",
@@ -734,11 +745,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Toyota+RAV4+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Toyota+RAV4+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Toyota+RAV4+Rear",
+        setName: "White",
+        front: "/assets/images/suv/toyota-rav4/white/suv-rav4-white-front.png",
+        side: "/assets/images/suv/toyota-rav4/white/suv-rav4-white-side.png",
+        rear: "/assets/images/suv/toyota-rav4/white/suv-rav4-white-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/suv/toyota-rav4/white/suv-rav4-white-front.png",
+      "/assets/images/suv/toyota-rav4/white/suv-rav4-white-side.png",
+      "/assets/images/suv/toyota-rav4/white/suv-rav4-white-rear.png"
     ],
     funFacts: [
       "The Toyota RAV4 is one of the best-selling SUVs globally.",
