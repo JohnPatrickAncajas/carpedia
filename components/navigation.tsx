@@ -2,9 +2,16 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Car, Menu, X } from "lucide-react"
+import {
+  Sheet,
+  SheetContent,
+  SheetClose,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
+import { Car, Menu } from "lucide-react"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -15,17 +22,12 @@ const navLinks = [
 
 export function Navigation() {
   const pathname = usePathname()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
     <nav className="sticky top-0 z-50 bg-background border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link
-            href="/"
-            className="flex items-center gap-2"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
+          <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Car className="w-5 h-5 text-primary-foreground" />
             </div>
@@ -46,43 +48,48 @@ export function Navigation() {
           </div>
 
           <div className="md:hidden">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="px-6 pt-10 pb-6">
+                <SheetHeader className="pb-6 mb-6 border-b text-left">
+                  <SheetTitle asChild>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <Car className="w-5 h-5 text-primary-foreground" />
+                      </div>
+                      <span className="font-bold text-lg text-foreground">
+                        Carpedia PH
+                      </span>
+                    </div>
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col gap-3">
+                  {navLinks.map((link) => (
+                    <SheetClose asChild key={link.href}>
+                      <Link href={link.href}>
+                        <Button
+                          variant={
+                            pathname === link.href ? "default" : "ghost"
+                          }
+                          className="w-full justify-start text-base"
+                          size="default"
+                        >
+                          {link.label}
+                        </Button>
+                      </Link>
+                    </SheetClose>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
-
-      {isMobileMenuOpen && (
-        <div className="absolute left-0 right-0 top-full w-full bg-background border-b border-border md:hidden">
-          <div className="flex flex-col gap-1 px-4 py-4 sm:px-6">
-            {navLinks.map((link) => (
-              <Link
-                href={link.href}
-                key={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <Button
-                  variant={pathname === link.href ? "default" : "ghost"}
-                  className="w-full justify-start"
-                  size="sm"
-                >
-                  {link.label}
-                </Button>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
     </nav>
   )
 }
