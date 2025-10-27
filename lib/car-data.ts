@@ -1322,11 +1322,16 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Toyota+Hilux+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Toyota+Hilux+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Toyota+Hilux+Rear",
+        setName: "White",
+        front: "/assets/images/pickup/toyota-hilux/white/pickup-hilux-white-front.png",
+        side: "/assets/images/pickup/toyota-hilux/white/pickup-hilux-white-side.png",
+        rear: "/assets/images/pickup/toyota-hilux/white/pickup-hilux-white-rear.png",
       },
+    ],
+    galleryImages: [
+      "/assets/images/pickup/toyota-hilux/white/pickup-hilux-white-front.png",
+      "/assets/images/pickup/toyota-hilux/white/pickup-hilux-white-side.png",
+      "/assets/images/pickup/toyota-hilux/white/pickup-hilux-white-rear.png"
     ],
     funFacts: [
       "The Toyota Hilux is one of the most popular pickup trucks in the Philippines.",
@@ -1354,11 +1359,17 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Isuzu+D-Max+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Isuzu+D-Max+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Isuzu+D-Max+Rear",
+        setName: "White",
+        front: "/assets/images/pickup/isuzu-dmax/white/pickup-dmax-white-front.png",
       },
+      {
+        setName: "Red",
+        front: "/assets/images/pickup/isuzu-dmax/red/pickup-dmax-red-front.png",
+      },
+    ],
+    galleryImages: [
+      "/assets/images/pickup/isuzu-dmax/white/pickup-dmax-white-front.png",
+      "/assets/images/pickup/isuzu-dmax/red/pickup-dmax-red-front.png"
     ],
     funFacts: [
       "The Isuzu D-Max is known for its durability and off-road capability.",
@@ -1386,11 +1397,34 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Ford+Ranger+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Ford+Ranger+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Ford+Ranger+Rear",
+        setName: "Red",
+        front: "/assets/images/pickup/ford-ranger/red/pickup-ranger-red-front.png",
+        side: "/assets/images/pickup/ford-ranger/red/pickup-ranger-red-side.png",
+        rear: "/assets/images/pickup/ford-ranger/red/pickup-ranger-red-rear.png",
       },
+      {
+        setName: "Gray",
+        front: "/assets/images/pickup/ford-ranger/gray/pickup-ranger-gray-front.png",
+        side: "/assets/images/pickup/ford-ranger/gray/pickup-ranger-gray-side.png",
+        rear: "/assets/images/pickup/ford-ranger/gray/pickup-ranger-gray-rear.png",
+      },
+      {
+        setName: "White",
+        front: "/assets/images/pickup/ford-ranger/white/pickup-ranger-white-front.png",
+        side: "/assets/images/pickup/ford-ranger/white/pickup-ranger-white-side.png",
+        rear: "/assets/images/pickup/ford-ranger/white/pickup-ranger-white-rear.png",
+      },
+    ],
+    galleryImages: [
+      "/assets/images/pickup/ford-ranger/red/pickup-ranger-red-front.png",
+      "/assets/images/pickup/ford-ranger/red/pickup-ranger-red-side.png",
+      "/assets/images/pickup/ford-ranger/red/pickup-ranger-red-rear.png",
+      "/assets/images/pickup/ford-ranger/gray/pickup-ranger-gray-front.png",
+      "/assets/images/pickup/ford-ranger/gray/pickup-ranger-gray-side.png",
+      "/assets/images/pickup/ford-ranger/gray/pickup-ranger-gray-rear.png",
+      "/assets/images/pickup/ford-ranger/white/pickup-ranger-white-front.png",
+      "/assets/images/pickup/ford-ranger/white/pickup-ranger-white-side.png",
+      "/assets/images/pickup/ford-ranger/white/pickup-ranger-white-rear.png"
     ],
     funFacts: [
       "The Ford Ranger is known for its modern design and advanced features.",
@@ -1399,9 +1433,9 @@ export const carsData: Car[] = [
     ],
   },
   {
-    id: "mitsubishi_l200",
+    id: "mitsubishi_triton",
     brand: "Mitsubishi",
-    model: "L200",
+    model: "Triton",
     type: "Pickup Truck",
     yearRange: "2015-present",
     description: "A reliable and capable pickup truck with excellent off-road performance.",
@@ -1418,14 +1452,19 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Mitsubishi+L200+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Mitsubishi+L200+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Mitsubishi+L200+Rear",
+        setName: "Orange",
+        front: "/assets/images/pickup/mitsubishi-triton/orange/pickup-triton-orange-front.png",
+        side: "/assets/images/pickup/mitsubishi-triton/orange/pickup-triton-orange-side.png",
+        rear: "/assets/images/pickup/mitsubishi-triton/orange/pickup-triton-orange-rear.png",
       },
     ],
+    galleryImages: [
+      "/assets/images/pickup/mitsubishi-triton/orange/pickup-triton-orange-front.png",
+      "/assets/images/pickup/mitsubishi-triton/orange/pickup-triton-orange-side.png",
+      "/assets/images/pickup/mitsubishi-triton/orange/pickup-triton-orange-rear.png"
+    ],
     funFacts: [
-      "The Mitsubishi L200 is known for its reliability and durability.",
+      "The Mitsubishi Triton is known for its reliability and durability.",
       "Popular among commercial operators and adventurers.",
       "Excellent resale value in the Philippine market.",
     ],
@@ -1450,11 +1489,34 @@ export const carsData: Car[] = [
     },
     imageSets: [
       {
-        setName: "Default",
-        front: "https://via.placeholder.com/400x300.png?text=Chevrolet+Colorado+Front",
-        side: "https://via.placeholder.com/400x300.png?text=Chevrolet+Colorado+Side",
-        rear: "https://via.placeholder.com/400x300.png?text=Chevrolet+Colorado+Rear",
+        setName: "Blue",
+        front: "/assets/images/pickup/chevrolet-colorado/blue/pickup-colorado-blue-front.png",
+        side: "/assets/images/pickup/chevrolet-colorado/blue/pickup-colorado-blue-side.png",
+        rear: "/assets/images/pickup/chevrolet-colorado/blue/pickup-colorado-blue-rear.png",
       },
+      {
+        setName: "Red",
+        front: "/assets/images/pickup/chevrolet-colorado/red/pickup-colorado-red-front.png",
+        side: "/assets/images/pickup/chevrolet-colorado/red/pickup-colorado-red-side.png",
+        rear: "/assets/images/pickup/chevrolet-colorado/red/pickup-colorado-red-rear.png",
+      },
+      {
+        setName: "White",
+        front: "/assets/images/pickup/chevrolet-colorado/white/pickup-colorado-white-front.png",
+        side: "/assets/images/pickup/chevrolet-colorado/white/pickup-colorado-white-side.png",
+        rear: "/assets/images/pickup/chevrolet-colorado/white/pickup-colorado-white-rear.png",
+      },
+    ],
+    galleryImages: [
+      "/assets/images/pickup/chevrolet-colorado/blue/pickup-colorado-blue-front.png",
+      "/assets/images/pickup/chevrolet-colorado/blue/pickup-colorado-blue-side.png",
+      "/assets/images/pickup/chevrolet-colorado/blue/pickup-colorado-blue-rear.png",
+      "/assets/images/pickup/chevrolet-colorado/red/pickup-colorado-red-front.png",
+      "/assets/images/pickup/chevrolet-colorado/red/pickup-colorado-red-side.png",
+      "/assets/images/pickup/chevrolet-colorado/red/pickup-colorado-red-rear.png",
+      "/assets/images/pickup/chevrolet-colorado/white/pickup-colorado-white-front.png",
+      "/assets/images/pickup/chevrolet-colorado/white/pickup-colorado-white-side.png",
+      "/assets/images/pickup/chevrolet-colorado/white/pickup-colorado-white-rear.png"
     ],
     funFacts: [
       "The Chevrolet Colorado is known for its powerful engine and advanced features.",
@@ -1510,7 +1572,7 @@ export const quizTests = [
       "toyota_hilux",
       "isuzu_d_max",
       "ford_ranger",
-      "mitsubishi_l200",
+      "mitsubishi_triton",
       "chevrolet_colorado",
     ],
   },
@@ -1597,7 +1659,7 @@ export const quizTests = [
     id: "test_7",
     name: "Pickup Trucks",
     description: "Test your knowledge on pickup truck models",
-    carIds: ["toyota_hilux", "isuzu_d_max", "ford_ranger", "mitsubishi_l200", "chevrolet_colorado"],
+    carIds: ["toyota_hilux", "isuzu_d_max", "ford_ranger", "mitsubishi_triton", "chevrolet_colorado"],
   },
   {
     id: "test_8",
