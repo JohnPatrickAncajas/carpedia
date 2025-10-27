@@ -33,7 +33,7 @@ export default function HomePage() {
               Learn the Most Common Cars in the Philippines
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground mb-8 text-balance">
-              Browse basic specs, photos, and fun facts about your favorite vehicles. Then test your
+              Browse the specs, photos, and fun facts about your favorite vehicles. Then test your
               knowledge with interactive quizzes!
             </p>
 

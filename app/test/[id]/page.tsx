@@ -13,30 +13,83 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
-import { carsData, quizTests, type Car } from "@/lib/car-data"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { carsData, quizTests, type Car, type CarSpecs } from "@/lib/car-data"
 import { ChevronLeft, CheckCircle, XCircle } from "lucide-react"
 import { Footer } from "@/components/footer"
+import { toast } from "sonner"
 
-type QuizMode = "image" | "specs" | "mixed"
 type QuestionType = "image" | "specs"
 
 interface Question {
   type: QuestionType
   carId: string
   options: string[]
-  imageUrl?: string // Added for image questions
+  imageUrl?: string
+  specKeys?: (keyof CarSpecs)[]
+}
+
+interface QuizSettings {
+  includeImageViews: {
+    front: boolean
+    side: boolean
+    rear: boolean
+    gallery: boolean
+  }
+  includeSpecs: {
+    engine: boolean
+    horsepower: boolean
+    torque: boolean
+    transmission: boolean
+    fuelType: boolean
+    fuelEfficiency: boolean
+    seats: boolean
+  }
+}
+
+const defaultSettings: QuizSettings = {
+  includeImageViews: { front: true, side: true, rear: true, gallery: true },
+  includeSpecs: {
+    engine: true,
+    horsepower: true,
+    torque: true,
+    transmission: true,
+    fuelType: true,
+    fuelEfficiency: true,
+    seats: true,
+  },
+}
+
+const allSpecKeys = Object.keys(defaultSettings.includeSpecs) as (keyof CarSpecs)[]
+const allImageViewKeys = Object.keys(
+  defaultSettings.includeImageViews,
+) as (keyof QuizSettings["includeImageViews"])[]
+
+function getRandomSubset<T>(array: T[], size: number): T[] {
+  const shuffled = array.sort(() => 0.5 - Math.random())
+  return shuffled.slice(0, size)
+}
+
+const specDisplayNames: Record<keyof CarSpecs, string> = {
+  engine: "Engine",
+  horsepower: "Horsepower",
+  torque: "Torque",
+  transmission: "Transmission",
+  fuelType: "Fuel Type",
+  fuelEfficiency: "Fuel Efficiency",
+  seats: "Seats",
 }
 
 export default function QuizPage() {
   const params = useParams()
+  const router = useRouter()
   const test = quizTests.find((t) => t.id === params.id)
 
   const [questions, setQuestions] = useState<Question[]>([])
@@ -46,16 +99,57 @@ export default function QuizPage() {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
 
   const [quizStarted, setQuizStarted] = useState(false)
-  const [quizMode, setQuizMode] = useState<QuizMode>("mixed")
+  const [settings, setSettings] = useState<QuizSettings>(defaultSettings)
 
-  const generateQuestions = (mode: QuizMode) => {
-    if (!test) return
+  const handleSettingChange = <K extends keyof QuizSettings, SK extends keyof QuizSettings[K]>(
+    category: K,
+    key: SK,
+    checked: boolean,
+  ) => {
+    setSettings((prev) => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [key]: checked,
+      },
+    }))
+  }
+
+  const toggleAll = (category: keyof QuizSettings, value: boolean) => {
+    setSettings((prev) => {
+      const currentCategory = prev[category]
+      const updatedCategory = { ...currentCategory }
+      Object.keys(updatedCategory).forEach((key) => {
+        // @ts-ignore
+        updatedCategory[key as keyof typeof updatedCategory] = value
+      })
+      return { ...prev, [category]: updatedCategory }
+    })
+  }
+
+  const generateQuestions = (currentSettings: QuizSettings) => {
+    if (!test) return false
+
+    const selectedImageKeys = allImageViewKeys.filter(
+      (k) => currentSettings.includeImageViews[k],
+    )
+    const selectedSpecKeys = allSpecKeys.filter(
+      (k) => currentSettings.includeSpecs[k],
+    )
+
+    const canDoImage = selectedImageKeys.length > 0
+    const canDoSpecs = selectedSpecKeys.length > 0
+
+    if (!canDoImage && !canDoSpecs) {
+      toast.error("Please select at least one image view or spec type.")
+      return false
+    }
 
     const testCars = carsData.filter((car) => test.carIds.includes(car.id))
     if (testCars.length < 4) {
       console.error("Not enough unique cars in this test category for options.")
-      // Handle this case - maybe show an error or disable the quiz
-      return
+      toast.error("Not enough unique cars in this category to generate a quiz.")
+      return false
     }
 
     const newQuestions: Question[] = []
@@ -63,56 +157,74 @@ export default function QuizPage() {
 
     for (let i = 0; i < 10; i++) {
       let questionType: QuestionType
-      if (mode === "mixed") {
+      if (canDoImage && canDoSpecs) {
         questionType = i % 2 === 0 ? "image" : "specs"
       } else {
-        questionType = mode
+        questionType = canDoImage ? "image" : "specs"
       }
 
       let correctCar: Car | undefined
       let attempts = 0
-      // Ensure no repeat correct answers
       while (!correctCar || usedCarIds.has(correctCar.id)) {
         correctCar = testCars[Math.floor(Math.random() * testCars.length)]
         attempts++
-        // Prevent infinite loop if somehow all cars get used (shouldn't happen with 10 questions unless testCars < 10)
         if (attempts > testCars.length * 2 && usedCarIds.size >= testCars.length) {
-            console.warn("Could not find a unique car for question, reusing.");
-            // Reset attempts and allow reuse if stuck (fallback)
-             correctCar = testCars[Math.floor(Math.random() * testCars.length)];
-             break;
+          console.warn("Could not find a unique car for question, reusing.")
+          correctCar = testCars[Math.floor(Math.random() * testCars.length)]
+          break
         } else if (attempts > testCars.length * 5) {
-             console.error("Failed to generate unique questions. Aborting.");
-             return; // Or handle error appropriately
+          console.error("Failed to generate unique questions after many attempts. Aborting.")
+          toast.error("Error generating quiz questions. Please try again.")
+          return false
         }
       }
       usedCarIds.add(correctCar.id)
 
-
-      // Select random image for image questions
       let imageUrl: string | undefined
+      let specKeys: (keyof CarSpecs)[] | undefined
+
       if (questionType === "image") {
-        if (correctCar.galleryImages && correctCar.galleryImages.length > 0) {
-          imageUrl =
-            correctCar.galleryImages[
-              Math.floor(Math.random() * correctCar.galleryImages.length)
-            ]
+        let possibleImageSources: string[] = []
+        const useGallery = currentSettings.includeImageViews.gallery && correctCar.galleryImages && correctCar.galleryImages.length > 0
+
+        if (useGallery && correctCar.galleryImages) {
+             possibleImageSources.push(...correctCar.galleryImages); // Fixed: Added check
         } else {
-          // Fallback if galleryImages is empty or missing
+          const firstSet = correctCar.imageSets[0]
+          if (firstSet) {
+            if (currentSettings.includeImageViews.front && firstSet.front)
+              possibleImageSources.push(firstSet.front)
+            if (currentSettings.includeImageViews.side && firstSet.side)
+              possibleImageSources.push(firstSet.side)
+            if (currentSettings.includeImageViews.rear && firstSet.rear)
+              possibleImageSources.push(firstSet.rear)
+          }
+        }
+
+        if (possibleImageSources.length > 0) {
+          imageUrl =
+            possibleImageSources[Math.floor(Math.random() * possibleImageSources.length)]
+        } else {
           imageUrl = correctCar.imageSets[0]?.front || "/placeholder.svg"
+          console.warn(`No suitable image found for ${correctCar.id} based on settings, using fallback.`)
+        }
+      } else {
+        specKeys = getRandomSubset(selectedSpecKeys, Math.min(selectedSpecKeys.length, Math.random() < 0.5 ? 3 : 4))
+        if (specKeys.length < 2 && selectedSpecKeys.length >= 2) {
+          specKeys = getRandomSubset(selectedSpecKeys, 2)
+        } else if (specKeys.length === 0) {
+          console.error(`No spec keys selected for car ${correctCar.id}`)
+          specKeys = getRandomSubset(allSpecKeys, 3)
         }
       }
 
-      // Get 3 random wrong answers (ensure they are different from correct answer)
       const wrongCars = testCars
         .filter((car) => car.id !== correctCar?.id)
         .sort(() => Math.random() - 0.5)
         .slice(0, 3)
 
-      // Ensure we actually got 3 wrong options if possible
-      if (wrongCars.length < 3) {
-          console.warn(`Could only find ${wrongCars.length} wrong options for car ${correctCar?.id}`);
-          // In a real app you might handle this by adding duplicates or adjusting logic
+      if (wrongCars.length < 3 && testCars.length >= 4) {
+        console.warn(`Could only find ${wrongCars.length} distinct wrong options for car ${correctCar?.id}`)
       }
 
       const options = [
@@ -120,16 +232,17 @@ export default function QuizPage() {
         ...wrongCars.map((car) => car.id),
       ].sort(() => Math.random() - 0.5)
 
-
       newQuestions.push({
         type: questionType,
         carId: correctCar.id,
         options,
-        imageUrl, // Store the selected image URL
+        imageUrl,
+        specKeys,
       })
     }
 
     setQuestions(newQuestions)
+    return true
   }
 
   if (!test) {
@@ -164,37 +277,76 @@ export default function QuizPage() {
             <CardContent className="space-y-6">
               <div>
                 <h3 className="font-semibold text-foreground mb-2">
-                  Quiz Details
+                  Customize Your Quiz
                 </h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• 10 questions total</li>
-                  <li>• {test.carIds.length} car models included</li>
-                  <li>• No time limit</li>
-                </ul>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Select the types of questions you want to include.
+                </p>
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="quiz-mode">Quiz Mode</Label>
-                <Select
-                  value={quizMode}
-                  onValueChange={(v) => setQuizMode(v as QuizMode)}
-                >
-                  <SelectTrigger id="quiz-mode">
-                    <SelectValue placeholder="Select quiz mode" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="mixed">Mixed Challenge</SelectItem>
-                    <SelectItem value="image">Images Only</SelectItem>
-                    <SelectItem value="specs">Specs Only</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Accordion type="multiple" defaultValue={["item-1", "item-2"]} className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>Image Questions</AccordionTrigger>
+                  <AccordionContent className="space-y-4 pt-4">
+                    <div className="flex justify-end gap-2 mb-2">
+                      <Button variant="ghost" size="sm" onClick={() => toggleAll("includeImageViews", true)}>
+                        Select All
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => toggleAll("includeImageViews", false)}>
+                        Deselect All
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {(Object.keys(settings.includeImageViews) as Array<keyof typeof settings.includeImageViews>).map((key) => (
+                        <div key={key} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`img-${key}`}
+                            checked={settings.includeImageViews[key]}
+                            onCheckedChange={(checked) => handleSettingChange("includeImageViews", key, !!checked)}
+                          />
+                          <Label htmlFor={`img-${key}`} className="capitalize">
+                            {key === "gallery" ? "Gallery (Random)" : key}
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Specification Questions</AccordionTrigger>
+                  <AccordionContent className="space-y-4 pt-4">
+                    <div className="flex justify-end gap-2 mb-2">
+                      <Button variant="ghost" size="sm" onClick={() => toggleAll("includeSpecs", true)}>
+                        Select All
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => toggleAll("includeSpecs", false)}>
+                        Deselect All
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {(Object.keys(settings.includeSpecs) as Array<keyof typeof settings.includeSpecs>).map((key) => (
+                        <div key={key} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`spec-${key}`}
+                            checked={settings.includeSpecs[key]}
+                            onCheckedChange={(checked) => handleSettingChange("includeSpecs", key, !!checked)}
+                          />
+                          <Label htmlFor={`spec-${key}`} className="capitalize">
+                            {specDisplayNames[key] || key}
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
               <Button
                 size="lg"
                 onClick={() => {
-                  generateQuestions(quizMode)
-                  setQuizStarted(true)
+                  if (generateQuestions(settings)) {
+                    setQuizStarted(true)
+                  }
                 }}
                 className="w-full"
               >
@@ -208,19 +360,19 @@ export default function QuizPage() {
     )
   }
 
-  if (questions.length === 0) {
+  if (questions.length === 0 && quizStarted) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <Navigation />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
-          <p className="text-center text-muted-foreground">Loading quiz...</p>
+          <p className="text-center text-muted-foreground">Generating quiz...</p>
         </main>
         <Footer />
       </div>
     )
   }
 
-  if (currentQuestion >= questions.length) {
+  if (currentQuestion >= questions.length && quizStarted) {
     const percentage = Math.round((score / questions.length) * 100)
 
     return (
@@ -261,8 +413,9 @@ export default function QuizPage() {
                     setScore(0)
                     setAnswered(false)
                     setSelectedAnswer(null)
-                    setQuestions([]) // Reset questions
-                    setQuizStarted(false) // Go back to quiz selection
+                    setQuestions([])
+                    setQuizStarted(false)
+                    setSettings(defaultSettings)
                   }}
                   className="flex-1"
                 >
@@ -281,6 +434,18 @@ export default function QuizPage() {
   }
 
   const question = questions[currentQuestion]
+  if (!question) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navigation />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
+          <p className="text-center text-muted-foreground">Error loading question...</p>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
   const correctCar = carsData.find((car) => car.id === question.carId)!
   const isCorrect = selectedAnswer === question.carId
 
@@ -301,7 +466,7 @@ export default function QuizPage() {
               className="bg-primary h-2 rounded-full transition-all duration-300"
               style={{
                 width: `${((currentQuestion + 1) / questions.length) * 100}%`,
-              }}
+              }} // I need inline style here for dynamic width
             />
           </div>
         </div>
@@ -316,13 +481,13 @@ export default function QuizPage() {
                 <div className="bg-muted rounded-lg flex items-center justify-center min-h-64 mb-6">
                   <div className="relative w-full h-64">
                     <Image
-                      src={question.imageUrl || "/placeholder.svg"} // Use stored imageUrl
+                      src={question.imageUrl || "/placeholder.svg"}
                       alt="Quiz car"
                       fill
-                      className="object-contain rounded-lg" // Changed to contain
-                      key={question.imageUrl} // Add key to force re-render on image change
-                      priority={currentQuestion === 0} // Prioritize first image
-                      sizes="(max-width: 768px) 90vw, (max-width: 1024px) 70vw, 600px" // Add sizes prop
+                      className="object-contain rounded-lg"
+                      key={question.imageUrl}
+                      priority={currentQuestion === 0}
+                      sizes="(max-width: 768px) 90vw, (max-width: 1024px) 70vw, 600px"
                     />
                   </div>
                 </div>
@@ -333,30 +498,19 @@ export default function QuizPage() {
                   Which car has these specifications?
                 </p>
                 <div className="bg-muted p-4 rounded-lg mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">Engine</p>
-                    <p className="font-semibold text-foreground">
-                      {correctCar.specs.engine}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Horsepower</p>
-                    <p className="font-semibold text-foreground">
-                      {correctCar.specs.horsepower}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Transmission</p>
-                    <p className="font-semibold text-foreground">
-                      {correctCar.specs.transmission}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Fuel Efficiency</p>
-                    <p className="font-semibold text-foreground">
-                      {correctCar.specs.fuelEfficiency}
-                    </p>
-                  </div>
+                  {question.specKeys?.map((key) => (
+                    <div key={key}>
+                      <p className="text-muted-foreground">{specDisplayNames[key] || key}</p>
+                      <p className="font-semibold text-foreground">
+                        {correctCar.specs[key]}
+                      </p>
+                    </div>
+                  ))}
+                  {(!question.specKeys || question.specKeys.length < 2) && (
+                    <div className="text-muted-foreground text-xs col-span-full">
+                      (More specs might be available)
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -366,6 +520,11 @@ export default function QuizPage() {
                 const optionCar = carsData.find((car) => car.id === carId)!
                 const isSelected = selectedAnswer === carId
                 const showResult = answered && isSelected
+
+                if (!optionCar) {
+                  console.error(`Could not find car data for option ID: ${carId}`)
+                  return null
+                }
 
                 return (
                   <button
