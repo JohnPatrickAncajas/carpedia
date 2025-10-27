@@ -2,12 +2,14 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useParams } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { carsData } from "@/lib/car-data"
 import { ChevronLeft } from "lucide-react"
+import { Footer } from "@/components/footer"
 
 type ImageView = "front" | "side" | "rear" | "interiorFoward" | "interiorBehind"
 
@@ -35,6 +37,7 @@ export default function CarDetailPage() {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <p className="text-center text-muted-foreground">Car not found</p>
         </main>
+        <Footer />
       </div>
     )
   }
@@ -62,25 +65,28 @@ export default function CarDetailPage() {
   )
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex flex-col">
       <Navigation />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Link href="/learn">
-          <Button variant="ghost" size="sm" className="mb-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
+        <Button variant="ghost" size="sm" className="mb-6" asChild>
+          <Link href="/learn">
             <ChevronLeft className="w-4 h-4 mr-2" />
             Back to Cars
-          </Button>
-        </Link>
+          </Link>
+        </Button>
 
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
           <div>
             <Card className="overflow-hidden">
-              <div className="bg-muted flex items-center justify-center">
-                <img
+              <div className="relative aspect-video lg:aspect-4/3 bg-muted flex items-center justify-center overflow-hidden">
+                <Image
                   src={imageUrl}
                   alt={`${car.brand} ${car.model} ${selectedView}`}
-                  className="w-full h-96 object-cover"
+                  fill
+                  priority
+                  className="object-cover transition-opacity duration-300"
+                  key={imageUrl}
                 />
               </div>
               <CardContent className="p-4">
@@ -92,9 +98,16 @@ export default function CarDetailPage() {
                         key={idx}
                         onClick={() => {
                           setSelectedImageSet(idx)
-                          const nextSetHasView = !!car.imageSets[idx]?.[selectedView]
+                          const nextSetHasView =
+                            !!car.imageSets[idx]?.[selectedView]
                           if (!nextSetHasView) {
-                             setSelectedView(car.imageSets[idx]?.front ? "front" : (possibleViews.find(v => !!car.imageSets[idx]?.[v]) || "front") )
+                            setSelectedView(
+                              car.imageSets[idx]?.front
+                                ? "front"
+                                : possibleViews.find(
+                                    (v) => !!car.imageSets[idx]?.[v],
+                                  ) || "front",
+                            )
                           }
                         }}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -135,12 +148,15 @@ export default function CarDetailPage() {
 
           <div>
             <div className="mb-8">
-              <p className="text-sm text-muted-foreground mb-2">Vehicle Type</p>
-              <h1 className="text-4xl font-bold text-foreground mb-2">
+              <h1 className="text-4xl font-bold text-foreground mb-2 text-balance">
                 {car.brand} {car.model}
               </h1>
-              <p className="text-lg text-accent font-semibold mb-4">{car.type}</p>
-              <p className="text-foreground leading-relaxed">{car.description}</p>
+              <p className="text-lg text-accent font-semibold mb-4">
+                {car.type}
+              </p>
+              <p className="text-foreground leading-relaxed text-balance">
+                {car.description}
+              </p>
             </div>
 
             <Card className="mb-6">
@@ -149,15 +165,23 @@ export default function CarDetailPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Price Range</p>
-                  <p className="text-lg font-semibold text-foreground">{car.priceRange}</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Price Range
+                  </p>
+                  <p className="text-lg font-semibold text-foreground">
+                    {car.priceRange}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Common Use</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Common Use
+                  </p>
                   <p className="text-foreground">{car.commonUse}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Year Range</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Year Range
+                  </p>
                   <p className="text-foreground">{car.yearRange}</p>
                 </div>
               </CardContent>
@@ -168,34 +192,52 @@ export default function CarDetailPage() {
                 <CardTitle>Specifications</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Engine</p>
-                    <p className="font-semibold text-foreground">{car.specs.engine}</p>
+                    <p className="font-semibold text-foreground">
+                      {car.specs.engine}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Horsepower</p>
-                    <p className="font-semibold text-foreground">{car.specs.horsepower}</p>
+                    <p className="font-semibold text-foreground">
+                      {car.specs.horsepower}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Torque</p>
-                    <p className="font-semibold text-foreground">{car.specs.torque}</p>
+                    <p className="font-semibold text-foreground">
+                      {car.specs.torque}
+                    </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Transmission</p>
-                    <p className="font-semibold text-foreground">{car.specs.transmission}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Transmission
+                    </p>
+                    <p className="font-semibold text-foreground">
+                      {car.specs.transmission}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Fuel Type</p>
-                    <p className="font-semibold text-foreground">{car.specs.fuelType}</p>
+                    <p className="font-semibold text-foreground">
+                      {car.specs.fuelType}
+                    </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Fuel Efficiency</p>
-                    <p className="font-semibold text-foreground">{car.specs.fuelEfficiency}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Fuel Efficiency
+                    </p>
+                    <p className="font-semibold text-foreground">
+                      {car.specs.fuelEfficiency}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Seats</p>
-                    <p className="font-semibold text-foreground">{car.specs.seats}</p>
+                    <p className="font-semibold text-foreground">
+                      {car.specs.seats}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -211,7 +253,7 @@ export default function CarDetailPage() {
             <ul className="space-y-3">
               {car.funFacts.map((fact, idx) => (
                 <li key={idx} className="flex gap-3">
-                  <span className="text-accent font-bold flex-shrink-0">•</span>
+                  <span className="text-accent font-bold shrink-0">•</span>
                   <span className="text-foreground">{fact}</span>
                 </li>
               ))}
@@ -229,12 +271,14 @@ export default function CarDetailPage() {
                 {car.galleryImages.map((imgSrc, idx) => (
                   <div
                     key={idx}
-                    className="bg-muted rounded-lg overflow-hidden aspect-video"
+                    className="bg-muted rounded-lg overflow-hidden aspect-video relative"
                   >
-                    <img
+                    <Image
                       src={imgSrc || "/placeholder.svg"}
                       alt={`${car.brand} ${car.model} gallery ${idx + 1}`}
+                      fill
                       className="w-full h-full object-cover"
+                      sizes="(max-width: 768px) 50vw, 33vw"
                     />
                   </div>
                 ))}
@@ -243,6 +287,7 @@ export default function CarDetailPage() {
           </Card>
         )}
       </main>
+      <Footer />
     </div>
   )
 }
