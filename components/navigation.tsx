@@ -12,6 +12,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Car, Menu } from "lucide-react"
+import { ModeToggle } from "@/components/mode-toggle"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -46,6 +47,9 @@ export function Navigation() {
                 </Button>
               </Link>
             ))}
+            <div className="ml-4">
+              <ModeToggle />
+            </div>
           </div>
 
           <div className="md:hidden">
@@ -56,7 +60,10 @@ export function Navigation() {
                   <span className="sr-only">Toggle navigation menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="px-6 pt-10 pb-6">
+              <SheetContent
+                side="right"
+                className="px-6 pt-10 pb-6 flex flex-col"
+              >
                 <SheetHeader className="pb-6 mb-6 border-b text-left">
                   <SheetTitle asChild>
                     <div className="flex items-center gap-2">
@@ -85,6 +92,15 @@ export function Navigation() {
                       </Link>
                     </SheetClose>
                   ))}
+                </div>
+
+                <div className="mt-auto pt-6 border-t">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      Change Theme
+                    </span>
+                    <ModeToggle />
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>
