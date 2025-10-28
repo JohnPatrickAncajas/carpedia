@@ -28,11 +28,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Label } from "@/components/ui/label"
 import { carsData, type Car } from "@/lib/car-data"
 import { Footer } from "@/components/footer"
-import { X, SlidersHorizontal } from "lucide-react"
+import { X, SlidersHorizontal, Info, BookText, Flag } from "lucide-react"
 
 const parsePrice = (priceRange: string, index: 0 | 1): number => {
   const parts = priceRange
@@ -310,6 +316,184 @@ export default function LearnPage() {
             Philippines
           </p>
         </div>
+
+        <Accordion type="single" collapsible className="mb-8 w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-lg font-semibold">
+              <div className="flex items-center gap-3">
+                <Info className="h-5 w-5 text-primary" />
+                <span>A Quick Guide: How to Tell Car Types Apart</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-6 pt-4 text-muted-foreground">
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Sedan vs. Hatchback (The Trunk)
+                  </h3>
+                  <p className="text-balance">
+                    The easiest way to tell them apart is the back. A{" "}
+                    <strong>Sedan</strong> has a separate trunk (a "three-box"
+                    design: engine, cabin, trunk). A <strong>Hatchback</strong>{" "}
+                    has no separate trunk; the rear glass lifts up with the
+                    "door" (a "two-box" design: engine, cabin/cargo).
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    SUV vs. Crossover (The Frame)
+                  </h3>
+                  <p className="text-balance">
+                    This is the trickiest! Visually, they look similar (high
+                    ground clearance). The key difference is the frame. A
+                    traditional <strong>SUV</strong> is built on a{" "}
+                    <strong>truck frame (body-on-frame)</strong>, making it
+                    rugged and great for heavy towing/off-roading (e.g., Toyota
+                    Fortuner). A <strong>Crossover</strong> is built on a{" "}
+                    <strong>car platform (unibody)</strong>, making it
+                    lighter, more comfortable, and more fuel-efficient (e.g.,
+                    Toyota Raize, Honda CR-V).
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    MPV / AUV (The Family Hauler)
+                  </h3>
+                  <p className="text-balance">
+                    <strong>Multi-Purpose Vehicles</strong> are all about
+                    maximizing interior space for passengers. Look for a tall,
+                    "one-box" (or van-like) shape. They almost always have 7 or
+                    more seats and are designed for family comfort (e.g., Toyota
+                    Innova, Mitsubishi Xpander).
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Pickup Truck (The Hauler)
+                  </h3>
+                  <p className="text-balance">
+                    This is the easiest one! It has a separate cabin for
+                    passengers and a distinct, open-air cargo bed at the back
+                    designed for hauling goods (e.g., Toyota Hilux, Ford
+                    Ranger).
+                  </p>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-2">
+            <AccordionTrigger className="text-lg font-semibold">
+              <div className="flex items-center gap-3">
+                <BookText className="h-5 w-5 text-primary" />
+                <span>Common Car Lingo Explained</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-6 pt-4 text-muted-foreground">
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    FWD vs. RWD vs. AWD (Drivetrain)
+                  </h3>
+                  <p className="text-balance">
+                    This is which wheels the engine powers.{" "}
+                    <strong>FWD (Front-Wheel Drive)</strong> powers the front
+                    wheels. It's the most common and is fuel-efficient.{" "}
+                    <strong>RWD (Rear-Wheel Drive)</strong> powers the rear
+                    wheels, common in sports cars and pickup trucks.{" "}
+                    <strong>AWD (All-Wheel Drive)</strong> powers all four
+                    wheels for the best grip, great for rain or bad roads.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Horsepower (HP) vs. Torque (Nm)
+                  </h3>
+                  <p className="text-balance">
+                    Here's a simple way to think about it:{" "}
+                    <strong>Horsepower</strong> is about *speed* (how fast the
+                    car can go). <strong>Torque</strong> is about *pulling
+                    power* (how quickly the car can get moving from a stop or
+                    climb a steep hill). More torque is what you "feel" when
+                    you accelerate.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Engine Displacement (e.g., 1.5L)
+                  </h3>
+                  <p className="text-balance">
+                    This is the total "size" of the engine's cylinders. A
+                    smaller number (like <strong>1.0L</strong>) usually means
+                    better fuel economy. A larger number (like{" "}
+                    <strong>3.0L</strong>) usually means more power (and uses
+                    more fuel).
+                  </p>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-3">
+            <AccordionTrigger className="text-lg font-semibold">
+              <div className="flex items-center gap-3">
+                <Flag className="h-5 w-5 text-primary" />
+                <span>Why Are These Cars Popular in the PH?</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-6 pt-4 text-muted-foreground">
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    The Love for 7-Seaters (MPVs & SUVs)
+                  </h3>
+                  <p className="text-balance">
+                    Filipino culture is all about family. Cars that can fit the
+                    *buong pamilya* (whole family), plus friends or cargo, are
+                    extremely popular. This is why MPVs (like the Innova or
+                    Xpander) and 3-row SUVs (like the Fortuner) are
+                    best-sellers.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Ground Clearance is King
+                  </h3>
+                  <p className="text-balance">
+                    With common *baha* (floods) in the city and rough
+                    provincial roads, a car that sits higher off the ground
+                    (high ground clearance) gives owners peace of mind. This is
+                    a major reason SUVs and Crossovers are so desirable.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Fuel Efficiency & Diesel Power
+                  </h3>
+                  <p className="text-balance">
+                    Gas prices are a big practical concern. Small, efficient
+                    hatchbacks (like the Wigo) are popular for city driving.
+                    For larger vehicles like SUVs and MPVs, efficient{" "}
+                    <strong>Diesel</strong> engines are often preferred for
+                    their combination of high torque (pulling power) and
+                    better mileage.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Reliability & Resale Value (The "Toyota Factor")
+                  </h3>
+                  <p className="text-balance">
+                    Filipinos are practical buyers. Brands known for
+                    reliability, having easily available parts (*madali ang
+                    piyesa*), and holding their value well over time (high
+                    resale value) are trusted the most.
+                  </p>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
           <div className="md:col-span-1 lg:col-span-1">
