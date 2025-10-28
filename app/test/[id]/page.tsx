@@ -10,6 +10,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -24,13 +25,24 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "@/components/ui/input"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog"
 import { carsData, quizTests, type Car, type CarSpecs } from "@/lib/car-data"
-import { ChevronLeft, CheckCircle, XCircle, RotateCcw, ArrowLeft, X } from "lucide-react"
+import { ChevronLeft, CheckCircle, XCircle, RotateCcw, ArrowLeft, X, Trophy, Smile, Frown } from "lucide-react"
 import { Footer } from "@/components/footer"
 import { toast } from "sonner"
 
-type QuestionType = "image" | "specs"
+type QuestionType = "image" | "specs" | "combined"
 type QuizMode = "multipleChoice" | "textInput"
+type QuestionMix = "images_only" | "specs_only" | "mixed" | "only_combined"
 
 interface Question {
   type: QuestionType
@@ -60,8 +72,11 @@ type SpecSettings = {
 interface QuizSettings {
   quizMode: QuizMode
   numberOfChoices: number
+  numberOfQuestions: number
   showCarBrandInOptions: boolean
   showCarTypeInOptions: boolean
+  showAllSpecs: boolean
+  questionMix: QuestionMix
   includeImageViews: ImageViewSettings
   includeSpecs: SpecSettings
 }
@@ -69,8 +84,11 @@ interface QuizSettings {
 const defaultSettings: QuizSettings = {
   quizMode: "multipleChoice",
   numberOfChoices: 4,
+  numberOfQuestions: 10,
   showCarBrandInOptions: true,
   showCarTypeInOptions: true,
+  showAllSpecs: false,
+  questionMix: "mixed",
   includeImageViews: { front: true, side: true, rear: true, gallery: true },
   includeSpecs: {
     engine: true,
@@ -103,6 +121,15 @@ const specsQuestionPhrases = [
     "These specs belong to which car?",
     "Select the car with these features:",
 ];
+
+const combinedQuestionPhrases = [
+    "Which car matches this image and these specs?",
+    "Identify the vehicle shown with the following details:",
+    "What model is pictured with these specifications?",
+    "Can you name the car shown with these specs?",
+    "Select the car that fits both the image and specs:",
+];
+
 
 function getRandomElement<T>(array: T[]): T {
     return array[Math.floor(Math.random() * array.length)];
@@ -138,6 +165,7 @@ export default function QuizPage() {
   const [isCurrentAnswerCorrect, setIsCurrentAnswerCorrect] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalImageUrl, setModalImageUrl] = useState<string | null>(null)
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const [quizStarted, setQuizStarted] = useState(false)
   const [settings, setSettings] = useState<QuizSettings>(defaultSettings)
@@ -152,10 +180,31 @@ export default function QuizPage() {
     setModalImageUrl(null)
   }
 
+   const openConfirmModal = () => {
+       const canDoImage = allImageViewKeys.some(k => settings.includeImageViews[k]);
+       const canDoSpecs = allSpecKeys.some(k => settings.includeSpecs[k]);
+
+       if (settings.questionMix === 'images_only' && !canDoImage) {
+           toast.error("Please select at least one image view for 'Images Only' mix.");
+           return;
+       }
+       if (settings.questionMix === 'specs_only' && !canDoSpecs) {
+           toast.error("Please select at least one spec type for 'Specs Only' mix.");
+           return;
+       }
+        if ((settings.questionMix === 'mixed' || settings.questionMix === 'only_combined') && (!canDoImage || !canDoSpecs)) {
+            toast.error("Please select at least one image view AND one spec type for mixed or combined questions.");
+            return;
+        }
+       setIsConfirmModalOpen(true);
+   }
+   const closeConfirmModal = () => setIsConfirmModalOpen(false);
+
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeModal()
+        closeConfirmModal()
       }
     }
     window.addEventListener("keydown", handleEsc)
@@ -224,11 +273,18 @@ export default function QuizPage() {
 
     const canDoImage = selectedImageKeys.length > 0
     const canDoSpecs = selectedSpecKeys.length > 0
+    const canDoCombined = canDoImage && canDoSpecs;
 
-    if (!canDoImage && !canDoSpecs) {
-      toast.error("Please select at least one image view or spec type.")
-      return false
+    if (currentSettings.questionMix === 'images_only' && !canDoImage) {
+        toast.error("Cannot generate 'Images Only' quiz without selecting image views."); return false;
     }
+    if (currentSettings.questionMix === 'specs_only' && !canDoSpecs) {
+        toast.error("Cannot generate 'Specs Only' quiz without selecting spec types."); return false;
+    }
+    if ((currentSettings.questionMix === 'mixed' || currentSettings.questionMix === 'only_combined') && (!canDoImage || !canDoSpecs)) {
+        toast.error("Cannot generate mixed or combined quiz without selecting both image views and spec types."); return false;
+    }
+
 
     const testCars = carsData.filter((car) => test.carIds.includes(car.id))
     const minRequiredCars = currentSettings.quizMode === "multipleChoice" ? currentSettings.numberOfChoices : 1
@@ -241,14 +297,25 @@ export default function QuizPage() {
 
     const newQuestions: Question[] = []
     const usedCarIds = new Set<string>()
-    const maxQuestions = 10;
+    const maxQuestions = currentSettings.numberOfQuestions;
 
     for (let i = 0; i < maxQuestions; i++) {
-      let questionType: QuestionType
-      if (canDoImage && canDoSpecs) {
-        questionType = i % 2 === 0 ? "image" : "specs"
-      } else {
-        questionType = canDoImage ? "image" : "specs"
+      let questionType: QuestionType;
+      switch (currentSettings.questionMix) {
+          case 'images_only':
+              questionType = 'image';
+              break;
+          case 'specs_only':
+              questionType = 'specs';
+              break;
+          case 'mixed':
+              questionType = i % 2 === 0 ? 'image' : 'specs';
+              break;
+          case 'only_combined':
+              questionType = 'combined';
+              break;
+          default:
+             questionType = 'image';
       }
 
       let correctCar: Car | undefined
@@ -265,47 +332,60 @@ export default function QuizPage() {
       correctCar = availableCars[Math.floor(Math.random() * availableCars.length)];
       usedCarIds.add(correctCar.id)
 
-
       let imageUrl: string | undefined
       let specKeys: (keyof CarSpecs)[] | undefined
       let questionText = "";
 
+      const generateImageData = () => {
+         let possibleImageSources: string[] = []
+         const useGallery = currentSettings.includeImageViews.gallery && correctCar.galleryImages && correctCar.galleryImages.length > 0
+
+         if (useGallery && correctCar.galleryImages) {
+              possibleImageSources.push(...correctCar.galleryImages);
+         } else {
+           const firstSet = correctCar.imageSets[0]
+           if (firstSet) {
+             if (currentSettings.includeImageViews.front && firstSet.front)
+               possibleImageSources.push(firstSet.front)
+             if (currentSettings.includeImageViews.side && firstSet.side)
+               possibleImageSources.push(firstSet.side)
+             if (currentSettings.includeImageViews.rear && firstSet.rear)
+               possibleImageSources.push(firstSet.rear)
+           }
+         }
+         if (possibleImageSources.length > 0) {
+           imageUrl = possibleImageSources[Math.floor(Math.random() * possibleImageSources.length)]
+         } else {
+           imageUrl = correctCar.imageSets[0]?.front || "/placeholder.svg"
+           console.warn(`No suitable image found for ${correctCar.id} based on settings, using fallback.`)
+         }
+      }
+
+      const generateSpecData = () => {
+          if(currentSettings.showAllSpecs) {
+              specKeys = allSpecKeys;
+          } else {
+              const availableSpecKeys = selectedSpecKeys.length > 0 ? selectedSpecKeys : allSpecKeys;
+              specKeys = getRandomSubset(availableSpecKeys, Math.min(availableSpecKeys.length, Math.random() < 0.5 ? 3 : 4))
+              if (specKeys.length < 2 && availableSpecKeys.length >= 2) {
+                specKeys = getRandomSubset(availableSpecKeys, 2)
+              } else if (specKeys.length === 0) {
+                console.error(`No spec keys could be selected for car ${correctCar.id}, using default fallback.`)
+                specKeys = getRandomSubset(allSpecKeys, 3)
+              }
+          }
+      }
+
       if (questionType === "image") {
         questionText = getRandomElement(imageQuestionPhrases);
-        let possibleImageSources: string[] = []
-        const useGallery = currentSettings.includeImageViews.gallery && correctCar.galleryImages && correctCar.galleryImages.length > 0
-
-        if (useGallery && correctCar.galleryImages) {
-             possibleImageSources.push(...correctCar.galleryImages);
-        } else {
-          const firstSet = correctCar.imageSets[0]
-          if (firstSet) {
-            if (currentSettings.includeImageViews.front && firstSet.front)
-              possibleImageSources.push(firstSet.front)
-            if (currentSettings.includeImageViews.side && firstSet.side)
-              possibleImageSources.push(firstSet.side)
-            if (currentSettings.includeImageViews.rear && firstSet.rear)
-              possibleImageSources.push(firstSet.rear)
-          }
-        }
-
-        if (possibleImageSources.length > 0) {
-          imageUrl =
-            possibleImageSources[Math.floor(Math.random() * possibleImageSources.length)]
-        } else {
-          imageUrl = correctCar.imageSets[0]?.front || "/placeholder.svg"
-          console.warn(`No suitable image found for ${correctCar.id} based on settings, using fallback.`)
-        }
-      } else {
+        generateImageData();
+      } else if (questionType === "specs") {
         questionText = getRandomElement(specsQuestionPhrases);
-        const availableSpecKeys = selectedSpecKeys.length > 0 ? selectedSpecKeys : allSpecKeys;
-        specKeys = getRandomSubset(availableSpecKeys, Math.min(availableSpecKeys.length, Math.random() < 0.5 ? 3 : 4))
-        if (specKeys.length < 2 && availableSpecKeys.length >= 2) {
-          specKeys = getRandomSubset(availableSpecKeys, 2)
-        } else if (specKeys.length === 0) {
-          console.error(`No spec keys could be selected for car ${correctCar.id}, using default fallback.`)
-          specKeys = getRandomSubset(allSpecKeys, 3)
-        }
+        generateSpecData();
+      } else {
+         questionText = getRandomElement(combinedQuestionPhrases);
+         generateImageData();
+         generateSpecData();
       }
 
       let options: string[] = []
@@ -350,6 +430,11 @@ export default function QuizPage() {
   }
 
   const checkAnswer = (answer: string) => {
+    // Ensure questions array is populated and currentQuestion is valid index
+    if (!questions || questions.length === 0 || currentQuestion >= questions.length) {
+        console.error("Attempted to check answer with invalid questions state.");
+        return false;
+    }
     const correctCar = carsData.find(car => car.id === questions[currentQuestion].carId)!
     const correctAnswerString = `${correctCar.brand} ${correctCar.model}`
     let correct = false;
@@ -362,6 +447,7 @@ export default function QuizPage() {
     return correct;
   };
 
+
   const submitAnswer = (answer: string) => {
     if (answeredStates[currentQuestion]) return;
 
@@ -372,9 +458,10 @@ export default function QuizPage() {
     };
     setAnsweredStates(newAnsweredStates);
 
-    if (isCorrect) {
-      setScore(prevScore => prevScore + 1);
-    }
+    // Score is calculated based on the final state in the results screen now
+    // if (isCorrect) {
+    //   setScore(prevScore => prevScore + 1);
+    // }
 
     setSelectedAnswer(answer);
     setIsCurrentAnswerCorrect(isCorrect);
@@ -394,17 +481,27 @@ export default function QuizPage() {
   }
 
   const goToQuestion = (index: number) => {
-      if (index >= 0 && index < questions.length) {
+      // Allow index to reach questions.length to trigger results screen
+      if (index >= 0 && index <= questions.length) {
           setCurrentQuestion(index);
-          const previousAnswerState = answeredStates[index];
-          if (previousAnswerState) {
-              setAnswered(true);
-              setSelectedAnswer(previousAnswerState.selected);
-              setIsCurrentAnswerCorrect(previousAnswerState.correct);
-              if (settings.quizMode === 'textInput') {
-                  setTextInputAnswer(previousAnswerState.selected || "");
-              }
+          // Only update answer state if navigating to a valid question index
+          if (index < questions.length) {
+            const previousAnswerState = answeredStates[index];
+            if (previousAnswerState) {
+                setAnswered(true);
+                setSelectedAnswer(previousAnswerState.selected);
+                setIsCurrentAnswerCorrect(previousAnswerState.correct);
+                if (settings.quizMode === 'textInput') {
+                    setTextInputAnswer(previousAnswerState.selected || "");
+                }
+            } else {
+                setAnswered(false);
+                setSelectedAnswer(null);
+                setIsCurrentAnswerCorrect(false);
+                setTextInputAnswer("");
+            }
           } else {
+              // Transitioning to results screen, reset transient states
               setAnswered(false);
               setSelectedAnswer(null);
               setIsCurrentAnswerCorrect(false);
@@ -412,6 +509,7 @@ export default function QuizPage() {
           }
       }
   };
+
 
   const retryQuestion = () => {
     const currentState = answeredStates[currentQuestion];
@@ -450,6 +548,17 @@ export default function QuizPage() {
       const typeText = showType ? car.type : undefined;
       return { modelText, typeText };
   };
+
+  const startQuizConfirmed = () => {
+     if (generateQuestions(settings)) {
+        setQuizStarted(true);
+        closeConfirmModal();
+     }
+  }
+
+  const isImageViewsSelected = useMemo(() => allImageViewKeys.some(k => settings.includeImageViews[k]), [settings.includeImageViews]);
+  const isSpecsSelected = useMemo(() => allSpecKeys.some(k => settings.includeSpecs[k]), [settings.includeSpecs]);
+
 
   if (!test) {
     return (
@@ -504,7 +613,20 @@ export default function QuizPage() {
                    </RadioGroup>
                  </div>
 
-                <div className={`space-y-2 mb-6 ${settings.quizMode === 'textInput' ? 'opacity-50 pointer-events-none' : ''}`}>
+                 <div className="space-y-2 mb-6 mt-6">
+                   <Label htmlFor="num-questions" className="cursor-pointer">Number of Questions: {settings.numberOfQuestions}</Label>
+                   <Slider
+                     id="num-questions"
+                     min={5}
+                     max={20}
+                     step={1}
+                     value={[settings.numberOfQuestions]}
+                     onValueChange={(value) => handleSettingChange("numberOfQuestions", value[0])}
+                     className="cursor-pointer"
+                   />
+                 </div>
+
+                <div className={`space-y-2 mb-6 mt-6 ${settings.quizMode === 'textInput' ? 'opacity-50 pointer-events-none' : ''}`}>
                    <Label htmlFor="num-choices" className="cursor-pointer">Number of Choices: {settings.numberOfChoices}</Label>
                    <Slider
                      id="num-choices"
@@ -540,17 +662,55 @@ export default function QuizPage() {
                    <Label htmlFor="show-type" className="cursor-pointer">Show Car Type in Options</Label>
                  </div>
 
-                <h3 className="font-semibold text-foreground mb-2">
-                  Question Types
+                <h3 className="font-semibold text-foreground mb-4 mt-6">
+                  Question Mix
                 </h3>
+                 <RadioGroup
+                     value={settings.questionMix}
+                     onValueChange={(value) => handleSettingChange("questionMix", value as QuestionMix)}
+                     className="grid grid-cols-2 gap-4 mb-6"
+                 >
+                     <div className={`flex items-center space-x-2 ${!isImageViewsSelected ? 'opacity-50' : ''}`}>
+                         <RadioGroupItem value="images_only" id="mix-img" className="cursor-pointer" disabled={!isImageViewsSelected}/>
+                         <Label htmlFor="mix-img" className={`cursor-pointer ${!isImageViewsSelected ? 'cursor-not-allowed' : ''}`}>Images Only</Label>
+                     </div>
+                      <div className={`flex items-center space-x-2 ${!isSpecsSelected ? 'opacity-50' : ''}`}>
+                         <RadioGroupItem value="specs_only" id="mix-spec" className="cursor-pointer" disabled={!isSpecsSelected}/>
+                         <Label htmlFor="mix-spec" className={`cursor-pointer ${!isSpecsSelected ? 'cursor-not-allowed' : ''}`}>Specs Only</Label>
+                     </div>
+                     <div className={`flex items-center space-x-2 ${(!isImageViewsSelected || !isSpecsSelected) ? 'opacity-50' : ''}`}>
+                         <RadioGroupItem value="mixed" id="mix-img-spec" className="cursor-pointer" disabled={!isImageViewsSelected || !isSpecsSelected}/>
+                         <Label htmlFor="mix-img-spec" className={`cursor-pointer ${(!isImageViewsSelected || !isSpecsSelected) ? 'cursor-not-allowed' : ''}`}>Mixed (Image / Specs)</Label>
+                     </div>
+                     <div className={`flex items-center space-x-2 ${(!isImageViewsSelected || !isSpecsSelected) ? 'opacity-50' : ''}`}>
+                         <RadioGroupItem value="only_combined" id="mix-all" className="cursor-pointer" disabled={!isImageViewsSelected || !isSpecsSelected}/>
+                         <Label htmlFor="mix-all" className={`cursor-pointer ${(!isImageViewsSelected || !isSpecsSelected) ? 'cursor-not-allowed' : ''}`}>Only Combined</Label>
+                     </div>
+                 </RadioGroup>
+
+                <h3 className="font-semibold text-foreground mb-2 mt-6">
+                  Included Details
+                </h3>
+                 <div className={`flex items-center space-x-2 mb-4 ${(settings.questionMix === 'images_only') ? 'opacity-50 pointer-events-none' : ''}`}>
+                   <Checkbox
+                     id="show-all-specs"
+                     checked={settings.showAllSpecs}
+                     onCheckedChange={(checked) => handleSettingChange("showAllSpecs", !!checked)}
+                     disabled={settings.questionMix === 'images_only'}
+                     className="cursor-pointer"
+                   />
+                   <Label htmlFor="show-all-specs" className={`cursor-pointer ${settings.questionMix === 'images_only' ? 'cursor-not-allowed' : ''}`}>
+                     Always Show All Specs (Overrides Selection Below)
+                    </Label>
+                 </div>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Select the types of questions you want to include.
+                  Select the image views and specs to use for questions.
                 </p>
               </div>
 
               <Accordion type="multiple" defaultValue={["item-1", "item-2"]} className="w-full">
                 <AccordionItem value="item-1">
-                  <AccordionTrigger className="cursor-pointer hover:no-underline">Image Questions</AccordionTrigger>
+                  <AccordionTrigger className="cursor-pointer hover:no-underline">Image Views</AccordionTrigger>
                   <AccordionContent className="space-y-4 pt-4">
                     <div className="flex justify-end gap-2 mb-2">
                       <Button variant="ghost" size="sm" onClick={() => toggleAll("includeImageViews", true)} className="cursor-pointer">
@@ -578,7 +738,7 @@ export default function QuizPage() {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
-                  <AccordionTrigger className="cursor-pointer hover:no-underline">Specification Questions</AccordionTrigger>
+                  <AccordionTrigger className="cursor-pointer hover:no-underline">Specifications</AccordionTrigger>
                   <AccordionContent className="space-y-4 pt-4">
                     <div className="flex justify-end gap-2 mb-2">
                       <Button variant="ghost" size="sm" onClick={() => toggleAll("includeSpecs", true)} className="cursor-pointer">
@@ -596,8 +756,9 @@ export default function QuizPage() {
                             checked={settings.includeSpecs[key]}
                             onCheckedChange={(checked) => handleNestedSettingChange("includeSpecs", key, !!checked)}
                             className="cursor-pointer"
+                            disabled={settings.showAllSpecs}
                           />
-                          <Label htmlFor={`spec-${key}`} className="capitalize cursor-pointer">
+                          <Label htmlFor={`spec-${key}`} className={`capitalize cursor-pointer ${settings.showAllSpecs ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             {specDisplayNames[key] || key}
                           </Label>
                         </div>
@@ -607,17 +768,87 @@ export default function QuizPage() {
                 </AccordionItem>
               </Accordion>
 
-              <Button
-                size="lg"
-                onClick={() => {
-                  if (generateQuestions(settings)) {
-                    setQuizStarted(true)
-                  }
-                }}
-                className="w-full mt-6 cursor-pointer hover:scale-105 hover:brightness-110 transform transition-all duration-200"
-              >
-                Start Quiz
-              </Button>
+              <Dialog open={isConfirmModalOpen} onOpenChange={setIsConfirmModalOpen}>
+                  <DialogTrigger asChild>
+                      <Button
+                        size="lg"
+                        onClick={openConfirmModal}
+                        className="w-full mt-6 cursor-pointer hover:scale-105 hover:brightness-110 transform transition-all duration-200"
+                        disabled={!isImageViewsSelected && !isSpecsSelected && settings.questionMix !== 'images_only' && settings.questionMix !== 'specs_only' }
+                      >
+                        Start Quiz
+                      </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                          <DialogTitle>Confirm Quiz Settings</DialogTitle>
+                          <DialogDescription>
+                              Review your selections before starting the quiz.
+                          </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4 text-sm">
+                          <div className="grid grid-cols-2 items-center gap-4">
+                                <Label># of Questions:</Label>
+                                <span className="font-medium">{settings.numberOfQuestions}</span>
+                          </div>
+                          <div className="grid grid-cols-2 items-center gap-4">
+                              <Label>Quiz Mode:</Label>
+                              <span className="font-medium">{settings.quizMode === 'multipleChoice' ? 'Multiple Choice' : 'Text Input'}</span>
+                          </div>
+                          {settings.quizMode === 'multipleChoice' && (
+                              <>
+                                <div className="grid grid-cols-2 items-center gap-4">
+                                     <Label>Choices:</Label>
+                                     <span className="font-medium">{settings.numberOfChoices}</span>
+                                </div>
+                                <div className="grid grid-cols-2 items-center gap-4">
+                                     <Label>Show Brand:</Label>
+                                     <span className="font-medium">{settings.showCarBrandInOptions ? 'Yes' : 'No'}</span>
+                                </div>
+                                <div className="grid grid-cols-2 items-center gap-4">
+                                      <Label>Show Type:</Label>
+                                      <span className="font-medium">{settings.showCarTypeInOptions ? 'Yes' : 'No'}</span>
+                                </div>
+                              </>
+                          )}
+                           <div className="grid grid-cols-2 items-center gap-4">
+                                <Label>Question Mix:</Label>
+                                <span className="font-medium capitalize">
+                                    {settings.questionMix === 'mixed' ? 'Mixed (Image / Specs)' : settings.questionMix.replace(/_/g, ' ')}
+                                </span>
+                           </div>
+                           <div className="grid grid-cols-2 items-center gap-4">
+                                <Label>Show All Specs:</Label>
+                                <span className="font-medium">{settings.showAllSpecs ? 'Yes' : 'No'}</span>
+                           </div>
+                           <div className="grid grid-cols-2 items-start gap-4">
+                               <Label>Image Views:</Label>
+                               <span className="font-medium capitalize">
+                                {allImageViewKeys.filter(k => settings.includeImageViews[k]).join(', ') || 'None Selected'}
+                               </span>
+                           </div>
+                           <div className="grid grid-cols-2 items-start gap-4">
+                               <Label>Specs:</Label>
+                               <span className="font-medium capitalize">
+                                {settings.showAllSpecs ? 'All' : (allSpecKeys.filter(k => settings.includeSpecs[k]).map(k => specDisplayNames[k]).join(', ') || 'None Selected')}
+                               </span>
+                           </div>
+                      </div>
+                      <DialogFooter>
+                          <DialogClose asChild>
+                             <Button type="button" variant="outline" className="cursor-pointer">Cancel</Button>
+                          </DialogClose>
+                          <Button
+                            type="button"
+                            onClick={startQuizConfirmed}
+                            className="cursor-pointer hover:scale-105 hover:brightness-110 transform transition-all duration-200"
+                           >
+                              Confirm & Start
+                           </Button>
+                      </DialogFooter>
+                  </DialogContent>
+              </Dialog>
+
             </CardContent>
           </Card>
         </main>
@@ -625,6 +856,62 @@ export default function QuizPage() {
       </div>
     )
   }
+
+  // Quiz Results Screen Logic needs to be here to avoid errors when questions array is empty initially
+  if (currentQuestion >= questions.length && quizStarted && questions.length > 0) {
+    const finalScore = Object.values(answeredStates).filter(state => state.correct).length;
+    const percentage = questions.length > 0 ? Math.round((finalScore / questions.length) * 100) : 0;
+    const scoreRemark = percentage >= 80 ? "Excellent!" : percentage >= 60 ? "Good Job!" : "Keep Practicing!";
+    const ScoreIcon = percentage >= 80 ? Trophy : percentage >= 60 ? Smile : Frown;
+
+    return (
+      <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex flex-col">
+        <Navigation />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full flex items-center justify-center">
+          <Card className="max-w-md mx-auto w-full">
+            <CardHeader className="text-center pb-4">
+              <CardTitle className="text-3xl">
+                Quiz Complete!
+              </CardTitle>
+               <CardDescription>{scoreRemark}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6 flex flex-col items-center pt-0">
+               <ScoreIcon
+                 className={`w-24 h-24 my-4 ${
+                    percentage >= 80 ? 'text-yellow-500' : percentage >= 60 ? 'text-green-500' : 'text-red-500'
+                 }`}
+                 strokeWidth={1.5}
+                />
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">Your Score</p>
+                <div className="text-6xl font-bold text-primary mb-1">
+                  {percentage}%
+                </div>
+                <p className="text-lg text-muted-foreground mb-6">
+                  ({finalScore} / {questions.length} correct)
+                </p>
+              </div>
+
+              <div className="w-full flex flex-col sm:flex-row gap-3">
+                <Button
+                  variant="outline"
+                  onClick={goBackToSettings}
+                  className="flex-1 cursor-pointer"
+                >
+                  New Quiz
+                </Button>
+                <Button asChild className="flex-1 cursor-pointer">
+                  <Link href="/learn">Learn More</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
 
   if (questions.length === 0 && quizStarted) {
     return (
@@ -651,59 +938,6 @@ export default function QuizPage() {
     )
   }
 
-  if (currentQuestion >= questions.length && quizStarted) {
-    const finalScore = Object.values(answeredStates).filter(state => state.correct).length;
-    const percentage = questions.length > 0 ? Math.round((finalScore / questions.length) * 100) : 0;
-
-    return (
-      <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex flex-col">
-        <Navigation />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
-          <Card className="max-w-2xl mx-auto">
-            <CardHeader>
-              <CardTitle className="text-3xl text-center">
-                Quiz Complete!
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-center">
-                <div className="text-6xl font-bold text-primary mb-2">
-                  {percentage}%
-                </div>
-                <p className="text-lg text-muted-foreground mb-4">
-                  You got {finalScore} out of {questions.length} correct
-                </p>
-              </div>
-
-              <div className="bg-muted p-4 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-2">Fun Fact:</p>
-                <p className="text-foreground italic">
-                  {
-                    carsData[Math.floor(Math.random() * carsData.length)]
-                      .funFacts[0]
-                  }
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="outline"
-                  onClick={goBackToSettings}
-                  className="flex-1 cursor-pointer"
-                >
-                  New Quiz
-                </Button>
-                <Button asChild className="flex-1 cursor-pointer">
-                  <Link href="/learn">Learn More</Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </main>
-        <Footer />
-      </div>
-    )
-  }
 
   const correctCar = carsData.find((car) => car.id === question.carId)!
   const correctAnswerString = `${correctCar?.brand} ${correctCar?.model}`
@@ -711,6 +945,9 @@ export default function QuizPage() {
   const localAnswered = !!currentAnswerState;
   const localSelectedAnswer = currentAnswerState?.selected || null;
   const localIsCorrect = currentAnswerState?.correct || false;
+
+  const showImage = question.type === 'image' || question.type === 'combined';
+  const showSpecs = question.type === 'specs' || question.type === 'combined';
 
   return (
     <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex flex-col">
@@ -729,13 +966,13 @@ export default function QuizPage() {
                 <ArrowLeft className="w-4 h-4" /> Settings
              </Button>
            </div>
-           <div className="justify-self-center">
+           <div className="justify-self-center text-center">
              <span className="text-sm font-semibold text-foreground">
               Question {currentQuestion + 1} of {questions.length}
              </span>
            </div>
            <div className="justify-self-end">
-             <span className="text-sm text-muted-foreground">Score: {score}</span>
+             <span className="text-sm text-muted-foreground">Score: {Object.values(answeredStates).filter(s => s.correct).length}</span>
            </div>
            <div className="col-span-3 mt-2">
              <div className="w-full bg-muted rounded-full h-2">
@@ -743,7 +980,7 @@ export default function QuizPage() {
                  className="bg-primary h-2 rounded-full transition-all duration-300"
                  style={{
                    width: `${((currentQuestion + 1) / questions.length) * 100}%`,
-                 }} // I need inline to calculate width
+                 }} // I need inline style here for dynamic width
                />
              </div>
            </div>
@@ -752,19 +989,20 @@ export default function QuizPage() {
 
         <Card>
           <CardContent className="pt-6">
-            {question.type === "image" ? (
-              <div className="mb-8">
-                <p className="text-lg font-semibold text-foreground mb-4 text-balance">
-                  {question.questionText}
-                </p>
-                <div className="rounded-lg flex items-center justify-center min-h-64 mb-6 relative group overflow-hidden">
+             <p className="text-lg font-semibold text-foreground mb-4 text-balance">
+                {question.questionText}
+             </p>
+
+            {showImage && (
+              <div className="mb-6">
+                <div className="rounded-lg flex items-center justify-center min-h-64 relative group overflow-hidden">
                    <div className="relative w-full h-64 cursor-pointer" onClick={() => question.imageUrl && openModal(question.imageUrl)}>
                        <Image
                          src={question.imageUrl || "/placeholder.svg"}
                          alt="Quiz car"
                          fill
                          className="object-contain rounded-lg transition-transform duration-200 group-hover:scale-105 bg-muted"
-                         key={question.imageUrl}
+                         key={question.imageUrl + '-main'}
                          priority={currentQuestion === 0}
                          sizes="(max-width: 768px) 90vw, (max-width: 1024px) 70vw, 600px"
                        />
@@ -774,12 +1012,11 @@ export default function QuizPage() {
                    </div>
                 </div>
               </div>
-            ) : (
-              <div className="mb-8">
-                <p className="text-lg font-semibold text-foreground mb-4 text-balance">
-                  {question.questionText}
-                </p>
-                <div className="bg-muted p-4 rounded-lg mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            )}
+
+            {showSpecs && (
+              <div className="mb-6">
+                <div className="bg-muted p-4 rounded-lg grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   {question.specKeys?.map((key) => (
                     <div key={key}>
                       <p className="text-muted-foreground">{specDisplayNames[key] || key}</p>
