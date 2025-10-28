@@ -1528,7 +1528,7 @@ export const carsData: Car[] = [
 
 export const quizTests = [
   {
-    id: "test_1",
+    id: "all-models-challenge",
     name: "All Models Challenge",
     description: "Test your knowledge on all available car models",
     carIds: [
@@ -1577,7 +1577,7 @@ export const quizTests = [
     ],
   },
   {
-    id: "test_2",
+    id: "sedans-only",
     name: "Sedans Only",
     description: "Focus on sedan models",
     carIds: [
@@ -1593,7 +1593,7 @@ export const quizTests = [
     ],
   },
   {
-    id: "test_3",
+    id: "suvs-challenge",
     name: "SUVs Challenge",
     description: "Test your knowledge on SUV models",
     carIds: [
@@ -1609,7 +1609,7 @@ export const quizTests = [
     ],
   },
   {
-    id: "test_4",
+    id: "budget-cars",
     name: "Budget Cars",
     description: "Test your knowledge on affordable vehicles",
     carIds: [
@@ -1624,7 +1624,7 @@ export const quizTests = [
     ],
   },
   {
-    id: "test_5",
+    id: "hatchbacks-only",
     name: "Hatchbacks Only",
     description: "Focus on hatchback models",
     carIds: [
@@ -1640,7 +1640,7 @@ export const quizTests = [
     ],
   },
   {
-    id: "test_6",
+    id: "family-vehicles",
     name: "Family Vehicles",
     description: "Test your knowledge on family-oriented cars",
     carIds: [
@@ -1656,13 +1656,13 @@ export const quizTests = [
     ],
   },
   {
-    id: "test_7",
+    id: "pickup-trucks",
     name: "Pickup Trucks",
     description: "Test your knowledge on pickup truck models",
     carIds: ["toyota_hilux", "isuzu_d_max", "ford_ranger", "mitsubishi_triton", "chevrolet_colorado"],
   },
   {
-    id: "test_8",
+    id: "premium-cars",
     name: "Premium Cars",
     description: "Test your knowledge on premium and luxury vehicles",
     carIds: [

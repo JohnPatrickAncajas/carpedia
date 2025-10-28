@@ -10,7 +10,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -430,7 +429,6 @@ export default function QuizPage() {
   }
 
   const checkAnswer = (answer: string) => {
-    // Ensure questions array is populated and currentQuestion is valid index
     if (!questions || questions.length === 0 || currentQuestion >= questions.length) {
         console.error("Attempted to check answer with invalid questions state.");
         return false;
@@ -457,12 +455,6 @@ export default function QuizPage() {
       [currentQuestion]: { selected: answer, correct: isCorrect }
     };
     setAnsweredStates(newAnsweredStates);
-
-    // Score is calculated based on the final state in the results screen now
-    // if (isCorrect) {
-    //   setScore(prevScore => prevScore + 1);
-    // }
-
     setSelectedAnswer(answer);
     setIsCurrentAnswerCorrect(isCorrect);
     setAnswered(true);
@@ -481,10 +473,8 @@ export default function QuizPage() {
   }
 
   const goToQuestion = (index: number) => {
-      // Allow index to reach questions.length to trigger results screen
       if (index >= 0 && index <= questions.length) {
           setCurrentQuestion(index);
-          // Only update answer state if navigating to a valid question index
           if (index < questions.length) {
             const previousAnswerState = answeredStates[index];
             if (previousAnswerState) {
@@ -501,7 +491,6 @@ export default function QuizPage() {
                 setTextInputAnswer("");
             }
           } else {
-              // Transitioning to results screen, reset transient states
               setAnswered(false);
               setSelectedAnswer(null);
               setIsCurrentAnswerCorrect(false);
@@ -787,6 +776,10 @@ export default function QuizPage() {
                           </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4 text-sm">
+                          <div className="grid grid-cols-2 items-center gap-4">
+                                <Label>Quiz:</Label>
+                                <span className="font-semibold text-primary">{test.name}</span>
+                          </div>
                           <div className="grid grid-cols-2 items-center gap-4">
                                 <Label># of Questions:</Label>
                                 <span className="font-medium">{settings.numberOfQuestions}</span>

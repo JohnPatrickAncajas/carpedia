@@ -14,6 +14,16 @@ import { quizTests } from "@/lib/car-data"
 import { Footer } from "@/components/footer"
 import { Car, Brain, Shuffle } from "lucide-react"
 
+const slugify = (text: string): string => {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
 export default function TestPage() {
   return (
     <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex flex-col">
@@ -32,7 +42,7 @@ export default function TestPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {quizTests.map((test) => (
-            <Link href={`/test/${test.id}`} key={test.id} className="block">
+            <Link href={`/test/${slugify(test.name)}`} key={test.id} className="block">
               <Card className="flex flex-col h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
                 <CardHeader>
                   <CardTitle>{test.name}</CardTitle>
