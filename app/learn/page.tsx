@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import Fuse from "fuse.js"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import {
@@ -36,9 +37,10 @@ import {
 } from "@/components/ui/accordion"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { carsData, type Car } from "@/lib/car-data"
 import { Footer } from "@/components/footer"
-import { X, SlidersHorizontal, Info, BookText, Flag } from "lucide-react"
+import { X, SlidersHorizontal, Info, BookText, Flag, Search } from "lucide-react"
 
 const parsePrice = (priceRange: string, index: 0 | 1): number => {
   const parts = priceRange
@@ -87,6 +89,7 @@ function CarCardSkeleton() {
 
 export default function LearnPage() {
   const [isLoading, setIsLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
   const [sortOrder, setSortOrder] = useState("default")
   const [filterType, setFilterType] = useState("all")
   const [filterBrand, setFilterBrand] = useState("all")
@@ -111,10 +114,28 @@ export default function LearnPage() {
     [],
   )
 
+  const fuse = useMemo(() => {
+    const options = {
+      keys: [
+        "brand",
+        "model",
+        "type",
+        "description",
+        "commonUse",
+        "specs.engine",
+      ],
+      threshold: 0.3,
+      includeScore: true,
+    }
+    return new Fuse(carsData, options)
+  }, [])
+
   useEffect(() => {
     setIsLoading(true)
     const timer = setTimeout(() => {
-      let newFilteredCars = [...carsData]
+      let newFilteredCars = searchQuery
+        ? fuse.search(searchQuery).map((result) => result.item)
+        : [...carsData]
 
       if (filterType !== "all") {
         newFilteredCars = newFilteredCars.filter(
@@ -169,15 +190,18 @@ export default function LearnPage() {
 
     return () => clearTimeout(timer)
   }, [
+    searchQuery,
     sortOrder,
     filterType,
     filterBrand,
     filterFuel,
     filterTransmission,
     filterSeats,
+    fuse,
   ])
 
   const resetFilters = () => {
+    setSearchQuery("")
     setFilterType("all")
     setFilterBrand("all")
     setFilterFuel("all")
@@ -187,12 +211,22 @@ export default function LearnPage() {
   }
 
   const filtersAreActive =
+    searchQuery !== "" ||
     filterType !== "all" ||
     filterBrand !== "all" ||
     filterFuel !== "all" ||
     filterTransmission !== "all" ||
     filterSeats !== "all" ||
     sortOrder !== "default"
+
+  const dropdownFiltersCount =
+    [
+      filterType,
+      filterBrand,
+      filterFuel,
+      filterTransmission,
+      filterSeats,
+    ].filter((f) => f !== "all").length + (sortOrder !== "default" ? 1 : 0)
 
   const filterControls = (
     <>
@@ -315,6 +349,17 @@ export default function LearnPage() {
             Browse through detailed profiles of the most common cars in the
             Philippines
           </p>
+        </div>
+
+        <div className="relative mb-8">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search by brand, model, or keyword (e.g., 'Toyota 7 seater')..."
+            className="w-full pl-10 h-12 text-base"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
 
         <Accordion type="single" collapsible className="mb-8 w-full">
@@ -625,18 +670,9 @@ export default function LearnPage() {
               <Button variant="outline" className="w-full">
                 <SlidersHorizontal className="w-4 h-4 mr-2" />
                 Filter & Sort
-                {filtersAreActive && (
+                {dropdownFiltersCount > 0 && (
                   <span className="ml-2 bg-primary text-primary-foreground h-5 w-5 rounded-full flex items-center justify-center text-xs">
-                    {
-                      [
-                        filterType,
-                        filterBrand,
-                        filterFuel,
-                        filterTransmission,
-                        filterSeats,
-                      ].filter((f) => f !== "all").length +
-                        (sortOrder !== "default" ? 1 : 0)
-                    }
+                    {dropdownFiltersCount}
                   </span>
                 )}
               </Button>
