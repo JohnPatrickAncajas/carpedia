@@ -362,184 +362,6 @@ export default function LearnPage() {
           />
         </div>
 
-        <Accordion type="single" collapsible className="mb-8 w-full">
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="text-lg font-semibold">
-              <div className="flex items-center gap-3">
-                <Info className="h-5 w-5 text-primary" />
-                <span>A Quick Guide: How to Tell Car Types Apart</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="space-y-6 pt-4 text-muted-foreground">
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    Sedan vs. Hatchback (The Trunk)
-                  </h3>
-                  <p className="text-balance">
-                    The easiest way to tell them apart is the back. A{" "}
-                    <strong>Sedan</strong> has a separate trunk (a "three-box"
-                    design: engine, cabin, trunk). A <strong>Hatchback</strong>{" "}
-                    has no separate trunk; the rear glass lifts up with the
-                    "door" (a "two-box" design: engine, cabin/cargo).
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    SUV vs. Crossover (The Frame)
-                  </h3>
-                  <p className="text-balance">
-                    This is the trickiest! Visually, they look similar (high
-                    ground clearance). The key difference is the frame. A
-                    traditional <strong>SUV</strong> is built on a{" "}
-                    <strong>truck frame (body-on-frame)</strong>, making it
-                    rugged and great for heavy towing/off-roading (e.g., Toyota
-                    Fortuner). A <strong>Crossover</strong> is built on a{" "}
-                    <strong>car platform (unibody)</strong>, making it
-                    lighter, more comfortable, and more fuel-efficient (e.g.,
-                    Toyota Raize, Honda CR-V).
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    MPV / AUV (The Family Hauler)
-                  </h3>
-                  <p className="text-balance">
-                    <strong>Multi-Purpose Vehicles</strong> are all about
-                    maximizing interior space for passengers. Look for a tall,
-                    "one-box" (or van-like) shape. They almost always have 7 or
-                    more seats and are designed for family comfort (e.g., Toyota
-                    Innova, Mitsubishi Xpander).
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    Pickup Truck (The Hauler)
-                  </h3>
-                  <p className="text-balance">
-                    This is the easiest one! It has a separate cabin for
-                    passengers and a distinct, open-air cargo bed at the back
-                    designed for hauling goods (e.g., Toyota Hilux, Ford
-                    Ranger).
-                  </p>
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-2">
-            <AccordionTrigger className="text-lg font-semibold">
-              <div className="flex items-center gap-3">
-                <BookText className="h-5 w-5 text-primary" />
-                <span>Common Car Lingo Explained</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="space-y-6 pt-4 text-muted-foreground">
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    FWD vs. RWD vs. AWD (Drivetrain)
-                  </h3>
-                  <p className="text-balance">
-                    This is which wheels the engine powers.{" "}
-                    <strong>FWD (Front-Wheel Drive)</strong> powers the front
-                    wheels. It's the most common and is fuel-efficient.{" "}
-                    <strong>RWD (Rear-Wheel Drive)</strong> powers the rear
-                    wheels, common in sports cars and pickup trucks.{" "}
-                    <strong>AWD (All-Wheel Drive)</strong> powers all four
-                    wheels for the best grip, great for rain or bad roads.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    Horsepower (HP) vs. Torque (Nm)
-                  </h3>
-                  <p className="text-balance">
-                    Here's a simple way to think about it:{" "}
-                    <strong>Horsepower</strong> is about *speed* (how fast the
-                    car can go). <strong>Torque</strong> is about *pulling
-                    power* (how quickly the car can get moving from a stop or
-                    climb a steep hill). More torque is what you "feel" when
-                    you accelerate.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    Engine Displacement (e.g., 1.5L)
-                  </h3>
-                  <p className="text-balance">
-                    This is the total "size" of the engine's cylinders. A
-                    smaller number (like <strong>1.0L</strong>) usually means
-                    better fuel economy. A larger number (like{" "}
-                    <strong>3.0L</strong>) usually means more power (and uses
-                    more fuel).
-                  </p>
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-3">
-            <AccordionTrigger className="text-lg font-semibold">
-              <div className="flex items-center gap-3">
-                <Flag className="h-5 w-5 text-primary" />
-                <span>Why Are These Cars Popular in the PH?</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="space-y-6 pt-4 text-muted-foreground">
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    The Love for 7-Seaters (MPVs & SUVs)
-                  </h3>
-                  <p className="text-balance">
-                    Filipino culture is all about family. Cars that can fit the
-                    *buong pamilya* (whole family), plus friends or cargo, are
-                    extremely popular. This is why MPVs (like the Innova or
-                    Xpander) and 3-row SUVs (like the Fortuner) are
-                    best-sellers.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    Ground Clearance is King
-                  </h3>
-                  <p className="text-balance">
-                    With common *baha* (floods) in the city and rough
-                    provincial roads, a car that sits higher off the ground
-                    (high ground clearance) gives owners peace of mind. This is
-                    a major reason SUVs and Crossovers are so desirable.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    Fuel Efficiency & Diesel Power
-                  </h3>
-                  <p className="text-balance">
-                    Gas prices are a big practical concern. Small, efficient
-                    hatchbacks (like the Wigo) are popular for city driving.
-                    For larger vehicles like SUVs and MPVs, efficient{" "}
-                    <strong>Diesel</strong> engines are often preferred for
-                    their combination of high torque (pulling power) and
-                    better mileage.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">
-                    Reliability & Resale Value (The "Toyota Factor")
-                  </h3>
-                  <p className="text-balance">
-                    Filipinos are practical buyers. Brands known for
-                    reliability, having easily available parts (*madali ang
-                    piyesa*), and holding their value well over time (high
-                    resale value) are trusted the most.
-                  </p>
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-
         <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
           <div className="md:col-span-1 lg:col-span-1">
             <div className="grid gap-2">
@@ -663,6 +485,146 @@ export default function LearnPage() {
             </Button>
           </div>
         </div>
+
+        <Accordion type="single" collapsible className="mb-8 w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-lg font-semibold">
+              <div className="flex items-center gap-3">
+                <Info className="h-5 w-5 text-primary" />
+                <span>Quick Guide: Understanding Car Types</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="pt-4">
+              <div className="space-y-6 text-muted-foreground">
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">Sedan</h3>
+                  <p className="text-balance">
+                    The classic car shape. Sedans typically have{" "}
+                    <strong>four doors</strong> and a{" "}
+                    <strong>separate trunk</strong> compartment in the back for
+                    cargo. Think of it as having three distinct sections or
+                    "boxes": engine, passenger cabin, and trunk. They usually
+                    seat 4-5 people comfortably and are great all-around cars
+                    for city driving and small families.
+                    <br />
+                    <span className="text-xs text-foreground/80">
+                      PH Examples: Toyota Vios, Honda Civic, Mitsubishi Mirage G4
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Hatchback
+                  </h3>
+                  <p className="text-balance">
+                    Similar to sedans, but instead of a separate trunk, the{" "}
+                    <strong>entire rear opens upwards like a hatch</strong>,
+                    including the rear window. This gives you more flexible
+                    cargo space, especially if you fold the rear seats down.
+                    They often look sportier or more compact than sedans and
+                    are usually available with 2 or 4 passenger doors (plus the
+                    rear hatch).
+                    <br />
+                    <span className="text-xs text-foreground/80">
+                      PH Examples: Toyota Wigo, Honda Brio, Suzuki Swift
+                    </span>
+                    <br />
+                    <strong>Key Difference vs. Sedan:</strong> Look at the back.
+                    Does the trunk open separately (Sedan) or does the whole
+                    rear window lift up (Hatchback)?
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    SUV (Sport Utility Vehicle)
+                  </h3>
+                  <p className="text-balance">
+                    Known for their <strong>high ground clearance</strong>,
+                    rugged appearance, and often available{" "}
+                    <strong>all-wheel drive (AWD)</strong> or{" "}
+                    <strong>four-wheel drive (4WD)</strong>. Traditionally,
+                    SUVs are built using <strong>body-on-frame</strong>{" "}
+                    construction (like a pickup truck), making them sturdy,
+                    great for towing, handling rough roads, and surviving
+                    floods. They typically seat 5-7 people.
+                    <br />
+                    <span className="text-xs text-foreground/80">
+                      PH Examples (Body-on-frame): Toyota Fortuner, Mitsubishi
+                      Montero Sport, Ford Everest
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Crossover (CUV)
+                  </h3>
+                  <p className="text-balance">
+                    These *look* like SUVs (high ground clearance, rugged
+                    styling) but are built using <strong>unibody</strong>{" "}
+                    construction (like a regular car, where the body and frame
+                    are one piece). This makes them lighter, more comfortable
+                    on the road, and more fuel-efficient than traditional SUVs.
+                    Most crossovers prioritize comfort over extreme off-road
+                    ability. This is arguably the most popular segment today.
+                    <br />
+                    <span className="text-xs text-foreground/80">
+                      PH Examples (Unibody): Toyota Raize, Geely Coolray, Honda
+                      CR-V, Ford Territory
+                    </span>
+                    <br />
+                    <strong>Key Difference vs. SUV:</strong> It's the frame!
+                    SUVs are built like trucks (tougher, better off-road),
+                    Crossovers are built like cars (more comfortable, better fuel
+                    economy). It's hard to tell visually, but Crossovers often
+                    feel smoother to drive.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    MPV / AUV (Multi-Purpose / Asian Utility Vehicle)
+                  </h3>
+                  <p className="text-balance">
+                    Designed primarily to <strong>maximize passenger space</strong>.
+                    They often have a tall, boxy, or van-like shape to fit{" "}
+                    <strong>7 or even 8 people</strong> across three rows. MPVs
+                    focus on practicality and family transport. Some are car-based
+                    (like the Xpander), while others are more rugged and based on
+                    truck platforms (like the Innova, often called an AUV).
+                    <br />
+                    <span className="text-xs text-foreground/80">
+                      PH Examples: Toyota Innova, Mitsubishi Xpander, Suzuki Ertiga
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Pickup Truck
+                  </h3>
+                  <p className="text-balance">
+                    Easily identified by its{" "}
+                    <strong>separate passenger cabin</strong> and{" "}
+                    <strong>open cargo bed</strong> in the back. Built on a
+                    rugged <strong>body-on-frame</strong> platform, they are
+                    designed for hauling heavy loads, towing, and tackling tough
+                    terrain. Often equipped with 4WD and diesel engines in the
+                    Philippines.
+                    <br />
+                    <span className="text-xs text-foreground/80">
+                      PH Examples: Toyota Hilux, Ford Ranger, Nissan Navara
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6">
+                <Button variant="outline" size="sm" asChild>
+                  <Link href="/guides">
+                    See All Guides (Lingo, Buying Tips & More) &rarr;
+                  </Link>
+                </Button>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <div className="md:hidden flex gap-4 mb-6">
           <Sheet>
