@@ -32,24 +32,23 @@ export default function TestPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {quizTests.map((test) => (
-            <Card
-              key={test.id}
-              className="flex flex-col hover:shadow-lg transition-shadow duration-300"
-            >
-              <CardHeader>
-                <CardTitle>{test.name}</CardTitle>
-                <CardDescription>{test.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col justify-end">
-                <p className="text-sm text-muted-foreground mb-4">
-                  {test.carIds.length} car
-                  {test.carIds.length !== 1 ? "s" : ""} included
-                </p>
-                <Link href={`/test/${test.id}`} className="w-full">
-                  <Button className="w-full">Select Quiz</Button>
-                </Link>
-              </CardContent>
-            </Card>
+            <Link href={`/test/${test.id}`} key={test.id} className="block">
+              <Card className="flex flex-col h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                <CardHeader>
+                  <CardTitle>{test.name}</CardTitle>
+                  <CardDescription>{test.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1 flex flex-col justify-end mt-auto">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {test.carIds.length} car
+                    {test.carIds.length !== 1 ? "s" : ""} included
+                  </p>
+                  <Button className="w-full cursor-pointer hover:scale-105 hover:brightness-110 transform transition-all duration-200">
+                    Select Quiz
+                  </Button>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
 
