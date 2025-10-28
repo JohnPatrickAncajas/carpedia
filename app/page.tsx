@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { carsData, type Car } from "@/lib/car-data"
 import { Car as CarIcon, Brain, Gift } from "lucide-react"
 import { Footer } from "@/components/footer"
+import { Tilt } from "react-tilt"
 
 export default function HomePage() {
   const [carOfDay, setCarOfDay] = useState<Car | null>(null)
@@ -28,32 +29,49 @@ export default function HomePage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <section className="text-center mb-16 md:mb-20">
-          <div className="bg-muted/50 rounded-lg p-6 py-12 sm:p-8 md:p-12 md:py-20 border">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 text-balance">
-              Learn the Most Common Cars in the Philippines
-            </h1>
-            <p className="text-base sm:text-lg text-muted-foreground mb-8 text-balance">
-              Browse the specs, photos, and fun facts about your favorite vehicles. Then test your
-              knowledge with interactive quizzes!
-            </p>
+          <Tilt
+            options={{
+              max: 10,
+              perspective: 1000,
+              scale: 1.02,
+              speed: 1000,
+              transition: true,
+              easing: "cubic-bezier(.03,.98,.52,.99)",
+            }}
+          >
+            <div className="bg-muted/50 rounded-lg p-6 py-12 sm:p-8 md:p-12 md:py-20 border">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 text-balance">
+                Learn the Most Common Cars in the Philippines
+              </h1>
+              <p className="text-base sm:text-lg text-muted-foreground mb-8 text-balance">
+                Browse the specs, photos, and fun facts about your favorite
+                vehicles. Then test your knowledge with interactive quizzes!
+              </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/learn">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Start Learning
-                </Button>
-              </Link>
-              <Link href="/test">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent">
-                  Take a Quiz
-                </Button>
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/learn">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Start Learning
+                  </Button>
+                </Link>
+                <Link href="/test">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full sm:w-auto bg-transparent"
+                  >
+                    Take a Quiz
+                  </Button>
+                </Link>
+              </div>
             </div>
-          </div>
+          </Tilt>
         </section>
 
         <section className="mb-16 md:mb-20">
-          <h2 className="text-2xl font-bold text-foreground mb-6">Featured Car</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">
+            Featured Car
+          </h2>
 
           {carOfDay ? (
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg">
@@ -69,18 +87,26 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-col justify-center">
                   <div className="mb-4">
-                    <p className="text-sm text-muted-foreground mb-1">Featured Car</p>
+                    <p className="text-sm text-muted-foreground mb-1">
+                      Featured Car
+                    </p>
                     <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
                       {carOfDay.brand} {carOfDay.model}
                     </h3>
-                    <p className="text-accent font-semibold mt-1">{carOfDay.type}</p>
+                    <p className="text-accent font-semibold mt-1">
+                      {carOfDay.type}
+                    </p>
                   </div>
 
                   <p className="text-foreground mb-4">{carOfDay.description}</p>
 
                   <div className="mb-6">
-                    <p className="text-sm text-muted-foreground mb-2">Fun Fact:</p>
-                    <p className="text-foreground italic">&ldquo;{carOfDay.funFacts[0]}&rdquo;</p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Fun Fact:
+                    </p>
+                    <p className="text-foreground italic">
+                      &ldquo;{carOfDay.funFacts[0]}&rdquo;
+                    </p>
                   </div>
 
                   <Link href={`/learn/${carOfDay.id}`}>
@@ -140,7 +166,9 @@ export default function HomePage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">100%</div>
-              <p className="text-xs text-muted-foreground">No sign-up required, learn at your own pace</p>
+              <p className="text-xs text-muted-foreground">
+                No sign-up required, learn at your own pace
+              </p>
             </CardContent>
           </Card>
         </section>
