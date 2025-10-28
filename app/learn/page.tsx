@@ -367,15 +367,25 @@ export default function LearnPage() {
             <div className="grid gap-2">
               <Label htmlFor="sort-order-desktop">Sort</Label>
               <Select value={sortOrder} onValueChange={setSortOrder}>
-                <SelectTrigger id="sort-order-desktop">
+                <SelectTrigger id="sort-order-desktop" className="cursor-pointer">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="default">Sort by: Default</SelectItem>
-                  <SelectItem value="name-asc">Model (A-Z)</SelectItem>
-                  <SelectItem value="name-desc">Model (Z-A)</SelectItem>
-                  <SelectItem value="price-asc">Price (Low to High)</SelectItem>
-                  <SelectItem value="price-desc">Price (High to Low)</SelectItem>
+                  <SelectItem value="default" className="cursor-pointer">
+                    Sort by: Default
+                  </SelectItem>
+                  <SelectItem value="name-asc" className="cursor-pointer">
+                    Model (A-Z)
+                  </SelectItem>
+                  <SelectItem value="name-desc" className="cursor-pointer">
+                    Model (Z-A)
+                  </SelectItem>
+                  <SelectItem value="price-asc" className="cursor-pointer">
+                    Price (Low to High)
+                  </SelectItem>
+                  <SelectItem value="price-desc" className="cursor-pointer">
+                    Price (High to Low)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -384,13 +394,15 @@ export default function LearnPage() {
             <div className="grid gap-2">
               <Label htmlFor="filter-type-desktop">Type</Label>
               <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger id="filter-type-desktop">
+                <SelectTrigger id="filter-type-desktop" className="cursor-pointer">
                   <SelectValue placeholder="Filter by Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="all" className="cursor-pointer">
+                    All Types
+                  </SelectItem>
                   {carTypes.map((type) => (
-                    <SelectItem key={type} value={type}>
+                    <SelectItem key={type} value={type} className="cursor-pointer">
                       {type}
                     </SelectItem>
                   ))}
@@ -402,13 +414,15 @@ export default function LearnPage() {
             <div className="grid gap-2">
               <Label htmlFor="filter-brand-desktop">Brand</Label>
               <Select value={filterBrand} onValueChange={setFilterBrand}>
-                <SelectTrigger id="filter-brand-desktop">
+                <SelectTrigger id="filter-brand-desktop" className="cursor-pointer">
                   <SelectValue placeholder="Filter by Brand" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Brands</SelectItem>
+                  <SelectItem value="all" className="cursor-pointer">
+                    All Brands
+                  </SelectItem>
                   {carBrands.map((brand) => (
-                    <SelectItem key={brand} value={brand}>
+                    <SelectItem key={brand} value={brand} className="cursor-pointer">
                       {brand}
                     </SelectItem>
                   ))}
@@ -420,13 +434,15 @@ export default function LearnPage() {
             <div className="grid gap-2">
               <Label htmlFor="filter-fuel-desktop">Fuel</Label>
               <Select value={filterFuel} onValueChange={setFilterFuel}>
-                <SelectTrigger id="filter-fuel-desktop">
+                <SelectTrigger id="filter-fuel-desktop" className="cursor-pointer">
                   <SelectValue placeholder="Filter by Fuel" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Fuel Types</SelectItem>
+                  <SelectItem value="all" className="cursor-pointer">
+                    All Fuel Types
+                  </SelectItem>
                   {fuelTypes.map((fuel) => (
-                    <SelectItem key={fuel} value={fuel}>
+                    <SelectItem key={fuel} value={fuel} className="cursor-pointer">
                       {fuel}
                     </SelectItem>
                   ))}
@@ -441,13 +457,18 @@ export default function LearnPage() {
                 value={filterTransmission}
                 onValueChange={setFilterTransmission}
               >
-                <SelectTrigger id="filter-transmission-desktop">
+                <SelectTrigger
+                  id="filter-transmission-desktop"
+                  className="cursor-pointer"
+                >
                   <SelectValue placeholder="Filter by Transmission" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Transmissions</SelectItem>
+                  <SelectItem value="all" className="cursor-pointer">
+                    All Transmissions
+                  </SelectItem>
                   {transmissions.map((trans) => (
-                    <SelectItem key={trans} value={trans}>
+                    <SelectItem key={trans} value={trans} className="cursor-pointer">
                       {trans}
                     </SelectItem>
                   ))}
@@ -459,13 +480,15 @@ export default function LearnPage() {
             <div className="grid gap-2">
               <Label htmlFor="filter-seats-desktop">Seats</Label>
               <Select value={filterSeats} onValueChange={setFilterSeats}>
-                <SelectTrigger id="filter-seats-desktop">
+                <SelectTrigger id="filter-seats-desktop" className="cursor-pointer">
                   <SelectValue placeholder="Filter by Seats" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Seat Counts</SelectItem>
+                  <SelectItem value="all" className="cursor-pointer">
+                    All Seat Counts
+                  </SelectItem>
                   {seatCounts.map((seats) => (
-                    <SelectItem key={seats} value={seats}>
+                    <SelectItem key={seats} value={seats} className="cursor-pointer">
                       {seats} Seats
                     </SelectItem>
                   ))}
@@ -476,7 +499,7 @@ export default function LearnPage() {
           <div className="md:col-span-1 lg:col-span-1 flex items-end">
             <Button
               variant="outline"
-              className="w-full"
+              className="w-full cursor-pointer"
               onClick={resetFilters}
               disabled={!filtersAreActive}
             >
@@ -488,7 +511,7 @@ export default function LearnPage() {
 
         <Accordion type="single" collapsible className="mb-8 w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger className="text-lg font-semibold">
+            <AccordionTrigger className="text-lg font-semibold cursor-pointer">
               <div className="flex items-center gap-3">
                 <Info className="h-5 w-5 text-primary" />
                 <span>Quick Guide: Understanding Car Types</span>
