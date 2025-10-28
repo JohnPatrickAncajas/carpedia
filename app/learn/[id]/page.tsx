@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useParams } from "next/navigation"
@@ -8,7 +8,7 @@ import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { carsData } from "@/lib/car-data"
-import { ChevronLeft } from "lucide-react"
+import { ChevronLeft, X } from "lucide-react"
 import { Footer } from "@/components/footer"
 
 type ImageView = "front" | "side" | "rear" | "interiorFoward" | "interiorBehind"
@@ -29,6 +29,31 @@ export default function CarDetailPage() {
   const car = carsData.find((c) => c.id === params.id)
   const [selectedImageSet, setSelectedImageSet] = useState(0)
   const [selectedView, setSelectedView] = useState<ImageView>("front")
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalImageUrl, setModalImageUrl] = useState<string | null>(null)
+
+  const openModal = (imageUrl: string) => {
+    setModalImageUrl(imageUrl)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setModalImageUrl(null)
+  }
+
+  useEffect(() => {
+    // Optional: Add ESC key listener to close modal
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeModal()
+      }
+    }
+    window.addEventListener("keydown", handleEsc)
+    return () => {
+      window.removeEventListener("keydown", handleEsc)
+    }
+  }, [])
 
   if (!car) {
     return (
@@ -79,13 +104,16 @@ export default function CarDetailPage() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
           <div>
             <Card className="overflow-hidden">
-              <div className="relative aspect-video lg:aspect-4/3 bg-muted flex items-center justify-center overflow-hidden">
+              <div
+                className="relative aspect-video lg:aspect-4/3 flex items-center justify-center overflow-hidden cursor-pointer"
+                onClick={() => openModal(imageUrl)}
+              >
                 <Image
                   src={imageUrl}
                   alt={`${car.brand} ${car.model} ${selectedView}`}
                   fill
                   priority
-                  className="object-cover transition-opacity duration-300"
+                  className="object-contain transition-opacity duration-300"
                   key={imageUrl}
                 />
               </div>
@@ -110,7 +138,7 @@ export default function CarDetailPage() {
                             )
                           }
                         }}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                           selectedImageSet === idx
                             ? "bg-primary text-primary-foreground"
                             : "bg-muted text-foreground hover:bg-muted/80"
@@ -130,7 +158,7 @@ export default function CarDetailPage() {
                         <button
                           key={view}
                           onClick={() => setSelectedView(view)}
-                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize ${
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize cursor-pointer ${
                             selectedView === view
                               ? "bg-primary text-primary-foreground"
                               : "bg-muted text-foreground hover:bg-muted/80"
@@ -271,7 +299,8 @@ export default function CarDetailPage() {
                 {car.galleryImages.map((imgSrc, idx) => (
                   <div
                     key={idx}
-                    className="bg-muted rounded-lg overflow-hidden aspect-video relative"
+                    className="bg-muted rounded-lg overflow-hidden aspect-video relative cursor-pointer"
+                    onClick={() => openModal(imgSrc || "/placeholder.svg")}
                   >
                     <Image
                       src={imgSrc || "/placeholder.svg"}
@@ -288,6 +317,32 @@ export default function CarDetailPage() {
         )}
       </main>
       <Footer />
+
+      {isModalOpen && modalImageUrl && (
+        <div
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
+          <button
+            className="absolute top-4 right-4 text-white z-50 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors cursor-pointer"
+            onClick={closeModal}
+            aria-label="Close image zoom"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <div
+            className="relative w-full h-full max-w-4xl max-h-[80vh]"
+            onClick={(e) => e.stopPropagation()} 
+          >
+            <Image
+              src={modalImageUrl}
+              alt="Zoomed car image"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
