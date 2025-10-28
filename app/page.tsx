@@ -60,7 +60,7 @@ export default function HomePage() {
                   <Link href="/learn">
                     <Button
                       size="lg"
-                      className="w-full sm:w-auto bg-white text-black hover:bg-white/90"
+                      className="w-full sm:w-auto bg-white text-black hover:bg-neutral-200 hover:scale-105 transform transition-all duration-200 cursor-pointer"
                     >
                       Start Learning
                     </Button>
@@ -69,7 +69,7 @@ export default function HomePage() {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white hover:text-black"
+                      className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/20 hover:scale-105 transform transition-all duration-200 cursor-pointer"
                     >
                       Take a Quiz
                     </Button>
@@ -88,15 +88,23 @@ export default function HomePage() {
           {carOfDay ? (
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg">
               <div className="grid md:grid-cols-2 gap-6 p-4 md:p-6">
-                <div className="relative flex items-center justify-center bg-muted rounded-lg overflow-hidden h-64 sm:h-80 md:h-96">
-                  <Image
-                    src={carOfDay.imageSets[0].front || "/placeholder.svg"}
-                    alt={`${carOfDay.brand} ${carOfDay.model}`}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </div>
+                <Tilt
+                  tiltMaxAngleX={5}
+                  tiltMaxAngleY={5}
+                  perspective={500}
+                  scale={1.05}
+                  transitionSpeed={500}
+                >
+                  <div className="relative flex items-center justify-center bg-muted rounded-lg overflow-hidden h-64 sm:h-80 md:h-96">
+                    <Image
+                      src={carOfDay.imageSets[0].front || "/placeholder.svg"}
+                      alt={`${carOfDay.brand} ${carOfDay.model}`}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                </Tilt>
                 <div className="flex flex-col justify-center">
                   <div className="mb-4">
                     <p className="text-sm text-muted-foreground mb-1">
@@ -122,7 +130,9 @@ export default function HomePage() {
                   </div>
 
                   <Link href={`/learn/${carOfDay.id}`}>
-                    <Button className="w-full">Learn More</Button>
+                    <Button className="w-full cursor-pointer hover:scale-105 hover:brightness-110 transform transition-all duration-200">
+                      Learn More
+                    </Button>
                   </Link>
                 </div>
               </div>
@@ -145,44 +155,56 @@ export default function HomePage() {
         </section>
 
         <section className="grid md:grid-cols-3 gap-6 mb-16">
-          <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Car Models</CardTitle>
-              <CarIcon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{carsData.length}</div>
-              <p className="text-xs text-muted-foreground">
-                Explore detailed profiles of popular Philippine vehicles
-              </p>
-            </CardContent>
-          </Card>
+          <Link href="/learn">
+            <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Car Models
+                </CardTitle>
+                <CarIcon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{carsData.length}</div>
+                <p className="text-xs text-muted-foreground">
+                  Explore detailed profiles of popular Philippine vehicles
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Quiz Modes</CardTitle>
-              <Brain className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">3</div>
-              <p className="text-xs text-muted-foreground">
-                Test your knowledge with different difficulty levels
-              </p>
-            </CardContent>
-          </Card>
+          <Link href="/test">
+            <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Quiz Modes
+                </CardTitle>
+                <Brain className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">3</div>
+                <p className="text-xs text-muted-foreground">
+                  Test your knowledge with different difficulty levels
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Free Access</CardTitle>
-              <Gift className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">100%</div>
-              <p className="text-xs text-muted-foreground">
-                No sign-up required, learn at your own pace
-              </p>
-            </CardContent>
-          </Card>
+          <Link href="/about">
+            <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Free Access
+                </CardTitle>
+                <Gift className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">100%</div>
+                <p className="text-xs text-muted-foreground">
+                  No sign-up required, learn at your own pace
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         </section>
       </main>
       <Footer />
