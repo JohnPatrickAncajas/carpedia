@@ -17,8 +17,8 @@ import { ModeToggle } from "@/components/mode-toggle"
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/learn", label: "Learn" },
-  { href: "/test", label: "Quiz" },
   { href: "/guides", label: "Guides" },
+  { href: "/test", label: "Quiz" },
   { href: "/about", label: "About" },
 ]
 

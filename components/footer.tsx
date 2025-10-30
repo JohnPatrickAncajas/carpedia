@@ -27,6 +27,12 @@ export function Footer() {
               Learn
             </Link>
             <Link
+              href="/guides"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Guides
+            </Link>
+            <Link
               href="/test"
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
