@@ -5,7 +5,18 @@ import { Navigation } from "@/components/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Footer } from "@/components/footer"
-import { BookOpen, HelpCircle, Trophy, Sparkles, User, Github, Linkedin, Twitter, Facebook, Check } from "lucide-react"
+import {
+  Car,
+  ClipboardList,
+  Wand,
+  Lightbulb,
+  Smile,
+  Github,
+  Linkedin,
+  Twitter,
+  Facebook,
+  Check,
+} from "lucide-react"
 
 export default function AboutPage() {
   return (
@@ -25,7 +36,7 @@ export default function AboutPage() {
         <div className="space-y-8">
           <Card>
             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-              <HelpCircle className="w-8 h-8 text-primary" />
+              <Car className="w-8 h-8 text-primary" />
               <CardTitle className="text-2xl">What is Carpedia PH?</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -48,7 +59,7 @@ export default function AboutPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-              <BookOpen className="w-8 h-8 text-primary" />
+              <ClipboardList className="w-8 h-8 text-primary" />
               <CardTitle className="text-2xl">How It Works</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -85,14 +96,14 @@ export default function AboutPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-              <Sparkles className="w-8 h-8 text-primary" />
+              <Wand className="w-8 h-8 text-primary" />
               <CardTitle className="text-2xl">Features</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
                 {[
                   "Detailed profiles for common Philippine car models",
-                  "High-quality images: multiple angles and colors",
+                  "Multiple images: multiple angles and colors",
                   "Gallery view for extra photos",
                   "Key specifications, pricing estimates, and common uses",
                   "Engaging fun facts for each vehicle",
@@ -113,7 +124,7 @@ export default function AboutPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-              <Trophy className="w-8 h-8 text-primary" />
+              <Lightbulb className="w-8 h-8 text-primary" />
               <CardTitle className="text-2xl">Why Carpedia PH?</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -136,7 +147,7 @@ export default function AboutPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-              <User className="w-8 h-8 text-primary" />
+              <Smile className="w-8 h-8 text-primary" />
               <CardTitle className="text-2xl">About the Maker</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -152,22 +163,42 @@ export default function AboutPage() {
               </p>
               <div className="flex gap-3">
                 <Button variant="outline" size="icon" asChild>
-                  <Link href="https://github.com/JohnPatrickAncajas" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                  <Link
+                    href="https://github.com/JohnPatrickAncajas"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub"
+                  >
                     <Github className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button variant="outline" size="icon" asChild>
-                  <Link href="https://www.linkedin.com/in/john-patrick-ancajas/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <Link
+                    href="https://www.linkedin.com/in/john-patrick-ancajas/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                  >
                     <Linkedin className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button variant="outline" size="icon" asChild>
-                  <Link href="https://x.com/_PatrickAncajas" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                  <Link
+                    href="https://x.com/_PatrickAncajas"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Twitter"
+                  >
                     <Twitter className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button variant="outline" size="icon" asChild>
-                  <Link href="https://www.facebook.com/profile.php?id=100082552025420" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                  <Link
+                    href="https://www.facebook.com/profile.php?id=100082552025420"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                  >
                     <Facebook className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -188,7 +219,12 @@ export default function AboutPage() {
                 <Button size="lg" asChild className="flex-1">
                   <Link href="/learn">Start Learning</Link>
                 </Button>
-                <Button size="lg" variant="secondary" asChild className="flex-1">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  asChild
+                  className="flex-1"
+                >
                   <Link href="/test">Take a Quiz</Link>
                 </Button>
               </div>
