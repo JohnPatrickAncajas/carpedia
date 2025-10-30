@@ -973,7 +973,7 @@ export default function QuizPage() {
                  className="bg-primary h-2 rounded-full transition-all duration-300"
                  style={{
                    width: `${((currentQuestion + 1) / questions.length) * 100}%`,
-                 }} // I need inline style here for dynamic width
+                 }} // I need inline style here for dynamic width, too lazy to refactor
                />
              </div>
            </div>
