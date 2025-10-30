@@ -48,8 +48,7 @@ export default function GuidesPage() {
             Carpedia PH Guides
           </h1>
           <p className="text-lg text-muted-foreground text-balance">
-            Learn more about car types, common terms, and tips for car owners in
-            the Philippines.
+            Your guide to recognizing car models, types, and brands, and understanding common car lingo in the Philippines.
           </p>
         </div>
 
