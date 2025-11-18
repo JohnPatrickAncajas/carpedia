@@ -3,12 +3,12 @@
 import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { useParams } from "next/navigation"
+import { useParams, notFound } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { carsData } from "@/lib/car-data"
-import { ChevronLeft, X, ArrowRight } from "lucide-react"
+import { ChevronLeft, X, ArrowRight, Share2 } from "lucide-react"
 import { Footer } from "@/components/footer"
 
 type ImageView = "front" | "side" | "rear" | "interiorFoward" | "interiorBehind"
@@ -34,9 +34,21 @@ export default function CarDetailPage() {
 
   const relatedCars = useMemo(() => {
     if (!car) return []
-    return carsData
-      .filter((c) => c.type === car.type && c.id !== car.id)
-      .slice(0, 3)
+    
+    const candidates = carsData.filter((c) => c.type === car.type && c.id !== car.id)
+    
+    const shuffled = [...candidates].sort((a, b) => {
+      const scoreA = a.id.length + a.brand.length + (car.id.length * 2)
+      const scoreB = b.id.length + b.brand.length + (car.id.length * 2)
+      
+      if (scoreA === scoreB) {
+        return a.id.localeCompare(b.id)
+      }
+      
+      return (car.id.charCodeAt(0) % 2 === 0) ? scoreA - scoreB : scoreB - scoreA
+    })
+
+    return shuffled.slice(0, 3)
   }, [car])
 
   const [selectedImageSet, setSelectedImageSet] = useState(0)
@@ -54,6 +66,23 @@ export default function CarDetailPage() {
     setModalImageUrl(null)
   }
 
+  const handleShare = async () => {
+    if (car && navigator.share) {
+      try {
+        await navigator.share({
+          title: `${car.brand} ${car.model} - Carpedia PH`,
+          text: `Check out the specs for the ${car.brand} ${car.model}!`,
+          url: window.location.href,
+        })
+      } catch (err) {
+        console.log("Error sharing", err)
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href)
+      alert("Link copied to clipboard!")
+    }
+  }
+
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -67,15 +96,7 @@ export default function CarDetailPage() {
   }, [])
 
   if (!car) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-center text-muted-foreground">Car not found</p>
-        </main>
-        <Footer />
-      </div>
-    )
+    notFound()
   }
 
   const currentImageSet = car.imageSets[selectedImageSet]
@@ -106,12 +127,28 @@ export default function CarDetailPage() {
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
-        <Button variant="ghost" size="sm" className="mb-6" asChild>
-          <Link href="/learn">
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            Back to Cars
-          </Link>
-        </Button>
+        
+        <nav className="flex text-sm text-muted-foreground mb-6 items-center">
+          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+          <span className="mx-2">/</span>
+          <Link href="/learn" className="hover:text-primary transition-colors">Learn</Link>
+          <span className="mx-2">/</span>
+          <span className="text-foreground font-medium truncate">{car.brand} {car.model}</span>
+        </nav>
+
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/learn">
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Back to Cars
+            </Link>
+          </Button>
+          
+          <Button variant="outline" size="sm" onClick={handleShare}>
+            <Share2 className="w-4 h-4 mr-2" />
+            Share
+          </Button>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
           <div>
@@ -351,7 +388,7 @@ export default function CarDetailPage() {
                       <CardTitle className="text-lg">
                         {related.brand} {related.model}
                       </CardTitle>
-                      <CardDescription>{related.priceRange}</CardDescription>
+                      <p className="text-sm text-muted-foreground">{related.priceRange}</p>
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-center text-sm text-primary font-medium">
