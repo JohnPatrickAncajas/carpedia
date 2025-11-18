@@ -36,7 +36,7 @@ export interface Car {
 export const carsData: Car[] = [
   // ===== SEDANS (9 models) =====
   {
-    "id": "toyota_vios",
+    "id": "toyota-vios",
     "brand": "Toyota",
     "model": "Vios",
     "type": "Sedan",
@@ -96,7 +96,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "honda_city",
+    "id": "honda-city",
     "brand": "Honda",
     "model": "City",
     "type": "Sedan",
@@ -172,7 +172,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "hyundai_accent",
+    "id": "hyundai-accent",
     "brand": "Hyundai",
     "model": "Accent",
     "type": "Sedan",
@@ -211,7 +211,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "nissan_almera",
+    "id": "nissan-almera",
     "brand": "Nissan",
     "model": "Almera",
     "type": "Sedan",
@@ -250,7 +250,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "mazda_2_sedan",
+    "id": "mazda-2-sedan",
     "brand": "Mazda",
     "model": "2 Sedan",
     "type": "Sedan",
@@ -289,7 +289,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "kia_soluto",
+    "id": "kia-soluto",
     "brand": "Kia",
     "model": "Soluto",
     "type": "Sedan",
@@ -326,7 +326,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "mitsubishi_lancer",
+    "id": "mitsubishi-lancer",
     "brand": "Mitsubishi",
     "model": "Lancer",
     "type": "Sedan",
@@ -365,7 +365,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "subaru_impreza",
+    "id": "subaru-impreza",
     "brand": "Subaru",
     "model": "Impreza",
     "type": "Sedan",
@@ -404,7 +404,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "toyota_corolla",
+    "id": "toyota-corolla",
     "brand": "Toyota",
     "model": "Corolla",
     "type": "Sedan",
@@ -445,7 +445,7 @@ export const carsData: Car[] = [
 
   // ===== SUVs (9 models) =====
   {
-    "id": "toyota_fortuner",
+    "id": "toyota-fortuner",
     "brand": "Toyota",
     "model": "Fortuner",
     "type": "SUV",
@@ -484,7 +484,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "honda_cr_v",
+    "id": "honda-cr-v",
     "brand": "Honda",
     "model": "CR-V",
     "type": "SUV",
@@ -523,7 +523,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "mitsubishi_montero",
+    "id": "mitsubishi-montero",
     "brand": "Mitsubishi",
     "model": "Montero",
     "type": "SUV",
@@ -562,7 +562,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "hyundai_tucson",
+    "id": "hyundai-tucson",
     "brand": "Hyundai",
     "model": "Tucson",
     "type": "SUV",
@@ -601,7 +601,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "kia_sorento",
+    "id": "kia-sorento",
     "brand": "Kia",
     "model": "Sorento",
     "type": "SUV",
@@ -640,7 +640,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "nissan_x_trail",
+    "id": "nissan-x-trail",
     "brand": "Nissan",
     "model": "X-Trail",
     "type": "SUV",
@@ -677,7 +677,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "mazda_cx_5",
+    "id": "mazda-cx-5",
     "brand": "Mazda",
     "model": "CX-5",
     "type": "SUV",
@@ -714,7 +714,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "isuzu_mu_x",
+    "id": "isuzu-mu-x",
     "brand": "Isuzu",
     "model": "MU-X",
     "type": "SUV",
@@ -759,7 +759,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "toyota_rav4",
+    "id": "toyota-rav4",
     "brand": "Toyota",
     "model": "RAV4",
     "type": "SUV",
@@ -800,7 +800,7 @@ export const carsData: Car[] = [
 
   // ===== HATCHBACKS (9 models) =====
   {
-    "id": "mitsubishi_mirage",
+    "id": "mitsubishi-mirage",
     "brand": "Mitsubishi",
     "model": "Mirage",
     "type": "Hatchback",
@@ -839,7 +839,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "mazda_2_hatchback",
+    "id": "mazda-2-hatchback",
     "brand": "Mazda",
     "model": "2 Hatchback",
     "type": "Hatchback",
@@ -876,7 +876,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "hyundai_i10",
+    "id": "hyundai-i10",
     "brand": "Hyundai",
     "model": "i10",
     "type": "Hatchback",
@@ -915,7 +915,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "kia_picanto",
+    "id": "kia-picanto",
     "brand": "Kia",
     "model": "Picanto",
     "type": "Hatchback",
@@ -954,7 +954,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "toyota_wigo",
+    "id": "toyota-wigo",
     "brand": "Toyota",
     "model": "Wigo",
     "type": "Hatchback",
@@ -993,7 +993,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "honda_jazz",
+    "id": "honda-jazz",
     "brand": "Honda",
     "model": "Jazz",
     "type": "Hatchback",
@@ -1030,7 +1030,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "nissan_march",
+    "id": "nissan-march",
     "brand": "Nissan",
     "model": "March",
     "type": "Hatchback",
@@ -1065,7 +1065,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "suzuki_swift",
+    "id": "suzuki-swift",
     "brand": "Suzuki",
     "model": "Swift",
     "type": "Hatchback",
@@ -1102,7 +1102,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "volkswagen_polo",
+    "id": "volkswagen-polo",
     "brand": "Volkswagen",
     "model": "Polo",
     "type": "Hatchback",
@@ -1161,7 +1161,7 @@ export const carsData: Car[] = [
 
   // ===== MPVs (5 models) =====
   {
-    "id": "toyota_avanza",
+    "id": "toyota-avanza",
     "brand": "Toyota",
     "model": "Avanza",
     "type": "MPV",
@@ -1198,7 +1198,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "honda_odyssey",
+    "id": "honda-odyssey",
     "brand": "Honda",
     "model": "Odyssey",
     "type": "MPV",
@@ -1255,7 +1255,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "nissan_serena",
+    "id": "nissan-serena",
     "brand": "Nissan",
     "model": "Serena",
     "type": "MPV",
@@ -1290,7 +1290,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "hyundai_starex",
+    "id": "hyundai-starex",
     "brand": "Hyundai",
     "model": "Starex",
     "type": "MPV",
@@ -1325,7 +1325,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "kia_carnival",
+    "id": "kia-carnival",
     "brand": "Kia",
     "model": "Carnival",
     "type": "MPV",
@@ -1366,7 +1366,7 @@ export const carsData: Car[] = [
 
   // ===== PICKUP TRUCKS (5 models) =====
   {
-    "id": "toyota_hilux",
+    "id": "toyota-hilux",
     "brand": "Toyota",
     "model": "Hilux",
     "type": "Pickup Truck",
@@ -1405,7 +1405,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "isuzu_d_max",
+    "id": "isuzu-d-max",
     "brand": "Isuzu",
     "model": "D-Max",
     "type": "Pickup Truck",
@@ -1445,7 +1445,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "ford_ranger",
+    "id": "ford-ranger",
     "brand": "Ford",
     "model": "Ranger",
     "type": "Pickup Truck",
@@ -1502,7 +1502,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "mitsubishi_triton",
+    "id": "mitsubishi-triton",
     "brand": "Mitsubishi",
     "model": "Triton",
     "type": "Pickup Truck",
@@ -1541,7 +1541,7 @@ export const carsData: Car[] = [
     ]
   },
   {
-    "id": "chevrolet_colorado",
+    "id": "chevrolet-colorado",
     "brand": "Chevrolet",
     "model": "Colorado",
     "type": "Pickup Truck",
@@ -1606,47 +1606,47 @@ export const quizTests = [
     description: "Test your knowledge on all available car models",
     carIds: [
       // Sedans
-      "toyota_vios",
-      "honda_city",
-      "hyundai_accent",
-      "nissan_almera",
-      "mazda_2_sedan",
-      "kia_soluto",
-      "mitsubishi_lancer",
-      "subaru_impreza",
-      "toyota_corolla",
+      "toyota-vios",
+      "honda-city",
+      "hyundai-accent",
+      "nissan-almera",
+      "mazda-2-sedan",
+      "kia-soluto",
+      "mitsubishi-lancer",
+      "subaru-impreza",
+      "toyota-corolla",
       // SUVs
-      "toyota_fortuner",
-      "honda_cr_v",
-      "mitsubishi_montero",
-      "hyundai_tucson",
-      "kia_sorento",
-      "nissan_x_trail",
-      "mazda_cx_5",
-      "isuzu_mu_x",
-      "toyota_rav4",
+      "toyota-fortuner",
+      "honda-cr-v",
+      "mitsubishi-montero",
+      "hyundai-tucson",
+      "kia-sorento",
+      "nissan-x-trail",
+      "mazda-cx-5",
+      "isuzu-mu-x",
+      "toyota-rav4",
       // Hatchbacks
-      "mitsubishi_mirage",
-      "mazda_2_hatchback",
-      "hyundai_i10",
-      "kia_picanto",
-      "toyota_wigo",
-      "honda_jazz",
-      "nissan_march",
-      "suzuki_swift",
-      "volkswagen_polo",
+      "mitsubishi-mirage",
+      "mazda-2-hatchback",
+      "hyundai-i10",
+      "kia-picanto",
+      "toyota-wigo",
+      "honda-jazz",
+      "nissan-march",
+      "suzuki-swift",
+      "volkswagen-polo",
       // MPVs
-      "toyota_avanza",
-      "honda_odyssey",
-      "nissan_serena",
-      "hyundai_starex",
-      "kia_carnival",
+      "toyota-avanza",
+      "honda-odyssey",
+      "nissan-serena",
+      "hyundai-starex",
+      "kia-carnival",
       // Pickup Trucks
-      "toyota_hilux",
-      "isuzu_d_max",
-      "ford_ranger",
-      "mitsubishi_triton",
-      "chevrolet_colorado",
+      "toyota-hilux",
+      "isuzu-d-max",
+      "ford-ranger",
+      "mitsubishi-triton",
+      "chevrolet-colorado",
     ],
   },
   {
@@ -1654,15 +1654,15 @@ export const quizTests = [
     name: "Sedans Only",
     description: "Focus on sedan models",
     carIds: [
-      "toyota_vios",
-      "honda_city",
-      "hyundai_accent",
-      "nissan_almera",
-      "mazda_2_sedan",
-      "kia_soluto",
-      "mitsubishi_lancer",
-      "subaru_impreza",
-      "toyota_corolla",
+      "toyota-vios",
+      "honda-city",
+      "hyundai-accent",
+      "nissan-almera",
+      "mazda-2-sedan",
+      "kia-soluto",
+      "mitsubishi-lancer",
+      "subaru-impreza",
+      "toyota-corolla",
     ],
   },
   {
@@ -1670,15 +1670,15 @@ export const quizTests = [
     name: "SUVs Challenge",
     description: "Test your knowledge on SUV models",
     carIds: [
-      "toyota_fortuner",
-      "honda_cr_v",
-      "mitsubishi_montero",
-      "hyundai_tucson",
-      "kia_sorento",
-      "nissan_x_trail",
-      "mazda_cx_5",
-      "isuzu_mu_x",
-      "toyota_rav4",
+      "toyota-fortuner",
+      "honda-cr-v",
+      "mitsubishi-montero",
+      "hyundai-tucson",
+      "kia-sorento",
+      "nissan-x-trail",
+      "mazda-cx-5",
+      "isuzu-mu-x",
+      "toyota-rav4",
     ],
   },
   {
@@ -1686,14 +1686,14 @@ export const quizTests = [
     name: "Budget Cars",
     description: "Test your knowledge on affordable vehicles",
     carIds: [
-      "mitsubishi_mirage",
-      "hyundai_i10",
-      "kia_picanto",
-      "toyota_wigo",
-      "nissan_march",
-      "toyota_vios",
-      "kia_soluto",
-      "nissan_almera",
+      "mitsubishi-mirage",
+      "hyundai-i10",
+      "kia-picanto",
+      "toyota-wigo",
+      "nissan-march",
+      "toyota-vios",
+      "kia-soluto",
+      "nissan-almera",
     ],
   },
   {
@@ -1701,15 +1701,15 @@ export const quizTests = [
     name: "Hatchbacks Only",
     description: "Focus on hatchback models",
     carIds: [
-      "mitsubishi_mirage",
-      "mazda_2_hatchback",
-      "hyundai_i10",
-      "kia_picanto",
-      "toyota_wigo",
-      "honda_jazz",
-      "nissan_march",
-      "suzuki_swift",
-      "volkswagen_polo",
+      "mitsubishi-mirage",
+      "mazda-2-hatchback",
+      "hyundai-i10",
+      "kia-picanto",
+      "toyota-wigo",
+      "honda-jazz",
+      "nissan-march",
+      "suzuki-swift",
+      "volkswagen-polo",
     ],
   },
   {
@@ -1717,36 +1717,36 @@ export const quizTests = [
     name: "Family Vehicles",
     description: "Test your knowledge on family-oriented cars",
     carIds: [
-      "toyota_avanza",
-      "honda_odyssey",
-      "nissan_serena",
-      "hyundai_starex",
-      "kia_carnival",
-      "toyota_fortuner",
-      "honda_cr_v",
-      "mitsubishi_montero",
-      "toyota_corolla",
+      "toyota-avanza",
+      "honda-odyssey",
+      "nissan-serena",
+      "hyundai-starex",
+      "kia-carnival",
+      "toyota-fortuner",
+      "honda-cr-v",
+      "mitsubishi-montero",
+      "toyota-corolla",
     ],
   },
   {
     id: "pickup-trucks",
     name: "Pickup Trucks",
     description: "Test your knowledge on pickup truck models",
-    carIds: ["toyota_hilux", "isuzu_d_max", "ford_ranger", "mitsubishi_triton", "chevrolet_colorado"],
+    carIds: ["toyota-hilux", "isuzu-d-max", "ford-ranger", "mitsubishi-triton", "chevrolet-colorado"],
   },
   {
     id: "premium-cars",
     name: "Premium Cars",
     description: "Test your knowledge on premium and luxury vehicles",
     carIds: [
-      "subaru_impreza",
-      "toyota_corolla",
-      "mazda_2_sedan",
-      "mazda_2_hatchback",
-      "mazda_cx_5",
-      "volkswagen_polo",
-      "honda_odyssey",
-      "kia_carnival",
+      "subaru-impreza",
+      "toyota-corolla",
+      "mazda-2-sedan",
+      "mazda-2-hatchback",
+      "mazda-cx-5",
+      "volkswagen-polo",
+      "honda-odyssey",
+      "kia-carnival",
     ],
   },
 ]
