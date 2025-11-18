@@ -16,6 +16,7 @@ const robotoMono = Roboto_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://carpedia-ph.vercel.app"),
   title: "Carpedia PH - Learn About Philippine Cars",
   description:
     "Interactive guide to the most common cars in the Philippines. Learn specs, see images, and test your knowledge with fun quizzes!",
