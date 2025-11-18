@@ -9,14 +9,14 @@ import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Sheet, SheetContent, SheetClose, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetClose, SheetFooter, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/components/ui/sheet"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { carsData, type Car } from "@/lib/car-data"
 import { Footer } from "@/components/footer"
-import { X, SlidersHorizontal, Info, Search, ChevronDown } from "lucide-react"
+import { X, SlidersHorizontal, Info, Search, ChevronDown, RotateCcw } from "lucide-react"
 
 const INITIAL_VISIBLE_COUNT = 18
 const LOAD_MORE_STEP = 12
@@ -32,7 +32,14 @@ const getMaxPrice = (priceRange: string) => parsePrice(priceRange, 1)
 
 const getUniqueValues = (key: (car: Car) => string | number) => {
   const values = carsData.flatMap(key)
-  return Array.from(new Set(values)).sort().map(String)
+  return Array.from(new Set(values)).sort((a, b) => {
+    const numA = Number(a)
+    const numB = Number(b)
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return numA - numB
+    }
+    return String(a).localeCompare(String(b))
+  }).map(String)
 }
 
 const getSplitValues = (key: (car: Car) => string) => {
@@ -175,6 +182,8 @@ export default function LearnPage() {
       case "name-desc":
         result.sort((a, b) => b.model.localeCompare(a.model))
         break
+      case "default":
+        break
     }
     return result
   }, [debouncedQuery, sortOrder, filterType, filterBrand, filterFuel, filterTransmission, filterSeats, fuse])
@@ -193,81 +202,161 @@ export default function LearnPage() {
     router.replace(pathname, { scroll: false })
   }
 
+  const clearSearch = () => {
+    setSearchQuery("")
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete("q")
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
   const filtersAreActive = searchQuery !== "" || filterType !== "all" || filterBrand !== "all" || filterFuel !== "all" || filterTransmission !== "all" || filterSeats !== "all" || sortOrder !== "default"
-  
+
   const dropdownFiltersCount = [filterType, filterBrand, filterFuel, filterTransmission, filterSeats].filter((f) => f !== "all").length + (sortOrder !== "default" ? 1 : 0)
 
+  const FilterItem = ({
+    label,
+    id,
+    value,
+    options,
+    defaultValue = "all",
+    suffix = "",
+    fullWidth = false,
+  }: {
+    label: string,
+    id: string,
+    value: string,
+    options: string[],
+    defaultValue?: string,
+    suffix?: string,
+    fullWidth?: boolean
+  }) => {
+    const isActive = value !== defaultValue
+    return (
+      <div className={`flex flex-col ${fullWidth ? 'w-full' : 'sm:w-1/2'} py-2 transition-colors duration-150 rounded-md`}>
+        <div className="flex items-center justify-between mb-1">
+          <Label htmlFor={id} className="text-sm font-medium text-foreground">{label}</Label>
+          {isActive && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => updateFilter(id === "sort-order" ? "sort" : id.replace("filter-", ""), defaultValue)}
+              className="h-auto p-0 text-[10px] uppercase font-bold text-muted-foreground hover:text-foreground/80"
+            >
+              Clear
+            </Button>
+          )}
+        </div>
+        <Select value={value} onValueChange={(val) => updateFilter(id === "sort-order" ? "sort" : id.replace("filter-", ""), val)}>
+          <SelectTrigger id={id} className={`w-full ${isActive ? 'border-primary bg-primary/5' : ''}`}>
+            <div className="flex items-center gap-2 truncate">
+              <SelectValue placeholder={`Select ${label}`} />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={defaultValue}>
+              {id === "sort-order" ? "Default (No Sorting)" : `All ${label}s`}
+            </SelectItem>
+            {options.map((opt) => (
+              <SelectItem key={opt} value={opt}>
+                {opt}{suffix}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    )
+  }
+
+  const sortOptions = [
+    { value: "default", label: "Default (No Sorting)" },
+    { value: "name-asc", label: "Model Name (A-Z)" },
+    { value: "name-desc", label: "Model Name (Z-A)" },
+    { value: "price-asc", label: "Price (Lowest First)" },
+    { value: "price-desc", label: "Price (Highest First)" },
+  ]
+
   const filterControls = (
-    <>
-      <div className="grid gap-2">
-        <Label htmlFor="sort-order-mobile">Sort</Label>
-        <Select value={sortOrder} onValueChange={(val) => updateFilter("sort", val)}>
-          <SelectTrigger id="sort-order-mobile" className="w-full"><SelectValue placeholder="Sort by" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="default">Sort by: Default</SelectItem>
-            <SelectItem value="name-asc">Model (A-Z)</SelectItem>
-            <SelectItem value="name-desc">Model (Z-A)</SelectItem>
-            <SelectItem value="price-asc">Price (Low to High)</SelectItem>
-            <SelectItem value="price-desc">Price (High to Low)</SelectItem>
-          </SelectContent>
-        </Select>
+    <div className="space-y-4">
+
+      <div className="space-y-2">
+        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-6 pt-2">Preferences</h4>
+
+        <div className="flex px-6">
+          <div className="flex flex-col w-full py-2 transition-colors duration-150 rounded-md">
+            <div className="flex items-center justify-between mb-1">
+              <Label htmlFor="sort-order" className="text-sm font-medium">Sort Order</Label>
+              {sortOrder !== "default" && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => updateFilter("sort", "default")}
+                  className="h-auto p-0 text-[10px] uppercase font-bold text-muted-foreground hover:text-foreground/80"
+                >
+                  Reset
+                </Button>
+              )}
+            </div>
+            <Select value={sortOrder} onValueChange={(val) => updateFilter("sort", val)}>
+              <SelectTrigger id="sort-order" className={`w-full ${sortOrder !== "default" ? "border-primary bg-primary/5" : ""}`}>
+                <div className="flex items-center gap-2 truncate">
+                  <SelectValue placeholder="Default (No Sorting)" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                {sortOptions.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="filter-type-mobile">Type</Label>
-        <Select value={filterType} onValueChange={(val) => updateFilter("type", val)}>
-          <SelectTrigger id="filter-type-mobile" className="w-full"><SelectValue placeholder="Filter by Type" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            {carTypes.map((type) => (<SelectItem key={type} value={type}>{type}</SelectItem>))}
-          </SelectContent>
-        </Select>
-      </div>
+      <div className="space-y-2">
+        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-6 pt-2">Vehicle Specs</h4>
 
-      <div className="grid gap-2">
-        <Label htmlFor="filter-brand-mobile">Brand</Label>
-        <Select value={filterBrand} onValueChange={(val) => updateFilter("brand", val)}>
-          <SelectTrigger id="filter-brand-mobile" className="w-full"><SelectValue placeholder="Filter by Brand" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Brands</SelectItem>
-            {carBrands.map((brand) => (<SelectItem key={brand} value={brand}>{brand}</SelectItem>))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="flex flex-col sm:flex-row gap-x-3 px-6">
+          <FilterItem
+            label="Type"
+            id="filter-type"
+            value={filterType}
+            options={carTypes}
+          />
+          <FilterItem
+            label="Brand"
+            id="filter-brand"
+            value={filterBrand}
+            options={carBrands}
+          />
+        </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="filter-fuel-mobile">Fuel</Label>
-        <Select value={filterFuel} onValueChange={(val) => updateFilter("fuel", val)}>
-          <SelectTrigger id="filter-fuel-mobile" className="w-full"><SelectValue placeholder="Filter by Fuel" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Fuel Types</SelectItem>
-            {fuelTypes.map((fuel) => (<SelectItem key={fuel} value={fuel}>{fuel}</SelectItem>))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="flex flex-col sm:flex-row gap-x-3 px-6">
+          <FilterItem
+            label="Fuel"
+            id="filter-fuel"
+            value={filterFuel}
+            options={fuelTypes}
+          />
+          <FilterItem
+            label="Seats"
+            id="filter-seats"
+            value={filterSeats}
+            options={seatCounts}
+            suffix=" Seats"
+          />
+        </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="filter-transmission-mobile">Transmission</Label>
-        <Select value={filterTransmission} onValueChange={(val) => updateFilter("transmission", val)}>
-          <SelectTrigger id="filter-transmission-mobile" className="w-full"><SelectValue placeholder="Filter by Transmission" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Transmissions</SelectItem>
-            {transmissions.map((trans) => (<SelectItem key={trans} value={trans}>{trans}</SelectItem>))}
-          </SelectContent>
-        </Select>
+        <div className="flex px-6">
+          <FilterItem
+            label="Transmission"
+            id="filter-transmission"
+            value={filterTransmission}
+            options={transmissions}
+            fullWidth={true}
+          />
+        </div>
       </div>
-
-      <div className="grid gap-2">
-        <Label htmlFor="filter-seats-mobile">Seats</Label>
-        <Select value={filterSeats} onValueChange={(val) => updateFilter("seats", val)}>
-          <SelectTrigger id="filter-seats-mobile" className="w-full"><SelectValue placeholder="Filter by Seats" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Seat Counts</SelectItem>
-            {seatCounts.map((seats) => (<SelectItem key={seats} value={seats}>{seats} Seats</SelectItem>))}
-          </SelectContent>
-        </Select>
-      </div>
-    </>
+    </div>
   )
 
   return (
@@ -285,35 +374,69 @@ export default function LearnPage() {
           <div className="relative grow">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
-              key={searchParams.get("q")}
               type="search"
-              placeholder="Brand, Model, Type (e.g. Ford Ranger Pickup Truck) or keywords like 'reliable' or 'capable'"
+              placeholder="Brand, Model, Type (e.g. Ford Ranger Pickup Truck) or keywords..."
               className="w-full pl-10 h-12 text-base"
-              defaultValue={searchParams.get("q")?.toString()}
+              value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-destructive p-1 rounded-full transition-colors"
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
-          
+
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" className="w-full sm:w-auto h-12 shrink-0 px-6">
-                <SlidersHorizontal className="w-4 h-4 mr-2" />
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto h-12 shrink-0 px-6 group hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2 group-hover:text-primary transition-colors" />
                 Filter & Sort
-                {dropdownFiltersCount > 0 && <span className="ml-2 bg-primary text-primary-foreground h-5 w-5 rounded-full flex items-center justify-center text-xs">{dropdownFiltersCount}</span>}
+                {dropdownFiltersCount > 0 && <span className="ml-2 bg-primary text-primary-foreground h-5 w-5 rounded-full flex items-center justify-center text-xs animate-in zoom-in">{dropdownFiltersCount}</span>}
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full sm:max-w-md flex flex-col h-full">
-              <SheetHeader><SheetTitle>Filter & Sort</SheetTitle></SheetHeader>
-              <div className="flex-1 overflow-y-auto px-1 py-4"><div className="flex flex-col gap-4">{filterControls}</div></div>
-              <SheetFooter className="flex-row gap-2">
-                <Button variant="ghost" className="flex-1" onClick={resetFilters} disabled={!filtersAreActive}>Clear All</Button>
-                <SheetClose asChild><Button className="flex-1">Show Results</Button></SheetClose>
+              <SheetHeader className="border-b pb-4 mb-0 px-6">
+                <SheetTitle>Filter & Sort</SheetTitle>
+                <SheetDescription>
+                  Refine your search by selecting specific attributes below.
+                </SheetDescription>
+              </SheetHeader>
+
+              <div className="flex-1 overflow-y-auto pt-4">
+                {filterControls}
+              </div>
+
+              <SheetFooter className="flex-row gap-3 border-t pt-4 mt-auto px-6 pb-6">
+                <Button
+                  variant="ghost"
+                  onClick={resetFilters}
+                  disabled={!filtersAreActive}
+                  className={`flex-1 text-destructive hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-900 dark:hover:text-red-200 ${!filtersAreActive ? 'opacity-70' : ''}`}
+                >
+                  <RotateCcw className="w-3 h-3 mr-2" />
+                  Reset All
+                </Button>
+                <SheetClose asChild>
+                  <Button
+                    className="flex-1 bg-primary text-primary-foreground hover:bg-black hover:text-white dark:hover:bg-primary/80 dark:hover:text-white/90"
+                  >
+                    Show {filteredCars.length} Results
+                  </Button>
+                </SheetClose>
               </SheetFooter>
             </SheetContent>
           </Sheet>
         </div>
 
-        <Accordion type="single" collapsible className="mb-8 w-full">
+        <Accordion type="single" collapsible id="quick-guide-accordion" className="mb-8 w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-lg font-semibold cursor-pointer">
               <div className="flex items-center gap-3">
@@ -366,15 +489,18 @@ export default function LearnPage() {
                   </p>
                 </div>
               </div>
-              <div className="mt-6">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+              <div className="mt-6 border-t pt-4 flex justify-between items-center">
+                <Button
+                  variant="outline"
+                  size="sm"
                   asChild
                   className="hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
                 >
-                  <Link href="/guides">See All Guides (Lingo, Buying Tips & More) &rarr;</Link>
+                  <Link href="/guides">See All Guides (Types, Brands & Lingo) &rarr;</Link>
                 </Button>
+                <a href="#quick-guide-accordion" onClick={(e) => { e.preventDefault(); document.getElementById('quick-guide-accordion')?.scrollIntoView({ behavior: 'smooth' }); document.getElementById('quick-guide-accordion')?.querySelector('button')?.click(); }} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200">
+                  Close Guide &uarr;
+                </a>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -387,7 +513,7 @@ export default function LearnPage() {
         ) : filteredCars.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {visibleCars.map((car) => (
+              {visibleCars.map((car, index) => (
                 <Link key={car.id} href={`/learn/${car.id}`} className="flex">
                   <Card className="flex flex-col w-full hover:shadow-lg transition-shadow duration-300 overflow-hidden">
                     <CardHeader>
@@ -398,6 +524,7 @@ export default function LearnPage() {
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          loading={index === 0 ? "eager" : "lazy"}
                         />
                       </div>
                       <CardTitle className="text-xl">{car.brand} {car.model}</CardTitle>
@@ -416,7 +543,11 @@ export default function LearnPage() {
             </div>
             {hasMore && (
               <div className="mt-8 text-center">
-                <Button onClick={loadMore} variant="outline" className="min-w-[200px] hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200">
+                <Button
+                  onClick={loadMore}
+                  variant="outline"
+                  className="min-w-[200px] hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
+                >
                   Load More <ChevronDown className="ml-2 w-4 h-4" />
                 </Button>
               </div>
