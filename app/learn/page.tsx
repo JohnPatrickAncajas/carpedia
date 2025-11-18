@@ -1,20 +1,76 @@
-import { Suspense } from 'react'
 import LearnContent from '../../components/learn-content'
+import { carsData, type Car } from '@/lib/car-data'
+import { notFound } from 'next/navigation'
 
-const SearchLoadingFallback = () => (
-  <div className="flex flex-col sm:flex-row gap-4 mb-8">
-    <div className="relative grow h-12">
-      <div className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 bg-muted-foreground/30 animate-pulse rounded" />
-      <div className="w-full pl-10 h-12 bg-muted/50 rounded-lg animate-pulse" />
-    </div>
-    <div className="w-full sm:w-auto h-12 bg-muted/50 rounded-lg animate-pulse" />
-  </div>
-)
+const parsePrice = (priceRange: string, index: 0 | 1): number => {
+  const parts = priceRange.replace(/[₱,]/g, "").split("-").map(Number)
+  if (parts.length === 1) return parts[0]
+  return parts[index] || 0
+}
 
-export default function LearnPage() {
+const getMinPrice = (priceRange: string): number => parsePrice(priceRange, 0)
+const getMaxPrice = (priceRange: string): number => parsePrice(priceRange, 1)
+
+interface LearnPageProps {
+  searchParams?: {
+    q?: string
+    sort?: string
+    type?: string
+    brand?: string
+    fuel?: string
+    transmission?: string
+    seats?: string
+  }
+}
+
+export default async function LearnPage({ searchParams }: LearnPageProps) {
+  const params = await searchParams || {}
+
+  const sortOrder = params.sort || "default"
+  const filterType = params.type || "all"
+  const filterBrand = params.brand || "all"
+  const filterFuel = params.fuel || "all"
+  const filterTransmission = params.transmission || "all"
+  const filterSeats = params.seats || "all"
+  const initialQuery = params.q || ""
+
+  let filteredCars = [...carsData]
+
+  if (filterType !== "all") filteredCars = filteredCars.filter((car) => car.type === filterType)
+  if (filterBrand !== "all") filteredCars = filteredCars.filter((car) => car.brand === filterBrand)
+  if (filterFuel !== "all") filteredCars = filteredCars.filter((car) => car.specs.fuelType.includes(filterFuel))
+  if (filterTransmission !== "all") filteredCars = filteredCars.filter((car) => car.specs.transmission.includes(filterTransmission))
+  if (filterSeats !== "all") {
+    const seatsInt = parseInt(filterSeats)
+    if (!isNaN(seatsInt)) {
+      filteredCars = filteredCars.filter((car) => car.specs.seats === seatsInt)
+    } else {
+      notFound()
+    }
+  }
+
+  switch (sortOrder) {
+    case "price-asc":
+      filteredCars.sort((a, b) => getMinPrice(a.priceRange) - getMinPrice(b.priceRange))
+      break
+    case "price-desc":
+      filteredCars.sort((a, b) => getMaxPrice(b.priceRange) - getMaxPrice(a.priceRange))
+      break
+    case "name-asc":
+      filteredCars.sort((a, b) => a.model.localeCompare(b.model))
+      break
+    case "name-desc":
+      filteredCars.sort((a, b) => b.model.localeCompare(a.model))
+      break
+    default:
+      break
+  }
+
   return (
-    <Suspense fallback={<SearchLoadingFallback />}>
-      <LearnContent />
-    </Suspense>
+    <LearnContent
+      initialCars={filteredCars}
+      initialCount={filteredCars.length}
+      initialQuery={initialQuery}
+    />
   )
 }

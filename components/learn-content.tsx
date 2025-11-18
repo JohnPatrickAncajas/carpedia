@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input"
 import { carsData, type Car } from "@/lib/car-data"
 import { Footer } from "@/components/footer"
 import { X, SlidersHorizontal, Info, Search, ChevronDown, RotateCcw } from "lucide-react"
-import { Suspense } from "react"
 
 const INITIAL_VISIBLE_COUNT = 18
 const LOAD_MORE_STEP = 12
@@ -69,38 +68,21 @@ function CarCardSkeleton() {
   )
 }
 
-export default function LearnContent() {
+interface LearnContentProps {
+  initialCars: Car[];
+  initialCount: number;
+  initialQuery: string;
+}
+
+export default function LearnContent({ initialCars, initialCount, initialQuery }: LearnContentProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "")
+  const [searchQuery, setSearchQuery] = useState(initialQuery)
+  const [currentFilteredCars, setCurrentFilteredCars] = useState(initialCars)
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT)
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && !searchParams.toString()) {
-      const savedParams = localStorage.getItem("carpedia-filters")
-      if (savedParams) {
-        router.replace(`${pathname}?${savedParams}`, { scroll: false })
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    const paramsString = searchParams.toString()
-    if (paramsString) {
-      localStorage.setItem("carpedia-filters", paramsString)
-    } else {
-      localStorage.removeItem("carpedia-filters")
-    }
-  }, [searchParams])
-
-  useEffect(() => {
-    const urlQuery = searchParams.get("q") || ""
-    if (urlQuery !== searchQuery) {
-      setSearchQuery(urlQuery)
-    }
-  }, [searchParams])
+  const [isDataLoading, setIsDataLoading] = useState(false)
 
   const debouncedQuery = searchParams.get("q") || ""
   const sortOrder = searchParams.get("sort") || "default"
@@ -142,6 +124,44 @@ export default function LearnContent() {
     router.replace(`${pathname}?${createQueryString(name, value)}`, { scroll: false })
   }
 
+  const resetFilters = () => {
+    setSearchQuery("")
+    localStorage.removeItem("carpedia-filters")
+    router.replace(pathname, { scroll: false })
+  }
+
+  const clearSearch = () => {
+    setSearchQuery("")
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete("q")
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && !searchParams.toString()) {
+      const savedParams = localStorage.getItem("carpedia-filters")
+      if (savedParams) {
+        router.replace(`${pathname}?${savedParams}`, { scroll: false })
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const paramsString = searchParams.toString()
+    if (paramsString) {
+      localStorage.setItem("carpedia-filters", paramsString)
+    } else {
+      localStorage.removeItem("carpedia-filters")
+    }
+  }, [searchParams])
+
+  useEffect(() => {
+    const urlQuery = searchParams.get("q") || ""
+    if (urlQuery !== searchQuery) {
+      setSearchQuery(urlQuery)
+    }
+  }, [searchParams])
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchQuery !== (searchParams.get("q") || "")) {
@@ -158,17 +178,21 @@ export default function LearnContent() {
   }, [searchQuery, pathname, router, searchParams])
 
   useEffect(() => {
+    setIsDataLoading(true)
     setVisibleCount(INITIAL_VISIBLE_COUNT)
-  }, [debouncedQuery, sortOrder, filterType, filterBrand, filterFuel, filterTransmission, filterSeats])
 
-  const filteredCars = useMemo(() => {
     let result = debouncedQuery ? fuse.search(debouncedQuery).map((r) => r.item) : [...carsData]
 
     if (filterType !== "all") result = result.filter((car) => car.type === filterType)
     if (filterBrand !== "all") result = result.filter((car) => car.brand === filterBrand)
     if (filterFuel !== "all") result = result.filter((car) => car.specs.fuelType.includes(filterFuel))
     if (filterTransmission !== "all") result = result.filter((car) => car.specs.transmission.includes(filterTransmission))
-    if (filterSeats !== "all") result = result.filter((car) => car.specs.seats === parseInt(filterSeats))
+    if (filterSeats !== "all") {
+      const seatsInt = parseInt(filterSeats)
+      if (!isNaN(seatsInt)) {
+        result = result.filter((car) => car.specs.seats === seatsInt)
+      }
+    }
 
     switch (sortOrder) {
       case "price-asc":
@@ -186,28 +210,25 @@ export default function LearnContent() {
       case "default":
         break
     }
-    return result
+    
+    const timer = setTimeout(() => {
+        setCurrentFilteredCars(result)
+        setIsDataLoading(false)
+    }, 100)
+    
+    return () => clearTimeout(timer)
+    
   }, [debouncedQuery, sortOrder, filterType, filterBrand, filterFuel, filterTransmission, filterSeats, fuse])
 
   const isTyping = searchQuery !== (searchParams.get("q") || "")
+  const isLoading = isTyping || isDataLoading
+
+  const filteredCars = currentFilteredCars
   const visibleCars = filteredCars.slice(0, visibleCount)
   const hasMore = visibleCount < filteredCars.length
 
   const loadMore = () => {
     setVisibleCount((prev) => prev + LOAD_MORE_STEP)
-  }
-
-  const resetFilters = () => {
-    setSearchQuery("")
-    localStorage.removeItem("carpedia-filters")
-    router.replace(pathname, { scroll: false })
-  }
-
-  const clearSearch = () => {
-    setSearchQuery("")
-    const params = new URLSearchParams(searchParams.toString())
-    params.delete("q")
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
   const filtersAreActive = searchQuery !== "" || filterType !== "all" || filterBrand !== "all" || filterFuel !== "all" || filterTransmission !== "all" || filterSeats !== "all" || sortOrder !== "default"
@@ -507,7 +528,7 @@ export default function LearnContent() {
           </AccordionItem>
         </Accordion>
 
-        {isTyping ? (
+        {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => <CarCardSkeleton key={i} />)}
           </div>
