@@ -1,8 +1,9 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import Fuse from "fuse.js"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
@@ -40,7 +41,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { carsData, type Car } from "@/lib/car-data"
 import { Footer } from "@/components/footer"
-import { X, SlidersHorizontal, Info, BookText, Flag, Search } from "lucide-react"
+import { X, SlidersHorizontal, Info, Search } from "lucide-react"
 
 const parsePrice = (priceRange: string, index: 0 | 1): number => {
   const parts = priceRange
@@ -88,16 +89,19 @@ function CarCardSkeleton() {
 }
 
 export default function LearnPage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [sortOrder, setSortOrder] = useState("default")
-  const [filterType, setFilterType] = useState("all")
-  const [filterBrand, setFilterBrand] = useState("all")
-  const [filterFuel, setFilterFuel] = useState("all")
-  const [filterTransmission, setFilterTransmission] = useState("all")
-  const [filterSeats, setFilterSeats] = useState("all")
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
-  const [filteredCars, setFilteredCars] = useState<Car[]>([...carsData])
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "")
+
+  const debouncedQuery = searchParams.get("q") || ""
+  const sortOrder = searchParams.get("sort") || "default"
+  const filterType = searchParams.get("type") || "all"
+  const filterBrand = searchParams.get("brand") || "all"
+  const filterFuel = searchParams.get("fuel") || "all"
+  const filterTransmission = searchParams.get("transmission") || "all"
+  const filterSeats = searchParams.get("seats") || "all"
 
   const carTypes = useMemo(() => getUniqueValues((car) => car.type), [])
   const carBrands = useMemo(() => getUniqueValues((car) => car.brand), [])
@@ -130,67 +134,88 @@ export default function LearnPage() {
     return new Fuse(carsData, options)
   }, [])
 
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      if (value === "all" || value === "default" || value === "") {
+        params.delete(name)
+      } else {
+        params.set(name, value)
+      }
+      return params.toString()
+    },
+    [searchParams],
+  )
+
+  const updateFilter = (name: string, value: string) => {
+    router.replace(`${pathname}?${createQueryString(name, value)}`, {
+      scroll: false,
+    })
+  }
+
   useEffect(() => {
-    setIsLoading(true)
     const timer = setTimeout(() => {
-      let newFilteredCars = searchQuery
-        ? fuse.search(searchQuery).map((result) => result.item)
-        : [...carsData]
-
-      if (filterType !== "all") {
-        newFilteredCars = newFilteredCars.filter(
-          (car) => car.type === filterType,
-        )
+      if (searchQuery !== debouncedQuery) {
+        const params = new URLSearchParams(searchParams.toString())
+        if (searchQuery) {
+          params.set("q", searchQuery)
+        } else {
+          params.delete("q")
+        }
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false })
       }
-      if (filterBrand !== "all") {
-        newFilteredCars = newFilteredCars.filter(
-          (car) => car.brand === filterBrand,
-        )
-      }
-      if (filterFuel !== "all") {
-        newFilteredCars = newFilteredCars.filter((car) =>
-          car.specs.fuelType.includes(filterFuel),
-        )
-      }
-      if (filterTransmission !== "all") {
-        newFilteredCars = newFilteredCars.filter((car) =>
-          car.specs.transmission.includes(filterTransmission),
-        )
-      }
-      if (filterSeats !== "all") {
-        newFilteredCars = newFilteredCars.filter(
-          (car) => car.specs.seats === parseInt(filterSeats),
-        )
-      }
-
-      switch (sortOrder) {
-        case "price-asc":
-          newFilteredCars.sort(
-            (a, b) => getMinPrice(a.priceRange) - getMinPrice(b.priceRange),
-          )
-          break
-        case "price-desc":
-          newFilteredCars.sort(
-            (a, b) => getMaxPrice(b.priceRange) - getMaxPrice(a.priceRange),
-          )
-          break
-        case "name-asc":
-          newFilteredCars.sort((a, b) => a.model.localeCompare(b.model))
-          break
-        case "name-desc":
-          newFilteredCars.sort((a, b) => b.model.localeCompare(a.model))
-          break
-        default:
-          break
-      }
-
-      setFilteredCars(newFilteredCars)
-      setIsLoading(false)
     }, 300)
-
     return () => clearTimeout(timer)
+  }, [searchQuery, debouncedQuery, pathname, router, searchParams])
+
+  const filteredCars = useMemo(() => {
+    let result = debouncedQuery
+      ? fuse.search(debouncedQuery).map((r) => r.item)
+      : [...carsData]
+
+    if (filterType !== "all") {
+      result = result.filter((car) => car.type === filterType)
+    }
+    if (filterBrand !== "all") {
+      result = result.filter((car) => car.brand === filterBrand)
+    }
+    if (filterFuel !== "all") {
+      result = result.filter((car) => car.specs.fuelType.includes(filterFuel))
+    }
+    if (filterTransmission !== "all") {
+      result = result.filter((car) =>
+        car.specs.transmission.includes(filterTransmission),
+      )
+    }
+    if (filterSeats !== "all") {
+      result = result.filter(
+        (car) => car.specs.seats === parseInt(filterSeats),
+      )
+    }
+
+    switch (sortOrder) {
+      case "price-asc":
+        result.sort(
+          (a, b) => getMinPrice(a.priceRange) - getMinPrice(b.priceRange),
+        )
+        break
+      case "price-desc":
+        result.sort(
+          (a, b) => getMaxPrice(b.priceRange) - getMaxPrice(a.priceRange),
+        )
+        break
+      case "name-asc":
+        result.sort((a, b) => a.model.localeCompare(b.model))
+        break
+      case "name-desc":
+        result.sort((a, b) => b.model.localeCompare(a.model))
+        break
+      default:
+        break
+    }
+    return result
   }, [
-    searchQuery,
+    debouncedQuery,
     sortOrder,
     filterType,
     filterBrand,
@@ -200,14 +225,11 @@ export default function LearnPage() {
     fuse,
   ])
 
+  const isTyping = searchQuery !== debouncedQuery
+
   const resetFilters = () => {
     setSearchQuery("")
-    setFilterType("all")
-    setFilterBrand("all")
-    setFilterFuel("all")
-    setFilterTransmission("all")
-    setFilterSeats("all")
-    setSortOrder("default")
+    router.replace(pathname, { scroll: false })
   }
 
   const filtersAreActive =
@@ -219,20 +241,22 @@ export default function LearnPage() {
     filterSeats !== "all" ||
     sortOrder !== "default"
 
-  const dropdownFiltersCount =
-    [
-      filterType,
-      filterBrand,
-      filterFuel,
-      filterTransmission,
-      filterSeats,
-    ].filter((f) => f !== "all").length + (sortOrder !== "default" ? 1 : 0)
+  const dropdownFiltersCount = [
+    filterType,
+    filterBrand,
+    filterFuel,
+    filterTransmission,
+    filterSeats,
+  ].filter((f) => f !== "all").length + (sortOrder !== "default" ? 1 : 0)
 
   const filterControls = (
     <>
       <div className="grid gap-2">
         <Label htmlFor="sort-order-mobile">Sort</Label>
-        <Select value={sortOrder} onValueChange={setSortOrder}>
+        <Select
+          value={sortOrder}
+          onValueChange={(val) => updateFilter("sort", val)}
+        >
           <SelectTrigger id="sort-order-mobile">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
@@ -248,7 +272,10 @@ export default function LearnPage() {
 
       <div className="grid gap-2">
         <Label htmlFor="filter-type-mobile">Type</Label>
-        <Select value={filterType} onValueChange={setFilterType}>
+        <Select
+          value={filterType}
+          onValueChange={(val) => updateFilter("type", val)}
+        >
           <SelectTrigger id="filter-type-mobile">
             <SelectValue placeholder="Filter by Type" />
           </SelectTrigger>
@@ -265,7 +292,10 @@ export default function LearnPage() {
 
       <div className="grid gap-2">
         <Label htmlFor="filter-brand-mobile">Brand</Label>
-        <Select value={filterBrand} onValueChange={setFilterBrand}>
+        <Select
+          value={filterBrand}
+          onValueChange={(val) => updateFilter("brand", val)}
+        >
           <SelectTrigger id="filter-brand-mobile">
             <SelectValue placeholder="Filter by Brand" />
           </SelectTrigger>
@@ -282,7 +312,10 @@ export default function LearnPage() {
 
       <div className="grid gap-2">
         <Label htmlFor="filter-fuel-mobile">Fuel</Label>
-        <Select value={filterFuel} onValueChange={setFilterFuel}>
+        <Select
+          value={filterFuel}
+          onValueChange={(val) => updateFilter("fuel", val)}
+        >
           <SelectTrigger id="filter-fuel-mobile">
             <SelectValue placeholder="Filter by Fuel" />
           </SelectTrigger>
@@ -301,7 +334,7 @@ export default function LearnPage() {
         <Label htmlFor="filter-transmission-mobile">Transmission</Label>
         <Select
           value={filterTransmission}
-          onValueChange={setFilterTransmission}
+          onValueChange={(val) => updateFilter("transmission", val)}
         >
           <SelectTrigger id="filter-transmission-mobile">
             <SelectValue placeholder="Filter by Transmission" />
@@ -319,7 +352,10 @@ export default function LearnPage() {
 
       <div className="grid gap-2">
         <Label htmlFor="filter-seats-mobile">Seats</Label>
-        <Select value={filterSeats} onValueChange={setFilterSeats}>
+        <Select
+          value={filterSeats}
+          onValueChange={(val) => updateFilter("seats", val)}
+        >
           <SelectTrigger id="filter-seats-mobile">
             <SelectValue placeholder="Filter by Seats" />
           </SelectTrigger>
@@ -366,8 +402,14 @@ export default function LearnPage() {
           <div className="md:col-span-1 lg:col-span-1">
             <div className="grid gap-2">
               <Label htmlFor="sort-order-desktop">Sort</Label>
-              <Select value={sortOrder} onValueChange={setSortOrder}>
-                <SelectTrigger id="sort-order-desktop" className="cursor-pointer">
+              <Select
+                value={sortOrder}
+                onValueChange={(val) => updateFilter("sort", val)}
+              >
+                <SelectTrigger
+                  id="sort-order-desktop"
+                  className="cursor-pointer"
+                >
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
@@ -393,8 +435,14 @@ export default function LearnPage() {
           <div className="md:col-span-1 lg:col-span-1">
             <div className="grid gap-2">
               <Label htmlFor="filter-type-desktop">Type</Label>
-              <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger id="filter-type-desktop" className="cursor-pointer">
+              <Select
+                value={filterType}
+                onValueChange={(val) => updateFilter("type", val)}
+              >
+                <SelectTrigger
+                  id="filter-type-desktop"
+                  className="cursor-pointer"
+                >
                   <SelectValue placeholder="Filter by Type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -402,7 +450,11 @@ export default function LearnPage() {
                     All Types
                   </SelectItem>
                   {carTypes.map((type) => (
-                    <SelectItem key={type} value={type} className="cursor-pointer">
+                    <SelectItem
+                      key={type}
+                      value={type}
+                      className="cursor-pointer"
+                    >
                       {type}
                     </SelectItem>
                   ))}
@@ -413,8 +465,14 @@ export default function LearnPage() {
           <div className="md:col-span-1 lg:col-span-1">
             <div className="grid gap-2">
               <Label htmlFor="filter-brand-desktop">Brand</Label>
-              <Select value={filterBrand} onValueChange={setFilterBrand}>
-                <SelectTrigger id="filter-brand-desktop" className="cursor-pointer">
+              <Select
+                value={filterBrand}
+                onValueChange={(val) => updateFilter("brand", val)}
+              >
+                <SelectTrigger
+                  id="filter-brand-desktop"
+                  className="cursor-pointer"
+                >
                   <SelectValue placeholder="Filter by Brand" />
                 </SelectTrigger>
                 <SelectContent>
@@ -422,7 +480,11 @@ export default function LearnPage() {
                     All Brands
                   </SelectItem>
                   {carBrands.map((brand) => (
-                    <SelectItem key={brand} value={brand} className="cursor-pointer">
+                    <SelectItem
+                      key={brand}
+                      value={brand}
+                      className="cursor-pointer"
+                    >
                       {brand}
                     </SelectItem>
                   ))}
@@ -433,8 +495,14 @@ export default function LearnPage() {
           <div className="md:col-span-1 lg:col-span-1">
             <div className="grid gap-2">
               <Label htmlFor="filter-fuel-desktop">Fuel</Label>
-              <Select value={filterFuel} onValueChange={setFilterFuel}>
-                <SelectTrigger id="filter-fuel-desktop" className="cursor-pointer">
+              <Select
+                value={filterFuel}
+                onValueChange={(val) => updateFilter("fuel", val)}
+              >
+                <SelectTrigger
+                  id="filter-fuel-desktop"
+                  className="cursor-pointer"
+                >
                   <SelectValue placeholder="Filter by Fuel" />
                 </SelectTrigger>
                 <SelectContent>
@@ -442,7 +510,11 @@ export default function LearnPage() {
                     All Fuel Types
                   </SelectItem>
                   {fuelTypes.map((fuel) => (
-                    <SelectItem key={fuel} value={fuel} className="cursor-pointer">
+                    <SelectItem
+                      key={fuel}
+                      value={fuel}
+                      className="cursor-pointer"
+                    >
                       {fuel}
                     </SelectItem>
                   ))}
@@ -455,7 +527,7 @@ export default function LearnPage() {
               <Label htmlFor="filter-transmission-desktop">Transmission</Label>
               <Select
                 value={filterTransmission}
-                onValueChange={setFilterTransmission}
+                onValueChange={(val) => updateFilter("transmission", val)}
               >
                 <SelectTrigger
                   id="filter-transmission-desktop"
@@ -468,7 +540,11 @@ export default function LearnPage() {
                     All Transmissions
                   </SelectItem>
                   {transmissions.map((trans) => (
-                    <SelectItem key={trans} value={trans} className="cursor-pointer">
+                    <SelectItem
+                      key={trans}
+                      value={trans}
+                      className="cursor-pointer"
+                    >
                       {trans}
                     </SelectItem>
                   ))}
@@ -479,8 +555,14 @@ export default function LearnPage() {
           <div className="md:col-span-1 lg:col-span-1">
             <div className="grid gap-2">
               <Label htmlFor="filter-seats-desktop">Seats</Label>
-              <Select value={filterSeats} onValueChange={setFilterSeats}>
-                <SelectTrigger id="filter-seats-desktop" className="cursor-pointer">
+              <Select
+                value={filterSeats}
+                onValueChange={(val) => updateFilter("seats", val)}
+              >
+                <SelectTrigger
+                  id="filter-seats-desktop"
+                  className="cursor-pointer"
+                >
                   <SelectValue placeholder="Filter by Seats" />
                 </SelectTrigger>
                 <SelectContent>
@@ -488,7 +570,11 @@ export default function LearnPage() {
                     All Seat Counts
                   </SelectItem>
                   {seatCounts.map((seats) => (
-                    <SelectItem key={seats} value={seats} className="cursor-pointer">
+                    <SelectItem
+                      key={seats}
+                      value={seats}
+                      className="cursor-pointer"
+                    >
                       {seats} Seats
                     </SelectItem>
                   ))}
@@ -531,7 +617,8 @@ export default function LearnPage() {
                     for city driving and small families.
                     <br />
                     <span className="text-xs text-foreground/80">
-                      PH Examples: Toyota Vios, Honda Civic, Mitsubishi Mirage G4
+                      PH Examples: Toyota Vios, Honda Civic, Mitsubishi Mirage
+                      G4
                     </span>
                   </p>
                 </div>
@@ -544,9 +631,9 @@ export default function LearnPage() {
                     <strong>entire rear opens upwards like a hatch</strong>,
                     including the rear window. This gives you more flexible
                     cargo space, especially if you fold the rear seats down.
-                    They often look sportier or more compact than sedans and
-                    are usually available with 2 or 4 passenger doors (plus the
-                    rear hatch).
+                    They often look sportier or more compact than sedans and are
+                    usually available with 2 or 4 passenger doors (plus the rear
+                    hatch).
                     <br />
                     <span className="text-xs text-foreground/80">
                       PH Examples: Toyota Wigo, Honda Brio, Suzuki Swift
@@ -565,11 +652,11 @@ export default function LearnPage() {
                     Known for their <strong>high ground clearance</strong>,
                     rugged appearance, and often available{" "}
                     <strong>all-wheel drive (AWD)</strong> or{" "}
-                    <strong>four-wheel drive (4WD)</strong>. Traditionally,
-                    SUVs are built using <strong>body-on-frame</strong>{" "}
-                    construction (like a pickup truck), making them sturdy,
-                    great for towing, handling rough roads, and surviving
-                    floods. They typically seat 5-7 people.
+                    <strong>four-wheel drive (4WD)</strong>. Traditionally, SUVs
+                    are built using <strong>body-on-frame</strong> construction
+                    (like a pickup truck), making them sturdy, great for towing,
+                    handling rough roads, and surviving floods. They typically
+                    seat 5-7 people.
                     <br />
                     <span className="text-xs text-foreground/80">
                       PH Examples (Body-on-frame): Toyota Fortuner, Mitsubishi
@@ -585,8 +672,8 @@ export default function LearnPage() {
                     These *look* like SUVs (high ground clearance, rugged
                     styling) but are built using <strong>unibody</strong>{" "}
                     construction (like a regular car, where the body and frame
-                    are one piece). This makes them lighter, more comfortable
-                    on the road, and more fuel-efficient than traditional SUVs.
+                    are one piece). This makes them lighter, more comfortable on
+                    the road, and more fuel-efficient than traditional SUVs.
                     Most crossovers prioritize comfort over extreme off-road
                     ability. This is arguably the most popular segment today.
                     <br />
@@ -597,9 +684,9 @@ export default function LearnPage() {
                     <br />
                     <strong>Key Difference vs. SUV:</strong> It's the frame!
                     SUVs are built like trucks (tougher, better off-road),
-                    Crossovers are built like cars (more comfortable, better fuel
-                    economy). It's hard to tell visually, but Crossovers often
-                    feel smoother to drive.
+                    Crossovers are built like cars (more comfortable, better
+                    fuel economy). It's hard to tell visually, but Crossovers
+                    often feel smoother to drive.
                   </p>
                 </div>
                 <div>
@@ -610,12 +697,14 @@ export default function LearnPage() {
                     Designed primarily to <strong>maximize passenger space</strong>.
                     They often have a tall, boxy, or van-like shape to fit{" "}
                     <strong>7 or even 8 people</strong> across three rows. MPVs
-                    focus on practicality and family transport. Some are car-based
-                    (like the Xpander), while others are more rugged and based on
-                    truck platforms (like the Innova, often called an AUV).
+                    focus on practicality and family transport. Some are
+                    car-based (like the Xpander), while others are more rugged
+                    and based on truck platforms (like the Innova, often called
+                    an AUV).
                     <br />
                     <span className="text-xs text-foreground/80">
-                      PH Examples: Toyota Innova, Mitsubishi Xpander, Suzuki Ertiga
+                      PH Examples: Toyota Innova, Mitsubishi Xpander, Suzuki
+                      Ertiga
                     </span>
                   </p>
                 </div>
@@ -689,7 +778,7 @@ export default function LearnPage() {
           </Sheet>
         </div>
 
-        {isLoading ? (
+        {isTyping ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <CarCardSkeleton />
             <CarCardSkeleton />

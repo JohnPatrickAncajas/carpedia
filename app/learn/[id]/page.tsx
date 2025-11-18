@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useParams } from "next/navigation"
@@ -26,7 +26,12 @@ const getViewDisplayName = (view: ImageView): string => {
 
 export default function CarDetailPage() {
   const params = useParams()
-  const car = carsData.find((c) => c.id === params.id)
+  
+  const car = useMemo(() => {
+    const id = Array.isArray(params.id) ? params.id[0] : params.id
+    return carsData.find((c) => c.id === id)
+  }, [params.id])
+
   const [selectedImageSet, setSelectedImageSet] = useState(0)
   const [selectedView, setSelectedView] = useState<ImageView>("front")
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -43,7 +48,6 @@ export default function CarDetailPage() {
   }
 
   useEffect(() => {
-    // Optional: Add ESC key listener to close modal
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeModal()
@@ -85,6 +89,7 @@ export default function CarDetailPage() {
     "interiorFoward",
     "interiorBehind",
   ]
+  
   const availableViews: ImageView[] = possibleViews.filter(
     (view) => !!currentImageSet[view],
   )
@@ -332,7 +337,7 @@ export default function CarDetailPage() {
           </button>
           <div
             className="relative w-full h-full max-w-4xl max-h-[80vh]"
-            onClick={(e) => e.stopPropagation()} 
+            onClick={(e) => e.stopPropagation()}
           >
             <Image
               src={modalImageUrl}
