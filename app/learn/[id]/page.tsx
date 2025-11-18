@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { carsData } from "@/lib/car-data"
 import { CarDetails } from "@/components/car-details"
+import { CarJsonLd } from "@/components/json-ld"
 import { Metadata } from "next"
 
 interface PageProps {
@@ -49,5 +50,10 @@ export default async function Page({ params }: PageProps) {
     notFound()
   }
 
-  return <CarDetails car={car} />
+  return (
+    <>
+      <CarJsonLd car={car} />
+      <CarDetails car={car} />
+    </>
+  )
 }
