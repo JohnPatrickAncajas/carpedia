@@ -6,9 +6,9 @@ import Image from "next/image"
 import { useParams } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { carsData } from "@/lib/car-data"
-import { ChevronLeft, X } from "lucide-react"
+import { ChevronLeft, X, ArrowRight } from "lucide-react"
 import { Footer } from "@/components/footer"
 
 type ImageView = "front" | "side" | "rear" | "interiorFoward" | "interiorBehind"
@@ -31,6 +31,13 @@ export default function CarDetailPage() {
     const id = Array.isArray(params.id) ? params.id[0] : params.id
     return carsData.find((c) => c.id === id)
   }, [params.id])
+
+  const relatedCars = useMemo(() => {
+    if (!car) return []
+    return carsData
+      .filter((c) => c.type === car.type && c.id !== car.id)
+      .slice(0, 3)
+  }, [car])
 
   const [selectedImageSet, setSelectedImageSet] = useState(0)
   const [selectedView, setSelectedView] = useState<ImageView>("front")
@@ -118,6 +125,7 @@ export default function CarDetailPage() {
                   alt={`${car.brand} ${car.model} ${selectedView}`}
                   fill
                   priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-contain transition-opacity duration-300"
                   key={imageUrl}
                 />
@@ -319,6 +327,42 @@ export default function CarDetailPage() {
               </div>
             </CardContent>
           </Card>
+        )}
+
+        {relatedCars.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-2xl font-bold text-foreground mb-6">
+              Similar {car.type}s
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedCars.map((related) => (
+                <Link key={related.id} href={`/learn/${related.id}`}>
+                  <Card className="h-full hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <div className="relative w-full h-40 bg-muted rounded-lg overflow-hidden mb-2">
+                        <Image
+                          src={related.imageSets[0].front || "/placeholder.svg"}
+                          alt={`${related.brand} ${related.model}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                      <CardTitle className="text-lg">
+                        {related.brand} {related.model}
+                      </CardTitle>
+                      <CardDescription>{related.priceRange}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center text-sm text-primary font-medium">
+                        View Details <ArrowRight className="ml-2 w-4 h-4" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </section>
         )}
       </main>
       <Footer />
