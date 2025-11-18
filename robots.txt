@@ -1,16 +1,6 @@
 User-agent: *
-Disallow: /wp-admin/
-Disallow: /wp-includes/
-Disallow: /cdn-cgi/
-Disallow: /search
-Disallow: /archives/
-Disallow: /*?
-Disallow: /*?s=*
-Disallow: /*?filter=*
-Disallow: /*&page=*
-Allow: /wp-content/uploads/
-
-# Host directive (Use this only if you must specify a canonical hostname)
-# Host: https://carpedia-ph.vercel.app
+Allow: /
+Disallow: /private/
+Disallow: /admin/
 
 Sitemap: https://carpedia-ph.vercel.app/sitemap.xml
