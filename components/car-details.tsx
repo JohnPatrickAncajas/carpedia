@@ -6,9 +6,12 @@ import Image from "next/image"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronLeft, X, ArrowRight, Share2 } from "lucide-react"
+import { ChevronLeft, X, ArrowRight, Share2, ChevronDown } from "lucide-react"
 import { Footer } from "@/components/footer"
 import { carsData, type Car } from "@/lib/car-data"
+
+const INITIAL_GALLERY_COUNT = 12
+const GALLERY_LOAD_MORE_STEP = 6
 
 type ImageView = "front" | "side" | "rear" | "interiorFoward" | "interiorBehind"
 
@@ -28,10 +31,17 @@ interface CarDetailsProps {
 }
 
 export function CarDetails({ car }: CarDetailsProps) {
+  const [selectedImageSet, setSelectedImageSet] = useState(0)
+  const [selectedView, setSelectedView] = useState<ImageView>("front")
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalImageUrl, setModalImageUrl] = useState<string | null>(null)
+  const [visibleGalleryCount, setVisibleGalleryCount] = useState(INITIAL_GALLERY_COUNT)
+
   useEffect(() => {
     setSelectedImageSet(0)
     setSelectedView("front")
     setIsModalOpen(false)
+    setVisibleGalleryCount(INITIAL_GALLERY_COUNT)
   }, [car.id])
 
   const relatedCars = useMemo(() => {
@@ -46,11 +56,6 @@ export function CarDetails({ car }: CarDetailsProps) {
 
     return shuffled.slice(0, 3)
   }, [car])
-
-  const [selectedImageSet, setSelectedImageSet] = useState(0)
-  const [selectedView, setSelectedView] = useState<ImageView>("front")
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalImageUrl, setModalImageUrl] = useState<string | null>(null)
 
   const openModal = (imageUrl: string) => {
     setModalImageUrl(imageUrl)
@@ -98,6 +103,17 @@ export function CarDetails({ car }: CarDetailsProps) {
   
   const availableViews = possibleViews.filter((view) => !!currentImageSet?.[view])
 
+  const visibleGalleryImages = car.galleryImages?.slice(0, visibleGalleryCount) || []
+  const hasMoreGalleryImages = (car.galleryImages?.length || 0) > visibleGalleryCount
+  
+  const loadMoreGallery = () => {
+    setVisibleGalleryCount((prev) => prev + GALLERY_LOAD_MORE_STEP)
+  }
+
+  const consistentHoverClasses = "hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
+  
+  const mutedButtonHoverClasses = "hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 transition-colors duration-200"
+
   return (
     <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex flex-col">
       <Navigation />
@@ -118,7 +134,12 @@ export function CarDetails({ car }: CarDetailsProps) {
               Back to Cars
             </Link>
           </Button>
-          <Button variant="outline" size="sm" onClick={handleShare}>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleShare} 
+            className={`w-auto ${consistentHoverClasses}`}
+          >
             <Share2 className="w-4 h-4 mr-2" />
             Share
           </Button>
@@ -150,13 +171,13 @@ export function CarDetails({ car }: CarDetailsProps) {
                         onClick={() => {
                           setSelectedImageSet(idx)
                           if (!car.imageSets[idx]?.[selectedView]) {
-                             setSelectedView("front")
+                            setSelectedView("front")
                           }
                         }}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                           selectedImageSet === idx
                             ? "bg-primary text-primary-foreground"
-                            : "bg-muted text-foreground hover:bg-muted/80"
+                            : `bg-muted text-foreground ${mutedButtonHoverClasses}`
                         }`}
                       >
                         {set.setName}
@@ -176,7 +197,7 @@ export function CarDetails({ car }: CarDetailsProps) {
                           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize cursor-pointer ${
                             selectedView === view
                               ? "bg-primary text-primary-foreground"
-                              : "bg-muted text-foreground hover:bg-muted/80"
+                              : `bg-muted text-foreground ${mutedButtonHoverClasses}`
                           }`}
                         >
                           {getViewDisplayName(view)}
@@ -247,29 +268,43 @@ export function CarDetails({ car }: CarDetailsProps) {
           </CardContent>
         </Card>
 
-        {car.galleryImages && car.galleryImages.length > 0 && (
-          <Card className="mt-8">
-            <CardHeader><CardTitle>Gallery</CardTitle></CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {car.galleryImages.map((imgSrc, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-muted rounded-lg overflow-hidden aspect-video relative cursor-pointer"
-                    onClick={() => openModal(imgSrc || "/placeholder.svg")}
-                  >
-                    <Image
-                      src={imgSrc || "/placeholder.svg"}
-                      alt={`${car.brand} ${car.model} gallery ${idx + 1}`}
-                      fill
-                      className="w-full h-full object-cover"
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                    />
-                  </div>
-                ))}
+        {visibleGalleryImages.length > 0 && (
+          <section className="mt-8">
+            <Card>
+              <CardHeader><CardTitle>Gallery</CardTitle></CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {visibleGalleryImages.map((imgSrc, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-muted rounded-lg overflow-hidden aspect-video relative cursor-pointer"
+                      onClick={() => openModal(imgSrc || "/placeholder.svg")}
+                    >
+                      <Image
+                        src={imgSrc || "/placeholder.svg"}
+                        alt={`${car.brand} ${car.model} gallery ${idx + 1}`}
+                        fill
+                        className="w-full h-full object-cover"
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+            
+            {hasMoreGalleryImages && (
+              <div className="mt-6 text-center">
+                <Button
+                  onClick={loadMoreGallery}
+                  variant="outline"
+                  className={`min-w-[200px] ${consistentHoverClasses}`}
+                >
+                  Load More Images <ChevronDown className="ml-2 w-4 h-4" />
+                </Button>
               </div>
-            </CardContent>
-          </Card>
+            )}
+          </section>
         )}
 
         {relatedCars.length > 0 && (
@@ -293,7 +328,7 @@ export function CarDetails({ car }: CarDetailsProps) {
                       <p className="text-sm text-muted-foreground">{related.priceRange}</p>
                     </CardHeader>
                     <CardContent>
-                      <div className="flex items-center text-sm text-primary font-medium">
+                      <div className="flex items-center text-sm text-primary font-medium hover:text-accent transition-colors">
                         View Details <ArrowRight className="ml-2 w-4 h-4" />
                       </div>
                     </CardContent>
