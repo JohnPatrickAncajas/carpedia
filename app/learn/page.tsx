@@ -1,5 +1,5 @@
 import LearnContent from '../../components/learn-content'
-import { carsData, type Car } from '@/lib/car-data'
+import { carsData } from '@/lib/car-data'
 import { notFound } from 'next/navigation'
 
 const parsePrice = (priceRange: string, index: 0 | 1): number => {
@@ -20,6 +20,7 @@ interface LearnPageProps {
     fuel?: string
     transmission?: string
     seats?: string
+    page?: string
   }
 }
 
@@ -33,8 +34,21 @@ export default async function LearnPage({ searchParams }: LearnPageProps) {
   const filterTransmission = params.transmission || "all"
   const filterSeats = params.seats || "all"
   const initialQuery = params.q || ""
+  
+  const page = Number(params.page) || 1
+  const itemsPerPage = 18
 
   let filteredCars = [...carsData]
+
+  if (initialQuery) {
+    const q = initialQuery.toLowerCase()
+    filteredCars = filteredCars.filter((car) => 
+      car.brand.toLowerCase().includes(q) ||
+      car.model.toLowerCase().includes(q) ||
+      car.type.toLowerCase().includes(q) ||
+      car.description.toLowerCase().includes(q)
+    )
+  }
 
   if (filterType !== "all") filteredCars = filteredCars.filter((car) => car.type === filterType)
   if (filterBrand !== "all") filteredCars = filteredCars.filter((car) => car.brand === filterBrand)
@@ -66,10 +80,16 @@ export default async function LearnPage({ searchParams }: LearnPageProps) {
       break
   }
 
+  const totalPages = Math.ceil(filteredCars.length / itemsPerPage)
+  const start = (page - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  const paginatedCars = filteredCars.slice(start, end)
+
   return (
     <LearnContent
-      initialCars={filteredCars}
-      initialCount={filteredCars.length}
+      cars={paginatedCars}
+      totalPages={totalPages}
+      currentPage={page}
       initialQuery={initialQuery}
     />
   )
