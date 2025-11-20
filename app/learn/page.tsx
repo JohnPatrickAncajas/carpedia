@@ -1,6 +1,7 @@
 import LearnContent from '../../components/learn-content'
 import { carsData } from '@/lib/car-data'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 
 const parsePrice = (priceRange: string, index: 0 | 1): number => {
   const parts = priceRange.replace(/[₱,]/g, "").split("-").map(Number)
@@ -12,7 +13,7 @@ const getMinPrice = (priceRange: string): number => parsePrice(priceRange, 0)
 const getMaxPrice = (priceRange: string): number => parsePrice(priceRange, 1)
 
 interface LearnPageProps {
-  searchParams?: {
+  searchParams?: Promise<{
     q?: string
     sort?: string
     type?: string
@@ -21,6 +22,27 @@ interface LearnPageProps {
     transmission?: string
     seats?: string
     page?: string
+  }>
+}
+
+export async function generateMetadata({ searchParams }: LearnPageProps): Promise<Metadata> {
+  const params = await searchParams || {}
+  const page = Number(params.page) || 1
+  
+  const title = page > 1 
+    ? `Car Prices & Specs - Page ${page} | Carpedia PH`
+    : "Learn About Cars - Prices & Specs | Carpedia PH"
+
+  return {
+    title: title,
+    description: "Browse detailed specs, prices, and features of all car models available in the Philippines.",
+    openGraph: {
+      title: title,
+      description: "Browse detailed specs, prices, and features of all car models available in the Philippines.",
+    },
+    alternates: {
+      canonical: page > 1 ? `/learn?page=${page}` : '/learn',
+    }
   }
 }
 
