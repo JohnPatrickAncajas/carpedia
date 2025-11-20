@@ -1,12 +1,13 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback, MouseEvent, TouchEvent, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronLeft, X, ArrowRight, Share2, ChevronDown } from "lucide-react"
+import { ChevronLeft, ChevronRight, X, ArrowRight, Share2, ChevronDown, ZoomIn } from "lucide-react"
 import { Footer } from "@/components/footer"
 import { carsData, type Car } from "@/lib/car-data"
 
@@ -31,16 +32,27 @@ interface CarDetailsProps {
 }
 
 export function CarDetails({ car }: CarDetailsProps) {
+  const router = useRouter()
   const [selectedImageSet, setSelectedImageSet] = useState(0)
   const [selectedView, setSelectedView] = useState<ImageView>("front")
+  
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalImageUrl, setModalImageUrl] = useState<string | null>(null)
+  const [modalSource, setModalSource] = useState<'main' | 'gallery'>('main')
+  const [modalIndex, setModalIndex] = useState(0) 
+  const [mainModalUrl, setMainModalUrl] = useState<string>("")
+
+  const [isZoomed, setIsZoomed] = useState(false)
+  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 })
+  const isDraggingRef = useRef(false)
+  const touchStartPosRef = useRef({ x: 0, y: 0 })
+
   const [visibleGalleryCount, setVisibleGalleryCount] = useState(INITIAL_GALLERY_COUNT)
 
   useEffect(() => {
     setSelectedImageSet(0)
     setSelectedView("front")
     setIsModalOpen(false)
+    setIsZoomed(false)
     setVisibleGalleryCount(INITIAL_GALLERY_COUNT)
   }, [car.id])
 
@@ -57,15 +69,104 @@ export function CarDetails({ car }: CarDetailsProps) {
     return shuffled.slice(0, 3)
   }, [car])
 
-  const openModal = (imageUrl: string) => {
-    setModalImageUrl(imageUrl)
+  const openMainModal = (imageUrl: string) => {
+    setModalSource('main')
+    setMainModalUrl(imageUrl)
     setIsModalOpen(true)
+    setIsZoomed(false)
+  }
+
+  const openGalleryModal = (index: number) => {
+    setModalSource('gallery')
+    setModalIndex(index)
+    setIsModalOpen(true)
+    setIsZoomed(false)
   }
 
   const closeModal = () => {
     setIsModalOpen(false)
-    setModalImageUrl(null)
+    setIsZoomed(false)
   }
+
+  const navigateGallery = useCallback((direction: 'prev' | 'next') => {
+    if (!car.galleryImages) return
+    
+    setIsZoomed(false)
+    setModalIndex((prev) => {
+      if (direction === 'next') {
+        return prev === car.galleryImages!.length - 1 ? 0 : prev + 1
+      } else {
+        return prev === 0 ? car.galleryImages!.length - 1 : prev - 1
+      }
+    })
+  }, [car.galleryImages])
+
+  const calculatePos = (clientX: number, clientY: number, rect: DOMRect) => {
+    const x = ((clientX - rect.left) / rect.width) * 100
+    const y = ((clientY - rect.top) / rect.height) * 100
+    return { x, y }
+  }
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isZoomed) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    setZoomPosition(calculatePos(e.clientX, e.clientY, rect))
+  }
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    isDraggingRef.current = false
+    touchStartPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+  }
+
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    if (!isZoomed) return
+    isDraggingRef.current = true
+    const rect = e.currentTarget.getBoundingClientRect()
+    const touch = e.touches[0]
+    setZoomPosition(calculatePos(touch.clientX, touch.clientY, rect))
+  }
+
+  const handleInteraction = (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    
+    if (isDraggingRef.current) {
+      isDraggingRef.current = false
+      return
+    }
+
+    if (!isZoomed) {
+      const rect = e.currentTarget.getBoundingClientRect()
+      let clientX, clientY
+      
+      if ('touches' in e) {
+        clientX = e.changedTouches[0].clientX
+        clientY = e.changedTouches[0].clientY
+      } else {
+        clientX = (e as MouseEvent).clientX
+        clientY = (e as MouseEvent).clientY
+      }
+      
+      setZoomPosition(calculatePos(clientX, clientY, rect))
+      setIsZoomed(true)
+    } else {
+      setIsZoomed(false)
+    }
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isModalOpen) return
+      
+      if (event.key === "Escape") {
+        closeModal()
+      } else if (modalSource === 'gallery' && !isZoomed) {
+        if (event.key === "ArrowRight") navigateGallery('next')
+        if (event.key === "ArrowLeft") navigateGallery('prev')
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [isModalOpen, modalSource, navigateGallery, isZoomed])
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -83,14 +184,6 @@ export function CarDetails({ car }: CarDetailsProps) {
       alert("Link copied to clipboard!")
     }
   }
-
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeModal()
-    }
-    window.addEventListener("keydown", handleEsc)
-    return () => window.removeEventListener("keydown", handleEsc)
-  }, [])
 
   const currentImageSet = car.imageSets[selectedImageSet] || car.imageSets[0]
   
@@ -111,14 +204,17 @@ export function CarDetails({ car }: CarDetailsProps) {
   }
 
   const consistentHoverClasses = "hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
-  
   const mutedButtonHoverClasses = "hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 transition-colors duration-200"
+
+  const currentModalImage = modalSource === 'main' 
+    ? mainModalUrl 
+    : (car.galleryImages?.[modalIndex] || "/placeholder.svg")
 
   return (
     <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex flex-col">
       <Navigation />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full" itemScope itemType="https://schema.org/Vehicle">
         <nav className="flex text-sm text-muted-foreground mb-6 items-center">
           <Link href="/" className="hover:text-primary transition-colors">Home</Link>
           <span className="mx-2">/</span>
@@ -128,11 +224,13 @@ export function CarDetails({ car }: CarDetailsProps) {
         </nav>
 
         <div className="flex items-center justify-between mb-6">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/learn">
-              <ChevronLeft className="w-4 h-4 mr-2" />
-              Back to Cars
-            </Link>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => router.back()} 
+          >
+            <ChevronLeft className="w-4 h-4 mr-2" />
+            Back to Cars
           </Button>
           <Button 
             variant="outline" 
@@ -149,17 +247,23 @@ export function CarDetails({ car }: CarDetailsProps) {
           <div>
             <Card className="overflow-hidden">
               <div
-                className="relative aspect-video lg:aspect-4/3 flex items-center justify-center overflow-hidden cursor-pointer"
-                onClick={() => openModal(imageUrl)}
+                className="relative aspect-video lg:aspect-4/3 flex items-center justify-center overflow-hidden cursor-pointer group"
+                onClick={() => openMainModal(imageUrl)}
               >
                 <Image
                   src={imageUrl}
                   alt={`${car.brand} ${car.model} ${selectedView}`}
                   fill
                   priority
+                  itemProp="image"
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain transition-opacity duration-300"
+                  className="object-contain transition-opacity duration-300 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                   <span className="bg-black/50 text-white px-3 py-1 rounded-full text-sm flex items-center backdrop-blur-sm">
+                     <ZoomIn className="w-4 h-4 mr-2" /> Click to Zoom
+                   </span>
+                </div>
               </div>
               <CardContent className="p-4">
                 <div className="mb-4">
@@ -212,11 +316,11 @@ export function CarDetails({ car }: CarDetailsProps) {
 
           <div>
             <div className="mb-8">
-              <h1 className="text-4xl font-bold text-foreground mb-2 text-balance">
+              <h1 className="text-4xl font-bold text-foreground mb-2 text-balance" itemProp="name">
                 {car.brand} {car.model}
               </h1>
               <p className="text-lg text-accent font-semibold mb-4">{car.type}</p>
-              <p className="text-foreground leading-relaxed text-balance">{car.description}</p>
+              <p className="text-foreground leading-relaxed text-balance" itemProp="description">{car.description}</p>
             </div>
 
             <Card className="mb-6">
@@ -232,7 +336,7 @@ export function CarDetails({ car }: CarDetailsProps) {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Year Range</p>
-                  <p className="text-foreground">{car.yearRange}</p>
+                  <p className="text-foreground" itemProp="productionDate">{car.yearRange}</p>
                 </div>
               </CardContent>
             </Card>
@@ -241,13 +345,13 @@ export function CarDetails({ car }: CarDetailsProps) {
               <CardHeader><CardTitle>Specifications</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div><p className="text-sm text-muted-foreground">Engine</p><p className="font-semibold text-foreground">{car.specs.engine}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Engine</p><p className="font-semibold text-foreground" itemProp="vehicleEngine">{car.specs.engine}</p></div>
                   <div><p className="text-sm text-muted-foreground">Horsepower</p><p className="font-semibold text-foreground">{car.specs.horsepower}</p></div>
                   <div><p className="text-sm text-muted-foreground">Torque</p><p className="font-semibold text-foreground">{car.specs.torque}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Transmission</p><p className="font-semibold text-foreground">{car.specs.transmission}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Fuel Type</p><p className="font-semibold text-foreground">{car.specs.fuelType}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Fuel Efficiency</p><p className="font-semibold text-foreground">{car.specs.fuelEfficiency}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Seats</p><p className="font-semibold text-foreground">{car.specs.seats}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Transmission</p><p className="font-semibold text-foreground" itemProp="vehicleTransmission">{car.specs.transmission}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Fuel Type</p><p className="font-semibold text-foreground" itemProp="fuelType">{car.specs.fuelType}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Fuel Efficiency</p><p className="font-semibold text-foreground" itemProp="fuelConsumptionDetails">{car.specs.fuelEfficiency}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Seats</p><p className="font-semibold text-foreground" itemProp="seatingCapacity">{car.specs.seats}</p></div>
                 </div>
               </CardContent>
             </Card>
@@ -277,14 +381,15 @@ export function CarDetails({ car }: CarDetailsProps) {
                   {visibleGalleryImages.map((imgSrc, idx) => (
                     <div
                       key={idx}
-                      className="bg-muted rounded-lg overflow-hidden aspect-video relative cursor-pointer"
-                      onClick={() => openModal(imgSrc || "/placeholder.svg")}
+                      className="bg-muted rounded-lg overflow-hidden aspect-video relative cursor-pointer group"
+                      onClick={() => openGalleryModal(idx)}
                     >
                       <Image
                         src={imgSrc || "/placeholder.svg"}
                         alt={`${car.brand} ${car.model} gallery ${idx + 1}`}
                         fill
-                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         sizes="(max-width: 768px) 50vw, 33vw"
                       />
                     </div>
@@ -341,17 +446,79 @@ export function CarDetails({ car }: CarDetailsProps) {
       </main>
       <Footer />
 
-      {isModalOpen && modalImageUrl && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={closeModal}>
+      {isModalOpen && (
+        <div 
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm cursor-default" 
+          onClick={closeModal}
+        >
           <button
-            className="absolute top-4 right-4 text-white z-50 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors cursor-pointer"
+            className="absolute top-4 right-4 text-white z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
             onClick={closeModal}
             aria-label="Close image zoom"
           >
             <X className="w-6 h-6" />
           </button>
-          <div className="relative w-full h-full max-w-4xl max-h-[80vh]" onClick={(e) => e.stopPropagation()}>
-            <Image src={modalImageUrl} alt="Zoomed car image" fill className="object-contain" />
+          
+          {modalSource === 'gallery' && !isZoomed && (
+            <>
+              <button
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-white z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigateGallery('prev')
+                }}
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-8 h-8" />
+              </button>
+              <button
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigateGallery('next')
+                }}
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-8 h-8" />
+              </button>
+            </>
+          )}
+
+          <div 
+            className={`relative w-full h-full max-w-5xl max-h-[85vh] overflow-hidden ${isZoomed ? 'cursor-move' : 'cursor-zoom-in'}`}
+            onClick={handleInteraction}
+            onMouseMove={handleMouseMove}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onMouseLeave={() => setIsZoomed(false)}
+          >
+            <Image 
+              src={currentModalImage} 
+              alt="Zoomed car image" 
+              fill 
+              className={`object-contain`}
+              style={{
+                transform: isZoomed ? `scale(2.5)` : 'scale(1)',
+                transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                transition: 'transform 0.15s ease-out'
+              }}
+              sizes="100vw"
+              priority
+            />
+            
+            {!isZoomed && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 hover:opacity-100 transition-opacity">
+                <div className="bg-black/50 text-white px-4 py-2 rounded-full flex items-center backdrop-blur-sm">
+                  <ZoomIn className="w-4 h-4 mr-2" /> Click to Zoom & Pan
+                </div>
+              </div>
+            )}
+
+            {modalSource === 'gallery' && car.galleryImages && !isZoomed && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 bg-black/50 rounded-full text-white text-sm font-medium pointer-events-none">
+                {modalIndex + 1} / {car.galleryImages.length}
+              </div>
+            )}
           </div>
         </div>
       )}

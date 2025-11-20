@@ -4,7 +4,6 @@ import { useState, useEffect, useMemo, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
-import Fuse from "fuse.js"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,19 +15,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { carsData, type Car } from "@/lib/car-data"
 import { Footer } from "@/components/footer"
-import { X, SlidersHorizontal, Info, Search, ChevronDown, RotateCcw } from "lucide-react"
-
-const INITIAL_VISIBLE_COUNT = 18
-const LOAD_MORE_STEP = 12
-
-const parsePrice = (priceRange: string, index: 0 | 1): number => {
-  const parts = priceRange.replace(/[₱,]/g, "").split("-").map(Number)
-  if (parts.length === 1) return parts[0]
-  return parts[index] || 0
-}
-
-const getMinPrice = (priceRange: string) => parsePrice(priceRange, 0)
-const getMaxPrice = (priceRange: string) => parsePrice(priceRange, 1)
+import { X, SlidersHorizontal, Info, Search, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react"
 
 const getUniqueValues = (key: (car: Car) => string | number) => {
   const values = carsData.flatMap(key)
@@ -69,22 +56,20 @@ function CarCardSkeleton() {
 }
 
 interface LearnContentProps {
-  initialCars: Car[];
-  initialCount: number;
-  initialQuery: string;
+  cars: Car[]
+  totalPages: number
+  currentPage: number
+  initialQuery: string
 }
 
-export default function LearnContent({ initialCars, initialCount, initialQuery }: LearnContentProps) {
+export default function LearnContent({ cars, totalPages, currentPage, initialQuery }: LearnContentProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   const [searchQuery, setSearchQuery] = useState(initialQuery)
-  const [currentFilteredCars, setCurrentFilteredCars] = useState(initialCars)
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT)
-  const [isDataLoading, setIsDataLoading] = useState(false)
+  const [isPending, setIsPending] = useState(false)
 
-  const debouncedQuery = searchParams.get("q") || ""
   const sortOrder = searchParams.get("sort") || "default"
   const filterType = searchParams.get("type") || "all"
   const filterBrand = searchParams.get("brand") || "all"
@@ -98,15 +83,6 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
   const transmissions = useMemo(() => getSplitValues((car) => car.specs.transmission), [])
   const seatCounts = useMemo(() => getUniqueValues((car) => car.specs.seats), [])
 
-  const fuse = useMemo(() => {
-    const options = {
-      keys: ["brand", "model", "type", "description", "commonUse", "specs.engine"],
-      threshold: 0.3,
-      includeScore: true,
-    }
-    return new Fuse(carsData, options)
-  }, [])
-
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString())
@@ -115,26 +91,40 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
       } else {
         params.set(name, value)
       }
+      if (name !== 'page') {
+        params.set('page', '1')
+      }
       return params.toString()
     },
     [searchParams]
   )
 
+  const createPageUrl = useCallback(
+    (pageNumber: number | string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set("page", pageNumber.toString())
+      return `${pathname}?${params.toString()}`
+    },
+    [searchParams, pathname]
+  )
+
   const updateFilter = (name: string, value: string) => {
-    router.replace(`${pathname}?${createQueryString(name, value)}`, { scroll: false })
+    setIsPending(true)
+    router.push(`${pathname}?${createQueryString(name, value)}`, { scroll: false })
   }
 
   const resetFilters = () => {
     setSearchQuery("")
     localStorage.removeItem("carpedia-filters")
-    router.replace(pathname, { scroll: false })
+    router.push(pathname, { scroll: false })
   }
 
   const clearSearch = () => {
     setSearchQuery("")
     const params = new URLSearchParams(searchParams.toString())
     params.delete("q")
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    params.delete("page")
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
   useEffect(() => {
@@ -153,6 +143,7 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
     } else {
       localStorage.removeItem("carpedia-filters")
     }
+    setIsPending(false)
   }, [searchParams])
 
   useEffect(() => {
@@ -171,68 +162,14 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
         } else {
           params.delete("q")
         }
-        router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+        params.set("page", "1")
+        router.push(`${pathname}?${params.toString()}`, { scroll: false })
       }
-    }, 300)
+    }, 500)
     return () => clearTimeout(timer)
   }, [searchQuery, pathname, router, searchParams])
 
-  useEffect(() => {
-    setIsDataLoading(true)
-    setVisibleCount(INITIAL_VISIBLE_COUNT)
-
-    let result = debouncedQuery ? fuse.search(debouncedQuery).map((r) => r.item) : [...carsData]
-
-    if (filterType !== "all") result = result.filter((car) => car.type === filterType)
-    if (filterBrand !== "all") result = result.filter((car) => car.brand === filterBrand)
-    if (filterFuel !== "all") result = result.filter((car) => car.specs.fuelType.includes(filterFuel))
-    if (filterTransmission !== "all") result = result.filter((car) => car.specs.transmission.includes(filterTransmission))
-    if (filterSeats !== "all") {
-      const seatsInt = parseInt(filterSeats)
-      if (!isNaN(seatsInt)) {
-        result = result.filter((car) => car.specs.seats === seatsInt)
-      }
-    }
-
-    switch (sortOrder) {
-      case "price-asc":
-        result.sort((a, b) => getMinPrice(a.priceRange) - getMinPrice(b.priceRange))
-        break
-      case "price-desc":
-        result.sort((a, b) => getMaxPrice(b.priceRange) - getMaxPrice(a.priceRange))
-        break
-      case "name-asc":
-        result.sort((a, b) => a.model.localeCompare(b.model))
-        break
-      case "name-desc":
-        result.sort((a, b) => b.model.localeCompare(a.model))
-        break
-      case "default":
-        break
-    }
-    
-    const timer = setTimeout(() => {
-        setCurrentFilteredCars(result)
-        setIsDataLoading(false)
-    }, 100)
-    
-    return () => clearTimeout(timer)
-    
-  }, [debouncedQuery, sortOrder, filterType, filterBrand, filterFuel, filterTransmission, filterSeats, fuse])
-
-  const isTyping = searchQuery !== (searchParams.get("q") || "")
-  const isLoading = isTyping || isDataLoading
-
-  const filteredCars = currentFilteredCars
-  const visibleCars = filteredCars.slice(0, visibleCount)
-  const hasMore = visibleCount < filteredCars.length
-
-  const loadMore = () => {
-    setVisibleCount((prev) => prev + LOAD_MORE_STEP)
-  }
-
   const filtersAreActive = searchQuery !== "" || filterType !== "all" || filterBrand !== "all" || filterFuel !== "all" || filterTransmission !== "all" || filterSeats !== "all" || sortOrder !== "default"
-
   const dropdownFiltersCount = [filterType, filterBrand, filterFuel, filterTransmission, filterSeats].filter((f) => f !== "all").length + (sortOrder !== "default" ? 1 : 0)
 
   const FilterItem = ({
@@ -299,10 +236,8 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
 
   const filterControls = (
     <div className="space-y-4">
-
       <div className="space-y-2">
         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-6 pt-2">Preferences</h4>
-
         <div className="flex px-6">
           <div className="flex flex-col w-full py-2 transition-colors duration-150 rounded-md">
             <div className="flex items-center justify-between mb-1">
@@ -336,50 +271,22 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
 
       <div className="space-y-2">
         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-6 pt-2">Vehicle Specs</h4>
-
         <div className="flex flex-col sm:flex-row gap-x-3 px-6">
-          <FilterItem
-            label="Type"
-            id="filter-type"
-            value={filterType}
-            options={carTypes}
-          />
-          <FilterItem
-            label="Brand"
-            id="filter-brand"
-            value={filterBrand}
-            options={carBrands}
-          />
+          <FilterItem label="Type" id="filter-type" value={filterType} options={carTypes} />
+          <FilterItem label="Brand" id="filter-brand" value={filterBrand} options={carBrands} />
         </div>
-
         <div className="flex flex-col sm:flex-row gap-x-3 px-6">
-          <FilterItem
-            label="Fuel"
-            id="filter-fuel"
-            value={filterFuel}
-            options={fuelTypes}
-          />
-          <FilterItem
-            label="Seats"
-            id="filter-seats"
-            value={filterSeats}
-            options={seatCounts}
-            suffix=" Seats"
-          />
+          <FilterItem label="Fuel" id="filter-fuel" value={filterFuel} options={fuelTypes} />
+          <FilterItem label="Seats" id="filter-seats" value={filterSeats} options={seatCounts} suffix=" Seats" />
         </div>
-
         <div className="flex px-6">
-          <FilterItem
-            label="Transmission"
-            id="filter-transmission"
-            value={filterTransmission}
-            options={transmissions}
-            fullWidth={true}
-          />
+          <FilterItem label="Transmission" id="filter-transmission" value={filterTransmission} options={transmissions} fullWidth={true} />
         </div>
       </div>
     </div>
   )
+
+  const buttonHoverClass = "hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
 
   return (
     <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20">
@@ -417,7 +324,7 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
             <SheetTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full sm:w-auto h-12 shrink-0 px-6 group hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
+                className={`w-full sm:w-auto h-12 shrink-0 px-6 group ${buttonHoverClass}`}
               >
                 <SlidersHorizontal className="w-4 h-4 mr-2 group-hover:text-primary transition-colors" />
                 Filter & Sort
@@ -427,15 +334,9 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
             <SheetContent side="right" className="w-full sm:max-w-md flex flex-col h-full">
               <SheetHeader className="border-b pb-4 mb-0 px-6">
                 <SheetTitle>Filter & Sort</SheetTitle>
-                <SheetDescription>
-                  Refine your search by selecting specific attributes below.
-                </SheetDescription>
+                <SheetDescription>Refine your search by selecting specific attributes below.</SheetDescription>
               </SheetHeader>
-
-              <div className="flex-1 overflow-y-auto pt-4">
-                {filterControls}
-              </div>
-
+              <div className="flex-1 overflow-y-auto pt-4">{filterControls}</div>
               <SheetFooter className="flex-row gap-3 border-t pt-4 mt-auto px-6 pb-6">
                 <Button
                   variant="ghost"
@@ -447,10 +348,8 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
                   Reset All
                 </Button>
                 <SheetClose asChild>
-                  <Button
-                    className="flex-1 bg-primary text-primary-foreground hover:bg-black hover:text-white dark:hover:bg-primary/80 dark:hover:text-white/90"
-                  >
-                    Show {filteredCars.length} Results
+                  <Button className="flex-1 bg-primary text-primary-foreground hover:bg-black hover:text-white dark:hover:bg-primary/80 dark:hover:text-white/90">
+                    Show Results
                   </Button>
                 </SheetClose>
               </SheetFooter>
@@ -468,74 +367,32 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
             </AccordionTrigger>
             <AccordionContent className="pt-4">
               <div className="space-y-6 text-muted-foreground">
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Sedan</h3>
-                  <p className="text-balance">
-                    The classic car shape. Sedans typically have <strong>four doors</strong> and a <strong>separate trunk</strong> compartment in the back. They usually seat 4-5 people comfortably. <br />
-                    <span className="text-xs text-foreground/80">PH Examples: Toyota Vios, Honda Civic, Mitsubishi Mirage G4</span>
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Hatchback</h3>
-                  <p className="text-balance">
-                    Similar to sedans, but instead of a separate trunk, the <strong>entire rear opens upwards</strong>. This gives more flexible cargo space, especially if you fold the rear seats down. <br />
-                    <span className="text-xs text-foreground/80">PH Examples: Toyota Wigo, Honda Brio, Suzuki Swift</span>
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">SUV (Sport Utility Vehicle)</h3>
-                  <p className="text-balance">
-                    Known for their <strong>high ground clearance</strong> and rugged appearance. Traditionally built using <strong>body-on-frame</strong> construction, making them sturdy for rough roads and floods. <br />
-                    <span className="text-xs text-foreground/80">PH Examples: Toyota Fortuner, Mitsubishi Montero Sport, Ford Everest</span>
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Crossover (CUV)</h3>
-                  <p className="text-balance">
-                    Look like SUVs but are built using <strong>unibody</strong> construction (like a regular car). This makes them lighter and more fuel-efficient than traditional SUVs. <br />
-                    <span className="text-xs text-foreground/80">PH Examples: Toyota Raize, Geely Coolray, Honda CR-V</span>
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">MPV / AUV</h3>
-                  <p className="text-balance">
-                    Designed to <strong>maximize passenger space</strong>, often fitting <strong>7 or 8 people</strong> across three rows. <br />
-                    <span className="text-xs text-foreground/80">PH Examples: Toyota Innova, Mitsubishi Xpander, Suzuki Ertiga</span>
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Pickup Truck</h3>
-                  <p className="text-balance">
-                    Identified by a <strong>separate passenger cabin</strong> and an <strong>open cargo bed</strong>. Built for hauling heavy loads and tackling tough terrain. <br />
-                    <span className="text-xs text-foreground/80">PH Examples: Toyota Hilux, Ford Ranger, Nissan Navara</span>
-                  </p>
-                </div>
+                 <div>
+                   <h3 className="font-semibold text-foreground mb-2">Sedan</h3>
+                   <p className="text-balance">The classic car shape. Typically 4 doors and a separate trunk. <span className="text-xs text-foreground/80">Ex: Vios, Civic</span></p>
+                 </div>
+                 <div>
+                   <h3 className="font-semibold text-foreground mb-2">SUV</h3>
+                   <p className="text-balance">High ground clearance, rugged. <span className="text-xs text-foreground/80">Ex: Fortuner, Montero</span></p>
+                 </div>
               </div>
               <div className="mt-6 border-t pt-4 flex justify-between items-center">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  asChild
-                  className="hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
-                >
-                  <Link href="/guides">See All Guides (Types, Brands & Lingo) &rarr;</Link>
+                <Button variant="outline" size="sm" asChild className={buttonHoverClass}>
+                  <Link href="/guides">See All Guides &rarr;</Link>
                 </Button>
-                <a href="#quick-guide-accordion" onClick={(e) => { e.preventDefault(); document.getElementById('quick-guide-accordion')?.scrollIntoView({ behavior: 'smooth' }); document.getElementById('quick-guide-accordion')?.querySelector('button')?.click(); }} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200">
-                  Close Guide &uarr;
-                </a>
               </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
 
-        {isLoading ? (
+        {isPending ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => <CarCardSkeleton key={i} />)}
           </div>
-        ) : filteredCars.length > 0 ? (
+        ) : cars.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {visibleCars.map((car, index) => (
+              {cars.map((car, index) => (
                 <Link key={car.id} href={`/learn/${car.id}`} className="flex">
                   <Card className="flex flex-col w-full hover:shadow-lg transition-shadow duration-300 overflow-hidden">
                     <CardHeader>
@@ -563,14 +420,112 @@ export default function LearnContent({ initialCars, initialCount, initialQuery }
                 </Link>
               ))}
             </div>
-            {hasMore && (
-              <div className="mt-8 text-center">
+
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-12 flex-wrap">
                 <Button
-                  onClick={loadMore}
                   variant="outline"
-                  className="min-w-[200px] hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
+                  size="icon"
+                  disabled={currentPage <= 1}
+                  className={`h-10 w-10 ${currentPage > 1 ? buttonHoverClass : ''}`}
+                  asChild={currentPage > 1}
                 >
-                  Load More <ChevronDown className="ml-2 w-4 h-4" />
+                  {currentPage > 1 ? (
+                    <Link href={createPageUrl(currentPage - 1)}>
+                      <ChevronLeft className="h-4 w-4" />
+                      <span className="sr-only">Previous</span>
+                    </Link>
+                  ) : (
+                    <span>
+                      <ChevronLeft className="h-4 w-4" />
+                      <span className="sr-only">Previous</span>
+                    </span>
+                  )}
+                </Button>
+
+                {(() => {
+                  const pages = []
+                  pages.push(
+                    <Button
+                      key={1}
+                      variant={currentPage === 1 ? "default" : "outline"}
+                      size="icon"
+                      className={`h-10 w-10 ${currentPage !== 1 ? buttonHoverClass : ''}`}
+                      asChild={currentPage !== 1}
+                    >
+                      {currentPage !== 1 ? (
+                        <Link href={createPageUrl(1)}>1</Link>
+                      ) : (
+                        <span>1</span>
+                      )}
+                    </Button>
+                  )
+
+                  if (currentPage > 3) {
+                    pages.push(<span key="start-ellipsis" className="px-2 text-muted-foreground">...</span>)
+                  }
+
+                  for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+                    pages.push(
+                      <Button
+                        key={i}
+                        variant={currentPage === i ? "default" : "outline"}
+                        size="icon"
+                        className={`h-10 w-10 ${currentPage !== i ? buttonHoverClass : ''}`}
+                        asChild={currentPage !== i}
+                      >
+                        {currentPage !== i ? (
+                          <Link href={createPageUrl(i)}>{i}</Link>
+                        ) : (
+                          <span>{i}</span>
+                        )}
+                      </Button>
+                    )
+                  }
+
+                  if (currentPage < totalPages - 2) {
+                    pages.push(<span key="end-ellipsis" className="px-2 text-muted-foreground">...</span>)
+                  }
+
+                  if (totalPages > 1) {
+                    pages.push(
+                      <Button
+                        key={totalPages}
+                        variant={currentPage === totalPages ? "default" : "outline"}
+                        size="icon"
+                        className={`h-10 w-10 ${currentPage !== totalPages ? buttonHoverClass : ''}`}
+                        asChild={currentPage !== totalPages}
+                      >
+                         {currentPage !== totalPages ? (
+                           <Link href={createPageUrl(totalPages)}>{totalPages}</Link>
+                         ) : (
+                           <span>{totalPages}</span>
+                         )}
+                      </Button>
+                    )
+                  }
+
+                  return pages
+                })()}
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  disabled={currentPage >= totalPages}
+                  className={`h-10 w-10 ${currentPage < totalPages ? buttonHoverClass : ''}`}
+                  asChild={currentPage < totalPages}
+                >
+                  {currentPage < totalPages ? (
+                    <Link href={createPageUrl(currentPage + 1)}>
+                      <ChevronRight className="h-4 w-4" />
+                      <span className="sr-only">Next</span>
+                    </Link>
+                  ) : (
+                    <span>
+                      <ChevronRight className="h-4 w-4" />
+                      <span className="sr-only">Next</span>
+                    </span>
+                  )}
                 </Button>
               </div>
             )}

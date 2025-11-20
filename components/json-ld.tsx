@@ -1,19 +1,30 @@
 import { Car } from "@/lib/car-data"
-import { notFound } from "next/navigation"
 
 const extractMinPrice = (priceRange: string): number => {
-    const priceParts = priceRange.replace(/[₱,]/g, "").match(/\d+/g) || []
-    
-    const minPrice = priceParts.length > 0 ? Math.min(...priceParts.map(Number)) : 0
-    
-    return minPrice
+  const priceParts = priceRange.replace(/[₱,]/g, "").match(/\d+/g) || []
+  const minPrice = priceParts.length > 0 ? Math.min(...priceParts.map(Number)) : 0
+  return minPrice
 }
 
 export function CarJsonLd({ car }: { car: Car }) {
-  const primaryImage = car.imageSets[0]?.front || '/placeholder.svg'
+  const baseUrl = "https://carpedia-ph.vercel.app"
   
+  const allImages = [
+    ...car.imageSets.flatMap(set => [
+      set.front,
+      set.side,
+      set.rear,
+      set.interiorFoward,
+      set.interiorBehind
+    ]),
+    ...(car.galleryImages || [])
+  ]
+  .filter((img): img is string => !!img)
+  .map((img) => img.startsWith("http") ? img : `${baseUrl}${img}`)
+
+  const uniqueImages = Array.from(new Set(allImages))
+
   const minPrice = extractMinPrice(car.priceRange)
-  
   const priceValidUntil = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
 
   const schema = {
@@ -21,9 +32,7 @@ export function CarJsonLd({ car }: { car: Car }) {
     "@type": "Vehicle",
     "name": `${car.brand} ${car.model}`,
     "description": car.description,
-    
-    "image": `https://carpedia-ph.vercel.app${primaryImage}`, 
-    
+    "image": uniqueImages, 
     "offers": {
         "@type": "Offer",
         "priceCurrency": "PHP",
@@ -31,7 +40,6 @@ export function CarJsonLd({ car }: { car: Car }) {
         "priceValidUntil": priceValidUntil,
         "availability": "https://schema.org/InStock"
     },
-    
     "brand": {
       "@type": "Brand",
       "name": car.brand
@@ -43,7 +51,6 @@ export function CarJsonLd({ car }: { car: Car }) {
       "@type": "EngineSpecification",
       "name": car.specs.engine
     },
-    
     "numberOfDoors": car.type === "Sedan" || car.type === "Hatchback" ? 4 : 5,
     "seatingCapacity": car.specs.seats,
     "fuelType": car.specs.fuelType,
