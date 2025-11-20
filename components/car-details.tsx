@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback, MouseEvent, TouchEvent, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -31,16 +32,15 @@ interface CarDetailsProps {
 }
 
 export function CarDetails({ car }: CarDetailsProps) {
+  const router = useRouter()
   const [selectedImageSet, setSelectedImageSet] = useState(0)
   const [selectedView, setSelectedView] = useState<ImageView>("front")
   
-  // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalSource, setModalSource] = useState<'main' | 'gallery'>('main')
   const [modalIndex, setModalIndex] = useState(0) 
   const [mainModalUrl, setMainModalUrl] = useState<string>("")
 
-  // Zoom State
   const [isZoomed, setIsZoomed] = useState(false)
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 })
   const isDraggingRef = useRef(false)
@@ -101,9 +101,6 @@ export function CarDetails({ car }: CarDetailsProps) {
     })
   }, [car.galleryImages])
 
-  // --- ZOOM LOGIC ---
-
-  // Calculate position relative to the image container
   const calculatePos = (clientX: number, clientY: number, rect: DOMRect) => {
     const x = ((clientX - rect.left) / rect.width) * 100
     const y = ((clientY - rect.top) / rect.height) * 100
@@ -132,15 +129,12 @@ export function CarDetails({ car }: CarDetailsProps) {
   const handleInteraction = (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
     e.stopPropagation()
     
-    // If dragging on mobile, do NOT toggle zoom (allows panning without closing)
     if (isDraggingRef.current) {
       isDraggingRef.current = false
       return
     }
 
     if (!isZoomed) {
-      // ON ZOOM IN: Update position immediately to click coordinates
-      // This fixes the "flick" issue
       const rect = e.currentTarget.getBoundingClientRect()
       let clientX, clientY
       
@@ -155,7 +149,6 @@ export function CarDetails({ car }: CarDetailsProps) {
       setZoomPosition(calculatePos(clientX, clientY, rect))
       setIsZoomed(true)
     } else {
-      // ON ZOOM OUT
       setIsZoomed(false)
     }
   }
@@ -231,11 +224,13 @@ export function CarDetails({ car }: CarDetailsProps) {
         </nav>
 
         <div className="flex items-center justify-between mb-6">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/learn">
-              <ChevronLeft className="w-4 h-4 mr-2" />
-              Back to Cars
-            </Link>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => router.back()} 
+          >
+            <ChevronLeft className="w-4 h-4 mr-2" />
+            Back to Cars
           </Button>
           <Button 
             variant="outline" 
