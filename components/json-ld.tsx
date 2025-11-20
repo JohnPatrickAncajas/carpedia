@@ -14,7 +14,7 @@ export function CarJsonLd({ car }: { car: Car }) {
       set.front,
       set.side,
       set.rear,
-      set.interiorFoward,
+      set.interiorForward,
       set.interiorBehind
     ]),
     ...(car.galleryImages || [])
