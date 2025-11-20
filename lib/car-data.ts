@@ -13,7 +13,7 @@ export interface ImageSet {
   front?: string
   side?: string
   rear?: string
-  interiorForward?: string
+  interiorForrward?: string
   interiorBehind?: string
 }
 

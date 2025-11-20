@@ -13,11 +13,11 @@ import { carsData, type Car } from "@/lib/car-data"
 const INITIAL_GALLERY_COUNT = 12
 const GALLERY_LOAD_MORE_STEP = 6
 
-type ImageView = "front" | "side" | "rear" | "interiorFoward" | "interiorBehind"
+type ImageView = "front" | "side" | "rear" | "interiorForward" | "interiorBehind"
 
 const getViewDisplayName = (view: ImageView): string => {
   switch (view) {
-    case "interiorFoward":
+    case "interiorForward":
       return "Interior Fwd"
     case "interiorBehind":
       return "Interior Rear"
@@ -99,7 +99,7 @@ export function CarDetails({ car }: CarDetailsProps) {
     currentImageSet?.front ||
     "/placeholder.svg"
 
-  const possibleViews: ImageView[] = ["front", "side", "rear", "interiorFoward", "interiorBehind"]
+  const possibleViews: ImageView[] = ["front", "side", "rear", "interiorForward", "interiorBehind"]
   
   const availableViews = possibleViews.filter((view) => !!currentImageSet?.[view])
 
