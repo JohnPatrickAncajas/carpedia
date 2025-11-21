@@ -516,7 +516,7 @@ export const carsData: Car[] = [
       "The first generation (1990s) famously included a foldable picnic table stored under the cargo area floor.",
       "It was one of the first SUVs to use a car-like unibody platform (based on the Civic), which is why it's known for its comfortable ride.",
       "The 5th generation CR-V (2017) was the first-ever Honda model in the Philippines to be offered with a diesel engine.",
-      "The latest 6th generation model (2023+) is the first CR-V in the PH to be offered as a full hybrid (e:HEV) and to feature Honda SENSING on all variants."
+      "The latest 6th generation model (2023+) is the first CR-V in the to be offered as a full hybrid (e:HEV) and to feature Honda SENSING on all variants."
     ]
   },
   {
@@ -1148,7 +1148,7 @@ export const carsData: Car[] = [
       "The Volkswagen logo on the hatchback's trunk often doubles as the trunk release handle.",
       "The Polo has won 'World Car of the Year' (2010) and 'World Urban Car of the Year' (2018).",
       "The high-performance 'Polo GTI' is a famous 'hot hatch' and a direct rival to the Ford Fiesta ST and Suzuki Swift Sport.",
-      "The sedan version of the Polo (called 'Polo Notch' in PH) was based on a model built in India, where it is known as the 'Volkswagen Vento'."
+      "The sedan version of the Polo (called 'Polo Notch' in) was based on a model built in India, where it is known as the 'Volkswagen Vento'."
     ]
   },
   {

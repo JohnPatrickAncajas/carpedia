@@ -30,8 +30,8 @@ export async function generateMetadata({ searchParams }: LearnPageProps): Promis
   const page = Number(params.page) || 1
   
   const title = page > 1 
-    ? `Car Prices & Specs - Page ${page} | Carpedia PH`
-    : "Learn About Cars - Prices & Specs | Carpedia PH"
+    ? `Car Prices & Specs - Page ${page} | KotsePedia`
+    : "Learn About Cars - Prices & Specs | KotsePedia"
 
   return {
     title: title,
