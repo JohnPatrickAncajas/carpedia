@@ -172,7 +172,7 @@ export function CarDetails({ car }: CarDetailsProps) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${car.brand} ${car.model} - KotsePedia`,
+          title: `${car.brand} ${car.model} - KotsePedia PH`,
           text: `Check out the specs for the ${car.brand} ${car.model}!`,
           url: window.location.href,
         })
@@ -214,7 +214,7 @@ export function CarDetails({ car }: CarDetailsProps) {
     <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/20 flex flex-col">
       <Navigation />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full" itemScope itemType="https://schema.org/Vehicle">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
         <nav className="flex text-sm text-muted-foreground mb-6 items-center">
           <Link href="/" className="hover:text-primary transition-colors">Home</Link>
           <span className="mx-2">/</span>
@@ -255,14 +255,13 @@ export function CarDetails({ car }: CarDetailsProps) {
                   alt={`${car.brand} ${car.model} ${selectedView}`}
                   fill
                   priority
-                  itemProp="image"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-contain transition-opacity duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-                   <span className="bg-black/50 text-white px-3 py-1 rounded-full text-sm flex items-center backdrop-blur-sm">
-                     <ZoomIn className="w-4 h-4 mr-2" /> Click to Zoom
-                   </span>
+                    <span className="bg-black/50 text-white px-3 py-1 rounded-full text-sm flex items-center backdrop-blur-sm">
+                      <ZoomIn className="w-4 h-4 mr-2" /> Click to Zoom
+                    </span>
                 </div>
               </div>
               <CardContent className="p-4">
@@ -316,11 +315,11 @@ export function CarDetails({ car }: CarDetailsProps) {
 
           <div>
             <div className="mb-8">
-              <h1 className="text-4xl font-bold text-foreground mb-2 text-balance" itemProp="name">
+              <h1 className="text-4xl font-bold text-foreground mb-2 text-balance">
                 {car.brand} {car.model}
               </h1>
               <p className="text-lg text-accent font-semibold mb-4">{car.type}</p>
-              <p className="text-foreground leading-relaxed text-balance" itemProp="description">{car.description}</p>
+              <p className="text-foreground leading-relaxed text-balance">{car.description}</p>
             </div>
 
             <Card className="mb-6">
@@ -336,7 +335,7 @@ export function CarDetails({ car }: CarDetailsProps) {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Year Range</p>
-                  <p className="text-foreground" itemProp="productionDate">{car.yearRange}</p>
+                  <p className="text-foreground">{car.yearRange}</p>
                 </div>
               </CardContent>
             </Card>
@@ -345,13 +344,13 @@ export function CarDetails({ car }: CarDetailsProps) {
               <CardHeader><CardTitle>Specifications</CardTitle></CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div><p className="text-sm text-muted-foreground">Engine</p><p className="font-semibold text-foreground" itemProp="vehicleEngine">{car.specs.engine}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Engine</p><p className="font-semibold text-foreground">{car.specs.engine}</p></div>
                   <div><p className="text-sm text-muted-foreground">Horsepower</p><p className="font-semibold text-foreground">{car.specs.horsepower}</p></div>
                   <div><p className="text-sm text-muted-foreground">Torque</p><p className="font-semibold text-foreground">{car.specs.torque}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Transmission</p><p className="font-semibold text-foreground" itemProp="vehicleTransmission">{car.specs.transmission}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Fuel Type</p><p className="font-semibold text-foreground" itemProp="fuelType">{car.specs.fuelType}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Fuel Efficiency</p><p className="font-semibold text-foreground" itemProp="fuelConsumptionDetails">{car.specs.fuelEfficiency}</p></div>
-                  <div><p className="text-sm text-muted-foreground">Seats</p><p className="font-semibold text-foreground" itemProp="seatingCapacity">{car.specs.seats}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Transmission</p><p className="font-semibold text-foreground">{car.specs.transmission}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Fuel Type</p><p className="font-semibold text-foreground">{car.specs.fuelType}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Fuel Efficiency</p><p className="font-semibold text-foreground">{car.specs.fuelEfficiency}</p></div>
+                  <div><p className="text-sm text-muted-foreground">Seats</p><p className="font-semibold text-foreground">{car.specs.seats}</p></div>
                 </div>
               </CardContent>
             </Card>
