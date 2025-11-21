@@ -2,7 +2,7 @@ import { MetadataRoute } from "next"
 import { carsData } from "@/lib/car-data"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://carpedia-ph.vercel.app"
+  const baseUrl = "https://kotsepedia-ph.vercel.app"
 
   const carUrls = carsData.map((car) => ({
     url: `${baseUrl}/learn/${car.id}`,

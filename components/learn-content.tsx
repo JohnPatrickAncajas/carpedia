@@ -115,7 +115,7 @@ export default function LearnContent({ cars, totalPages, currentPage, initialQue
 
   const resetFilters = () => {
     setSearchQuery("")
-    localStorage.removeItem("carpedia-filters")
+    localStorage.removeItem("kotsepedia-filters")
     router.push(pathname, { scroll: false })
   }
 
@@ -129,7 +129,7 @@ export default function LearnContent({ cars, totalPages, currentPage, initialQue
 
   useEffect(() => {
     if (typeof window !== "undefined" && !searchParams.toString()) {
-      const savedParams = localStorage.getItem("carpedia-filters")
+      const savedParams = localStorage.getItem("kotsepedia-filters")
       if (savedParams) {
         router.replace(`${pathname}?${savedParams}`, { scroll: false })
       }
@@ -139,9 +139,9 @@ export default function LearnContent({ cars, totalPages, currentPage, initialQue
   useEffect(() => {
     const paramsString = searchParams.toString()
     if (paramsString) {
-      localStorage.setItem("carpedia-filters", paramsString)
+      localStorage.setItem("kotsepedia-filters", paramsString)
     } else {
-      localStorage.removeItem("carpedia-filters")
+      localStorage.removeItem("kotsepedia-filters")
     }
     setIsPending(false)
   }, [searchParams])

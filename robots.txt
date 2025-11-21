@@ -3,4 +3,4 @@ Allow: /
 Disallow: /private/
 Disallow: /admin/
 
-Sitemap: https://carpedia-ph.vercel.app/sitemap.xml
+Sitemap: https://kotsepedia-ph.vercel.app/sitemap.xml

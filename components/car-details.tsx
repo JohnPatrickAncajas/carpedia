@@ -172,7 +172,7 @@ export function CarDetails({ car }: CarDetailsProps) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${car.brand} ${car.model} - Carpedia PH`,
+          title: `${car.brand} ${car.model} - Kotsepedia`,
           text: `Check out the specs for the ${car.brand} ${car.model}!`,
           url: window.location.href,
         })

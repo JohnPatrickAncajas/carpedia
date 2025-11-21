@@ -203,7 +203,7 @@ export const carsData: Car[] = [
     ],
     funFacts: [
       "The previous generation of the Accent was famous for its diesel variant, which was incredibly popular with fleet operators and Grab drivers for its massive fuel savings.",
-      "It was one of the first cars in the PH to offer a 5-year unlimited mileage warranty, which was a major market disruptor at the time.",
+      "It was one of the first cars in the to offer a 5-year unlimited mileage warranty, which was a major market disruptor at the time.",
       "The 'Accent' nameplate actually competed in the World Rally Championship (WRC) from 2000 to 2003.",
       "In some markets, like its home country of South Korea, the Accent is known as the 'Verna'.",
       "A hatchback version of the Accent was also sold, but the sedan version is far more common on Philippine roads."
@@ -241,7 +241,7 @@ export const carsData: Car[] = [
       "/assets/images/sedans/nissan-almera/silver/sedan-almera-silver-rear.png"
     ],
     funFacts: [
-      "The newest Almera model (2020+) uses a tiny 1.0-liter 3-cylinder turbo engine, a first for its class in the PH market.",
+      "The newest Almera model (2020+) uses a tiny 1.0-liter 3-cylinder turbo engine, a first for its class in the market.",
       "It was one of the first in its segment to offer 'Nissan Intelligent Mobility' features like a 360-degree 'Around View Monitor'.",
       "The new design is often nicknamed the 'Baby Altima' due to its strong resemblance to Nissan's larger, more executive sedan.",
       "In the United States and other markets, the Almera is sold as the 'Nissan Versa'.",
@@ -357,7 +357,7 @@ export const carsData: Car[] = [
     ],
     funFacts: [
       "The Lancer name is legendary thanks to its 'big brother,' the Lancer Evolution, which won multiple World Rally Championships.",
-      "The popular 2007-2017 generation was nicknamed the 'Lancer EX' in the PH, and globally known as the 'Shark-nose' Lancer.",
+      "The popular 2007-2017 generation was nicknamed the 'Lancer EX' in the, and globally known as the 'Shark-nose' Lancer.",
       "A 2.0L variant of the Lancer EX was often nicknamed the 'Lancer PADEro' by enthusiasts because it used the same 4B11 engine block found in the Pajero.",
       "The final generation had an incredibly long production run, lasting over 10 years (2007-2017) with minor changes.",
       "Its discontinuation marked the end of Mitsubishi's long-running compact sedan lineage, as the company shifted focus to SUVs and MPVs."
@@ -436,7 +436,7 @@ export const carsData: Car[] = [
     funFacts: [
       "It holds the Guinness World Record for the best-selling automotive nameplate in history, with over 50 million sold worldwide since 1966.",
       "In the Philippines, it's called the 'Corolla Altis.' 'Altis' comes from the word 'altiloquent,' meaning high-sounding or superior.",
-      "The 7th generation (1990s) is fondly remembered in the PH as the 'Big Body' Corolla and is now a popular '90s enthusiast car.",
+      "The 7th generation (1990s) is fondly remembered in the as the 'Big Body' Corolla and is now a popular '90s enthusiast car.",
       "The current generation is the first Corolla Altis in the Philippines to be offered as a full hybrid (HEV) variant.",
       "The 'GR-S' (Gazoo Racing Sport) model adds aggressive styling, a stiffer suspension, and paddle shifters for a sportier driving feel."
     ]
@@ -516,7 +516,7 @@ export const carsData: Car[] = [
       "The first generation (1990s) famously included a foldable picnic table stored under the cargo area floor.",
       "It was one of the first SUVs to use a car-like unibody platform (based on the Civic), which is why it's known for its comfortable ride.",
       "The 5th generation CR-V (2017) was the first-ever Honda model in the Philippines to be offered with a diesel engine.",
-      "The latest 6th generation model (2023+) is the first CR-V in the PH to be offered as a full hybrid (e:HEV) and to feature Honda SENSING on all variants."
+      "The latest 6th generation model (2023+) is the first CR-V in the to be offered as a full hybrid (e:HEV) and to feature Honda SENSING on all variants."
     ]
   },
   {
@@ -590,7 +590,7 @@ export const carsData: Car[] = [
     funFacts: [
       "The Tucson is named after the city of Tucson, Arizona, continuing Hyundai's theme of naming SUVs after American destinations.",
       "The latest generation (NX4) is famous for its 'Parametric Jewel' grille, where the daytime running lights are hidden within the grille pattern itself.",
-      "In the past, the Tucson was extremely popular in the PH for its CRDi (diesel) variant, which was known for its powerful torque and fuel economy.",
+      "In the past, the Tucson was extremely popular in the for its CRDi (diesel) variant, which was known for its powerful torque and fuel economy.",
       "The high-performance 'N-Line' variant offers sporty styling inspired by Hyundai's 'N' performance division, similar to Toyota's 'GR-S'.",
       "The Tucson shares its unibody platform with its Kia counterpart, the Sportage."
     ]
@@ -1053,7 +1053,7 @@ export const carsData: Car[] = [
       "The March is known as the Nissan 'Micra' in Europe and most other parts of the world.",
       "The nameplate is one of Nissan's oldest, with the first generation (K10) launching in 1982.",
       "The original K10 Micra was actually designed by Nissan for Fiat, who rejected the design in favor of their own 'Uno'.",
-      "The K13 generation (sold in the PH) was a 'global car' built in multiple countries, including Thailand, India, and Mexico.",
+      "The K13 generation (sold in the) was a 'global car' built in multiple countries, including Thailand, India, and Mexico.",
       "Its distinct, bubbly shape was designed to maximize interior headroom and visibility, making it a very easy car to drive in the city."
     ]
   },
@@ -1148,7 +1148,7 @@ export const carsData: Car[] = [
       "The Volkswagen logo on the hatchback's trunk often doubles as the trunk release handle.",
       "The Polo has won 'World Car of the Year' (2010) and 'World Urban Car of the Year' (2018).",
       "The high-performance 'Polo GTI' is a famous 'hot hatch' and a direct rival to the Ford Fiesta ST and Suzuki Swift Sport.",
-      "The sedan version of the Polo (called 'Polo Notch' in PH) was based on a model built in India, where it is known as the 'Volkswagen Vento'."
+      "The sedan version of the Polo (called 'Polo Notch' in) was based on a model built in India, where it is known as the 'Volkswagen Vento'."
     ]
   },
   {
@@ -1275,8 +1275,8 @@ export const carsData: Car[] = [
     funFacts: [
       "The name 'Serena' is derived from the Latin word 'serenus,' which means 'clear, tranquil, or pleasant'.",
       "A key feature is its 'Dual-Back Door,' which allows you to open just the top glass portion of the tailgate or the entire tailgate itself.",
-      "The Serena sold in the PH is a 'JDM' or Japanese Domestic Market model, known for its tall, boxy 'compliance' design to maximize space within Japanese tax brackets.",
-      "In Japan, the Serena is famous for its advanced 'e-Power' hybrid system (not yet in PH), where the gas engine only charges the battery.",
+      "The Serena sold in the is a 'JDM' or Japanese Domestic Market model, known for its tall, boxy 'compliance' design to maximize space within Japanese tax brackets.",
+      "In Japan, the Serena is famous for its advanced 'e-Power' hybrid system (not yet in), where the gas engine only charges the battery.",
       "It was also available with 'ProPILOT' assist, Nissan's hands-on semi-autonomous driving feature for highway use."
     ]
   },
@@ -1580,7 +1580,7 @@ export const carsData: Car[] = [
     ],
     funFacts: [
       "The Colorado's 2.8L Duramax diesel engine was the 'King of Torque' in the Philippines for many years, being the first to break the 500 Nm barrier in its class.",
-      "The international version of the Colorado (sold in the PH) was a 'platform-twin' with the Isuzu D-Max, co-developed by GM and Isuzu.",
+      "The international version of the Colorado (sold in the) was a 'platform-twin' with the Isuzu D-Max, co-developed by GM and Isuzu.",
       "The high-end 'High Country Storm' variant featured a factory-installed bull bar, roof rack, and body decals, making it look much more aggressive.",
       "It was one of the first trucks in its class to offer premium features like remote engine start and forward collision alert.",
       "Chevrolet has officially withdrawn from the Philippine market, making these trucks rarer and marking the end of the brand's local presence."

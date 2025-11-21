@@ -1,6 +1,6 @@
-# 🚗 Carpedia PH
+# 🚗 Kotsepedia
 
-Welcome to Carpedia PH! This is an interactive web application built to help Filipinos recognize, learn about, and test their knowledge of the most common car models found on local roads.
+Welcome to Kotsepedia! This is an interactive web application built to help Filipinos recognize, learn about, and test their knowledge of the most common car models found on local roads.
 
 From detailed profiles and specs to engaging interactive quizzes, this platform makes automotive education accessible, visual, and fun.
 

@@ -21,11 +21,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const car = carsData.find((c) => c.id === id)
 
   if (!car) {
-    return { title: "Car Not Found | Carpedia PH" }
+    return { title: "Car Not Found | Kotsepedia" }
   }
 
   return {
-    title: `${car.brand} ${car.model} - Specs, Price & Features | Carpedia PH`,
+    title: `${car.brand} ${car.model} - Specs, Price & Features | Kotsepedia`,
     description: `Read the full review for the ${car.yearRange} ${car.brand} ${car.model}. Price starts at ${car.priceRange}.`,
     openGraph: {
       title: `${car.brand} ${car.model} - Specs & Price`,

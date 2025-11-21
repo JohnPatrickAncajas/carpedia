@@ -12,10 +12,10 @@ export function Footer() {
               className="flex items-center gap-2 text-foreground hover:text-muted-foreground transition-colors"
             >
               <Car className="h-5 w-5" />
-              <span className="font-semibold text-lg">Carpedia</span>
+              <span className="font-semibold text-lg">Kotsepedia</span>
             </Link>
             <p className="text-sm text-muted-foreground mt-2 sm:mt-0 sm:border-l sm:pl-4">
-              &copy; {new Date().getFullYear()} Carpedia. All rights reserved.
+              &copy; {new Date().getFullYear()} Kotsepedia. All rights reserved.
             </p>
           </div>
 
