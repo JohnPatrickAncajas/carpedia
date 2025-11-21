@@ -7,7 +7,7 @@ const extractMinPrice = (priceRange: string): number => {
 }
 
 export function CarJsonLd({ car }: { car: Car }) {
-  const baseUrl = "https://KotsePedia.vercel.app"
+  const baseUrl = "https://kotsepedia.vercel.app"
   
   const allImages = [
     ...car.imageSets.flatMap(set => [
