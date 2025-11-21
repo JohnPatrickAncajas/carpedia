@@ -408,10 +408,10 @@ export default function GuidesPage() {
                   Hybrid (HEV), Plug-in (PHEV) & Electric (BEV)
                 </h3>
                 <p className="text-balance">
-                  Types of electrified vehicles. <strong>HEV (Hybrid Electric Vehicle)</strong> has both a gas engine and an electric motor/battery. The battery charges itself through braking (regenerative braking) and the engine; you cannot plug it in. Can run on electricity alone for short distances at low speeds to save fuel. (e.g., Toyota Corolla Cross Hybrid, Nissan Kicks e-Power - though e-Power is a series hybrid). <strong>PHEV (Plug-in Hybrid Electric Vehicle)</strong> similar to HEV but with a larger battery that can be plugged in to charge externally. Offers a much longer electric-only range (e.g., 30-60km) before the gas engine is needed. (e.g., Mitsubishi OutlanderEV, BYD Song). <strong>BEV (Battery Electric Vehicle)</strong> is 100% electric, has no gas engine. Must be plugged in to charge. Offers silent operation, instant torque (quick acceleration), and zero tailpipe emissions. (e.g., BYD Atto 3, MG4 EV, Tesla Model 3).
+                  Types of electrified vehicles. <strong>HEV (Hybrid Electric Vehicle)</strong> has both a gas engine and an electric motor/battery. The battery charges itself through braking (regenerative braking) and the engine; you cannot plug it in. Can run on electricity alone for short distances at low speeds to save fuel. (e.g., Toyota Corolla Cross Hybrid, Nissan Kicks e-Power - though e-Power is a series hybrid). <strong>PHEV (Plug-in Hybrid Electric Vehicle)</strong> similar to HEV but with a larger battery that can be plugged in to charge externally. Offers a much longer electric-only range (e.g., 30-60km) before the gas engine is needed. (e.g., Mitsubishi Outlander PHEV, BYD Song). <strong>BEV (Battery Electric Vehicle)</strong> is 100% electric, has no gas engine. Must be plugged in to charge. Offers silent operation, instant torque (quick acceleration), and zero tailpipe emissions. (e.g., BYD Atto 3, MG4 EV, Tesla Model 3).
                   <br />
                   <span className="text-xs text-foreground/80">
-                    <strong>PH Bonus:</strong> Registered HEVs,EVs, and BEVs are exempted from the MMDA number coding scheme until 2030 under the EVIDA law.
+                    <strong>PH Bonus:</strong> Registered HEVs, PHEVs, and BEVs are exempted from the MMDA number coding scheme until 2030 under the EVIDA law.
                   </span>
                 </p>
               </div>
