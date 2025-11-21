@@ -10,6 +10,7 @@ import {
   SheetTrigger,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
 } from "@/components/ui/sheet"
 import { Car, Menu } from "lucide-react"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -75,6 +76,9 @@ export function Navigation() {
                       </span>
                     </div>
                   </SheetTitle>
+                  <SheetDescription className="sr-only">
+                    Mobile navigation menu
+                  </SheetDescription>
                 </SheetHeader>
                 <div className="flex flex-col gap-3">
                   {navLinks.map((link) => (
