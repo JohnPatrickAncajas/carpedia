@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   title: "KotsePedia - Learn About Philippine Cars",
   description:
     "Interactive guide to the most common cars in the Philippines. Learn specs, see images, and test your knowledge with fun quizzes!",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 }
 
 export default function RootLayout({
