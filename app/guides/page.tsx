@@ -45,7 +45,7 @@ export default function GuidesPage() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
         <div className="mb-12 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 text-balance">
-            Kotsepedia Guides
+            KotsePedia Guides
           </h1>
           <p className="text-lg text-muted-foreground text-balance">
             Your guide to recognizing car models, types, and brands, and understanding common car lingo in the Philippines.

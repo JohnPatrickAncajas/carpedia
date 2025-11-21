@@ -3,4 +3,4 @@ Allow: /
 Disallow: /private/
 Disallow: /admin/
 
-Sitemap: https://kotsepedia.vercel.app/sitemap.xml
+Sitemap: https://KotsePedia.vercel.app/sitemap.xml

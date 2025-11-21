@@ -2,8 +2,8 @@ import { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Kotsepedia",
-    short_name: "Kotsepedia",
+    name: "KotsePedia",
+    short_name: "KotsePedia",
     description: "The ultimate guide to common cars in the Philippines.",
     start_url: "/",
     display: "standalone",

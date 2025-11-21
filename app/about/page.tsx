@@ -26,7 +26,7 @@ export default function AboutPage() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grow w-full">
         <div className="mb-12 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 text-balance">
-            About Kotsepedia
+            About KotsePedia
           </h1>
           <p className="text-lg text-muted-foreground text-balance">
             Discover the story and purpose behind this educational car platform.
@@ -37,15 +37,15 @@ export default function AboutPage() {
           <Card>
             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
               <Car className="w-8 h-8 text-primary" />
-              <CardTitle className="text-2xl">What is Kotsepedia?</CardTitle>
+              <CardTitle className="text-2xl">What is KotsePedia?</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-foreground text-balance">
-                Kotsepedia is an interactive educational web app designed to
+                KotsePedia is an interactive educational web app designed to
                 help Filipinos recognize and learn about the most common car
                 models found on local roads. Whether you're a budding car
                 enthusiast, a new driver preparing for the streets, or simply
-                curious about the vehicles around you, Kotsepedia makes
+                curious about the vehicles around you, KotsePedia makes
                 discovering cars easy, visual, and genuinely fun.
               </p>
               <p className="text-foreground text-balance">
@@ -125,19 +125,19 @@ export default function AboutPage() {
           <Card>
             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
               <Lightbulb className="w-8 h-8 text-primary" />
-              <CardTitle className="text-2xl">Why Kotsepedia?</CardTitle>
+              <CardTitle className="text-2xl">Why KotsePedia?</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-foreground text-balance">
                 Ever seen a car zip by and wondered, "What model was that?" Many
                 Filipinos encounter the same vehicles daily but might not know
-                their names, capabilities, or unique stories. Kotsepedia aims
+                their names, capabilities, or unique stories. KotsePedia aims
                 to bridge this gap, transforming passive observation into active
                 learning.
               </p>
               <p className="text-foreground text-balance">
                 Built with a passion for both automobiles and accessible
-                education, Kotsepedia strives to make automotive knowledge not
+                education, KotsePedia strives to make automotive knowledge not
                 just available, but genuinely engaging and fun for everyone.
                 It's about fostering curiosity and appreciation for the machines
                 that shape our daily commutes and adventures.
@@ -152,7 +152,7 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-foreground text-balance">
-                Hi! I'm John Patrick Ancajas, the creator of Kotsepedia. As a
+                Hi! I'm John Patrick Ancajas, the creator of KotsePedia. As a
                 web development enthusiast based here in the Philippines, I
                 wanted to build a project that combines my interest in cars with
                 my skills in creating interactive web applications. This app was
