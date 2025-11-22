@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next"
 import { carsData } from "@/lib/car-data"
 
+export const dynamic = "force-static"
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://kotsepedia.vercel.app"
 
