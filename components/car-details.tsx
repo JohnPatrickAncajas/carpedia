@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo, useCallback, MouseEvent, TouchEvent, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -32,7 +31,6 @@ interface CarDetailsProps {
 }
 
 export function CarDetails({ car }: CarDetailsProps) {
-  const router = useRouter()
   const [selectedImageSet, setSelectedImageSet] = useState(0)
   const [selectedView, setSelectedView] = useState<ImageView>("front")
   
@@ -227,10 +225,12 @@ export function CarDetails({ car }: CarDetailsProps) {
           <Button 
             variant="ghost" 
             size="sm"
-            onClick={() => router.back()} 
+            asChild
           >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            Back to Cars
+            <Link href="/learn">
+                <ChevronLeft className="w-4 h-4 mr-2" />
+                Back to Cars
+            </Link>
           </Button>
           <Button 
             variant="outline" 
