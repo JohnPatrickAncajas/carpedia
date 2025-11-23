@@ -31,6 +31,7 @@ import { Metadata } from "next"
 export const metadata: Metadata = {
   title: "KotsePedia | Philippine Car Culture & Identification",
   description: "The ultimate guide to identifying and understanding cars in the Philippines. Free, open-source, and built for enthusiasts.",
+  keywords: ["Philippines cars", "Manila driving", "Toyota Vios specs", "car identification PH"],
 }
 
 export default function HomePage() {
@@ -40,7 +41,7 @@ export default function HomePage() {
   const randomIndex = safeIndex % (carsData.length || 1)
   const carOfDay = carsData[randomIndex] || carsData[0]
 
-  const consistentHoverClasses = "hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/30 dark:hover:text-red-400 dark:hover:border-red-800 transition-colors duration-200"
+  const consistentHoverClasses = "hover:bg-red-50 hover:text-red-800 hover:border-red-300 dark:hover:bg-red-900/30 dark:hover:text-red-300 dark:hover:border-red-800 transition-colors duration-200"
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950/20 font-sans overflow-x-hidden text-slate-900 dark:text-slate-100">
@@ -49,9 +50,10 @@ export default function HomePage() {
       <div className="relative w-full min-h-[85vh] md:min-h-[800px] flex items-center justify-center overflow-hidden group bg-slate-900">
         <Image
           src="/assets/images/sedans/vios/red/sedan-vios-red-front.png"
-          alt="Philippine Car Culture"
+          alt="Toyota Vios Red Sedan Front View - Philippine Car Culture"
           fill
           priority
+          sizes="(max-width: 768px) 100vw, 100vw"
           className="object-cover opacity-40 md:opacity-50 transition-transform duration-3000ms ease-in-out group-hover:scale-105 will-change-transform"
         />
         
@@ -72,7 +74,7 @@ export default function HomePage() {
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-xl leading-relaxed font-light animate-in fade-in slide-in-from-left-8 duration-1000 delay-200">
+            <p className="text-base sm:text-lg md:text-xl text-slate-200 max-w-xl leading-relaxed font-light animate-in fade-in slide-in-from-left-8 duration-1000 delay-200">
               Ever wondered what that hatchback zipping through EDSA was? KotsePedia is your digital field guide to learning the names, specs, and stories of the vehicles that move our nation.
             </p>
 
@@ -100,19 +102,19 @@ export default function HomePage() {
               <span className="text-3xl font-bold text-white flex items-center gap-2 group-hover:text-red-400 transition-colors">
                 {carsData.length} <span className="text-red-500 text-4xl animate-pulse">.</span>
               </span>
-              <span className="uppercase tracking-wider text-xs font-medium text-slate-500 group-hover:text-slate-300 transition-colors">Models Tracked</span>
+              <span className="uppercase tracking-wider text-xs font-medium text-slate-300 group-hover:text-slate-100 transition-colors">Models Tracked</span>
             </div>
             <div className="flex flex-col gap-1 group cursor-default">
               <span className="text-3xl font-bold text-white flex items-center gap-2 group-hover:text-orange-400 transition-colors">
                 Free <span className="text-orange-500 text-4xl animate-pulse delay-75">.</span>
               </span>
-              <span className="uppercase tracking-wider text-xs font-medium text-slate-500 group-hover:text-slate-300 transition-colors">Open Source</span>
+              <span className="uppercase tracking-wider text-xs font-medium text-slate-300 group-hover:text-slate-100 transition-colors">Open Source</span>
             </div>
             <div className="flex flex-col gap-1 group cursor-default">
               <span className="text-3xl font-bold text-white flex items-center gap-2 group-hover:text-amber-400 transition-colors">
                 Fun <span className="text-amber-500 text-4xl animate-pulse delay-150">.</span>
               </span>
-              <span className="uppercase tracking-wider text-xs font-medium text-slate-500 group-hover:text-slate-300 transition-colors">Quiz Modes</span>
+              <span className="uppercase tracking-wider text-xs font-medium text-slate-300 group-hover:text-slate-100 transition-colors">Quiz Modes</span>
             </div>
           </div>
         </div>
@@ -124,35 +126,35 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row gap-12 items-start">
             <div className="lg:w-5/12 sticky top-24">
               <div className="inline-block p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/50 mb-6 shadow-sm">
-                <Info className="w-8 h-8 text-slate-900 dark:text-slate-100" />
+                <Info className="w-8 h-8 text-slate-800 dark:text-slate-100" />
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
                 Bridging Observation & Knowledge
               </h2>
-              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+              <p className="text-base sm:text-lg text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                 We encounter thousands of vehicles daily—commuting to work, stuck in traffic, or walking the streets. Yet, many remain nameless metal boxes to the average observer.
               </p>
-              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg text-slate-700 dark:text-slate-300 mb-8 leading-relaxed">
                 KotsePedia was created to change that. It serves as a dedicated educational resource, stripped of sales pitches and dealership clutter. The goal is simple: to help you identify, understand, and appreciate the machines that shape the Philippine landscape.
               </p>
               
               <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-5 p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300 hover:border-blue-200 dark:hover:border-blue-800 group">
+                <div className="flex items-center gap-5 p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300 hover:border-blue-300 dark:hover:border-blue-700 group">
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-full shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    <Sparkles className="w-6 h-6 text-blue-800 dark:text-blue-300" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white text-lg mb-1">Pure Discovery</h4>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">A digital museum for local car culture.</p>
+                    <h3 className="font-bold text-slate-900 dark:text-white text-lg mb-1">Pure Discovery</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">A digital museum for local car culture.</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-5 p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300 hover:border-emerald-200 dark:hover:border-emerald-800 group">
+                <div className="flex items-center gap-5 p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300 hover:border-emerald-300 dark:hover:border-emerald-700 group">
                   <div className="bg-emerald-50 dark:bg-emerald-900/20 p-3 rounded-full shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <Users className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                    <Users className="w-6 h-6 text-emerald-800 dark:text-emerald-300" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white text-lg mb-1">Accessible to All</h4>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">No login. No ads. Just knowledge.</p>
+                    <h3 className="font-bold text-slate-900 dark:text-white text-lg mb-1">Accessible to All</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">No login. No ads. Just knowledge.</p>
                   </div>
                 </div>
               </div>
@@ -162,10 +164,10 @@ export default function HomePage() {
                <Card className="bg-white dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group">
                  <CardContent className="p-6 sm:p-8 flex flex-col items-start text-left h-full">
                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
-                     <Search className="w-6 h-6 sm:w-7 sm:h-7 text-orange-600 dark:text-orange-400" />
+                     <Search className="w-6 h-6 sm:w-7 sm:h-7 text-orange-700 dark:text-orange-300" />
                    </div>
-                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Identify</h3>
-                   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors">Identify</h3>
+                   <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
                      Spot a distinct grille or headlight shape? Use our visual database to put a name to the face.
                    </p>
                  </CardContent>
@@ -174,10 +176,10 @@ export default function HomePage() {
                <Card className="bg-white dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group sm:translate-y-12">
                  <CardContent className="p-6 sm:p-8 flex flex-col items-start text-left h-full">
                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
-                     <BookOpen className="w-6 h-6 sm:w-7 sm:h-7 text-indigo-600 dark:text-indigo-400" />
+                     <BookOpen className="w-6 h-6 sm:w-7 sm:h-7 text-indigo-700 dark:text-indigo-300" />
                    </div>
-                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Learn</h3>
-                   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors">Learn</h3>
+                   <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
                      Memorize specifications, common uses, and the history behind the most popular models.
                    </p>
                  </CardContent>
@@ -186,10 +188,10 @@ export default function HomePage() {
                <Card className="bg-white dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group">
                  <CardContent className="p-6 sm:p-8 flex flex-col items-start text-left h-full">
                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-pink-50 dark:bg-pink-900/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
-                     <Trophy className="w-6 h-6 sm:w-7 sm:h-7 text-pink-600 dark:text-pink-400" />
+                     <Trophy className="w-6 h-6 sm:w-7 sm:h-7 text-pink-700 dark:text-pink-300" />
                    </div>
-                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">Quiz</h3>
-                   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 group-hover:text-pink-700 dark:group-hover:text-pink-300 transition-colors">Quiz</h3>
+                   <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
                      Challenge your visual memory with image-based tests ranging from easy to expert difficulty.
                    </p>
                  </CardContent>
@@ -198,10 +200,10 @@ export default function HomePage() {
                <Card className="bg-white dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group sm:translate-y-12">
                  <CardContent className="p-6 sm:p-8 flex flex-col items-start text-left h-full">
                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
-                     <Gauge className="w-6 h-6 sm:w-7 sm:h-7 text-teal-600 dark:text-teal-400" />
+                     <Gauge className="w-6 h-6 sm:w-7 sm:h-7 text-teal-700 dark:text-teal-300" />
                    </div>
-                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">Master</h3>
-                   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                   <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100 group-hover:text-teal-700 dark:group-hover:text-teal-300 transition-colors">Master</h3>
+                   <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
                      Become the person who knows every car on the block, from engine displacement to seating capacity.
                    </p>
                  </CardContent>
@@ -228,7 +230,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-col items-start md:items-end">
                     <span className="text-3xl font-bold text-white/90">{carOfDay.priceRange}</span>
-                    <span className="text-white/50 text-sm">Estimated Market Price</span>
+                    <span className="text-white/70 text-sm">Estimated Market Price</span>
                 </div>
               </div>
 
@@ -240,6 +242,7 @@ export default function HomePage() {
                           src={carOfDay.imageSets[0].front || "/placeholder.svg"}
                           alt={carOfDay.model}
                           fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
                           className="object-contain drop-shadow-2xl transition-transform duration-700 group-hover:scale-110"
                         />
                       </div>
@@ -258,25 +261,25 @@ export default function HomePage() {
                 <div className="w-full lg:w-1/2 grid gap-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-white/5 border border-white/10 p-5 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                         <div className="flex items-center gap-2 text-slate-400 mb-2 text-sm">
+                         <div className="flex items-center gap-2 text-slate-300 mb-2 text-sm">
                            <Zap className="w-4 h-4" /> Engine
                          </div>
                          <p className="font-semibold text-lg text-white">{carOfDay.specs.engine}</p>
                       </div>
                       <div className="bg-white/5 border border-white/10 p-5 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                         <div className="flex items-center gap-2 text-slate-400 mb-2 text-sm">
+                         <div className="flex items-center gap-2 text-slate-300 mb-2 text-sm">
                            <Users className="w-4 h-4" /> Seats
                          </div>
                          <p className="font-semibold text-lg text-white">{carOfDay.specs.seats} Seater</p>
                       </div>
                       <div className="bg-white/5 border border-white/10 p-5 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                         <div className="flex items-center gap-2 text-slate-400 mb-2 text-sm">
+                         <div className="flex items-center gap-2 text-slate-300 mb-2 text-sm">
                            <CarIcon className="w-4 h-4" /> Type
                          </div>
                          <p className="font-semibold text-lg text-white">{carOfDay.type}</p>
                       </div>
                       <div className="bg-white/5 border border-white/10 p-5 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                         <div className="flex items-center gap-2 text-slate-400 mb-2 text-sm">
+                         <div className="flex items-center gap-2 text-slate-300 mb-2 text-sm">
                            <ShieldCheck className="w-4 h-4" /> Usage
                          </div>
                          <p className="font-semibold text-lg text-white truncate">{carOfDay.commonUse}</p>
@@ -304,12 +307,12 @@ export default function HomePage() {
 
         <section className="mb-32">
           <div className="flex flex-col items-center text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-300 text-xs font-bold uppercase tracking-widest mb-6 border border-orange-100 dark:border-orange-900/50">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 text-xs font-bold uppercase tracking-widest mb-6 border border-orange-100 dark:border-orange-900/50">
               <Flame className="w-4 h-4" />
               Market Leaders
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-white">The Big Players</h2>
-            <p className="text-slate-600 dark:text-slate-400 max-w-2xl text-lg">
+            <p className="text-slate-700 dark:text-slate-400 max-w-2xl text-lg">
               A few key manufacturers dominate the Philippine automotive landscape. Understanding these brands is the first step to mastering the road.
             </p>
           </div>
@@ -323,8 +326,8 @@ export default function HomePage() {
                 <CardContent className="p-8 flex flex-col justify-between h-full relative z-10">
                   <div>
                     <div className="flex items-center gap-3 mb-4">
-                      <Compass className="w-5 h-5 text-white/70" />
-                      <span className="text-xs font-bold uppercase tracking-widest text-white/70">Reliability</span>
+                      <Compass className="w-5 h-5 text-white/80" />
+                      <span className="text-xs font-bold uppercase tracking-widest text-white/80">Reliability</span>
                     </div>
                     <h3 className="text-3xl sm:text-4xl font-bold mb-4 transition-colors">Toyota</h3>
                     <p className="text-red-100 leading-relaxed mb-6 text-sm sm:text-base">
@@ -413,7 +416,7 @@ export default function HomePage() {
           </div>
 
           <div className="mt-16 text-center">
-            <Button asChild variant="ghost" size="lg" className="group text-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-300">
+            <Button asChild variant="ghost" size="lg" className="group text-lg text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-300">
               <Link href="/learn">
                 View All Manufacturers <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" />
               </Link>
@@ -425,7 +428,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 px-2">
             <div>
                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Explore by Body Type</h2>
-               <p className="text-slate-600 dark:text-slate-400 mt-3 max-w-xl text-lg">
+               <p className="text-slate-700 dark:text-slate-400 mt-3 max-w-xl text-lg">
                  Don&apos;t know the model name? Start by identifying the shape. These are the most common vehicle categories in the Philippines.
                </p>
             </div>
@@ -435,26 +438,26 @@ export default function HomePage() {
              <Link href="/learn?type=Sedan" className="group h-full">
                <Card className="h-full hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:-translate-y-2 group">
                  <div className="h-56 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
-                    <CarIcon className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-blue-500/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
+                    <CarIcon className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-blue-700/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
                     <div className="absolute inset-0 bg-linear-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
                     <div className="absolute bottom-4 left-4 bg-white dark:bg-black/50 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-sm text-slate-900 dark:text-white">
                       Classic Layout
                     </div>
                     <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110">
-                      <ArrowRight className="w-4 h-4 text-blue-600" />
+                      <ArrowRight className="w-4 h-4 text-blue-700 dark:text-blue-400" />
                     </div>
                  </div>
                  <CardContent className="p-8 relative">
                     <div className="absolute -top-6 left-8">
-                      <span className="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider shadow-lg group-hover:bg-blue-700 transition-colors">
+                      <span className="bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider shadow-lg group-hover:bg-blue-800 transition-colors">
                         City Standard
                       </span>
                     </div>
-                    <h3 className="font-bold text-2xl mb-3 mt-4 text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Sedans</h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                    <h3 className="font-bold text-2xl mb-3 mt-4 text-slate-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">Sedans</h3>
+                    <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                       The classic 4-door configuration. Including icons like the Vios and City. Optimized for city driving.
                     </p>
-                    <span className="text-sm font-bold text-blue-600 uppercase tracking-wide border-b-2 border-blue-600/20 group-hover:border-blue-600 transition-colors pb-1 inline-flex items-center gap-2">
+                    <span className="text-sm font-bold text-blue-800 dark:text-blue-400 uppercase tracking-wide border-b-2 border-blue-700/20 group-hover:border-blue-800 dark:group-hover:border-blue-400 transition-colors pb-1 inline-flex items-center gap-2">
                       View Sedans <ArrowRight className="w-4 h-4" />
                     </span>
                  </CardContent>
@@ -464,7 +467,7 @@ export default function HomePage() {
              <Link href="/learn?type=SUV" className="group h-full">
                <Card className="h-full hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:-translate-y-2 group">
                  <div className="h-56 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
-                    <ShieldCheck className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-orange-500/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
+                    <ShieldCheck className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-orange-700/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
                     <div className="absolute inset-0 bg-linear-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
                     <div className="absolute bottom-4 left-4 bg-white dark:bg-black/50 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-sm text-slate-900 dark:text-white">
                       All-Terrain
@@ -472,15 +475,15 @@ export default function HomePage() {
                  </div>
                  <CardContent className="p-8 relative">
                     <div className="absolute -top-6 left-8">
-                      <span className="bg-orange-500 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider shadow-lg group-hover:bg-orange-600 transition-colors">
+                      <span className="bg-orange-700 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider shadow-lg group-hover:bg-orange-800 transition-colors">
                         Family Choice
                       </span>
                     </div>
-                    <h3 className="font-bold text-2xl mb-3 mt-4 text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">SUVs & AUVs</h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                    <h3 className="font-bold text-2xl mb-3 mt-4 text-slate-900 dark:text-white group-hover:text-orange-700 dark:group-hover:text-orange-400 transition-colors">SUVs & AUVs</h3>
+                    <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                       High ground clearance and rugged builds. Home to the Fortuner. Designed for floods and provincial trips.
                     </p>
-                    <span className="text-sm font-bold text-orange-600 uppercase tracking-wide border-b-2 border-orange-600/20 group-hover:border-orange-600 transition-colors pb-1 inline-flex items-center gap-2">
+                    <span className="text-sm font-bold text-orange-800 dark:text-orange-400 uppercase tracking-wide border-b-2 border-orange-700/20 group-hover:border-orange-800 dark:group-hover:border-orange-400 transition-colors pb-1 inline-flex items-center gap-2">
                       View SUVs <ArrowRight className="w-4 h-4" />
                     </span>
                  </CardContent>
@@ -490,7 +493,7 @@ export default function HomePage() {
              <Link href="/learn?type=Hatchback" className="group h-full">
                <Card className="h-full hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:-translate-y-2 group">
                  <div className="h-56 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
-                    <Box className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-emerald-500/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
+                    <Box className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-emerald-700/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
                     <div className="absolute inset-0 bg-linear-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
                     <div className="absolute bottom-4 left-4 bg-white dark:bg-black/50 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-sm text-slate-900 dark:text-white">
                       Compact King
@@ -498,15 +501,15 @@ export default function HomePage() {
                  </div>
                  <CardContent className="p-8 relative">
                     <div className="absolute -top-6 left-8">
-                      <span className="bg-emerald-500 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider shadow-lg group-hover:bg-emerald-600 transition-colors">
+                      <span className="bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider shadow-lg group-hover:bg-emerald-800 transition-colors">
                         City Slicker
                       </span>
                     </div>
-                    <h3 className="font-bold text-2xl mb-3 mt-4 text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Hatchbacks</h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                    <h3 className="font-bold text-2xl mb-3 mt-4 text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">Hatchbacks</h3>
+                    <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                       Compact footprint with a rear liftgate. Featuring the Wigo and Brio. The ultimate choice for tight parking.
                     </p>
-                    <span className="text-sm font-bold text-emerald-600 uppercase tracking-wide border-b-2 border-emerald-600/20 group-hover:border-emerald-600 transition-colors pb-1 inline-flex items-center gap-2">
+                    <span className="text-sm font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wide border-b-2 border-emerald-700/20 group-hover:border-emerald-800 dark:group-hover:border-emerald-400 transition-colors pb-1 inline-flex items-center gap-2">
                       View Hatchbacks <ArrowRight className="w-4 h-4" />
                     </span>
                  </CardContent>
@@ -517,21 +520,21 @@ export default function HomePage() {
 
         <section className="grid md:grid-cols-3 gap-8 mb-16">
           <Link href="/learn" className="group h-full">
-            <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-indigo-500 hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-900 hover:-translate-y-1 group-hover:border-l-8">
+            <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-indigo-700 hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-900 hover:-translate-y-1 group-hover:border-l-8">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-2xl text-slate-900 dark:text-white">
-                  <div className="p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-lg group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
-                    <BookOpen className="w-6 h-6 text-indigo-600 dark:text-indigo-400 group-hover:text-white transition-colors" />
+                  <div className="p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-lg group-hover:bg-indigo-700 group-hover:text-white transition-colors duration-300">
+                    <BookOpen className="w-6 h-6 text-indigo-800 dark:text-indigo-400 group-hover:text-white transition-colors" />
                   </div>
                   Encyclopedia
                 </CardTitle>
                 <CardDescription className="text-base mt-1 text-slate-500 dark:text-slate-400">Access the full database</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                   Dive into our comprehensive collection of {carsData.length}+ vehicle profiles. Filter by price, year, and specifications.
                 </p>
-                <div className="flex items-center text-indigo-600 font-bold group-hover:gap-3 gap-1 transition-all">
+                <div className="flex items-center text-indigo-800 dark:text-indigo-400 font-bold group-hover:gap-3 gap-1 transition-all">
                   Browse Library <ArrowRight className="w-4 h-4" />
                 </div>
               </CardContent>
@@ -539,21 +542,21 @@ export default function HomePage() {
           </Link>
 
           <Link href="/test" className="group h-full">
-            <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-pink-500 hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-900 hover:-translate-y-1 group-hover:border-l-8">
+            <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-pink-700 hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-900 hover:-translate-y-1 group-hover:border-l-8">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-2xl text-slate-900 dark:text-white">
-                  <div className="p-2 bg-pink-50 dark:bg-pink-900/50 rounded-lg group-hover:bg-pink-500 group-hover:text-white transition-colors duration-300">
-                    <Trophy className="w-6 h-6 text-pink-600 dark:text-pink-400 group-hover:text-white transition-colors" />
+                  <div className="p-2 bg-pink-50 dark:bg-pink-900/50 rounded-lg group-hover:bg-pink-700 group-hover:text-white transition-colors duration-300">
+                    <Trophy className="w-6 h-6 text-pink-800 dark:text-pink-400 group-hover:text-white transition-colors" />
                   </div>
                   Quiz Arena
                 </CardTitle>
                 <CardDescription className="text-base mt-1 text-slate-500 dark:text-slate-400">Test your mastery</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                   Configure custom quizzes. Choose "Image Only" mode for visual training or "Specs" mode for technical mastery.
                 </p>
-                <div className="flex items-center text-pink-600 font-bold group-hover:gap-3 gap-1 transition-all">
+                <div className="flex items-center text-pink-800 dark:text-pink-400 font-bold group-hover:gap-3 gap-1 transition-all">
                   Start Challenge <ArrowRight className="w-4 h-4" />
                 </div>
               </CardContent>
@@ -561,21 +564,21 @@ export default function HomePage() {
           </Link>
 
           <Link href="/about" className="group h-full">
-            <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-emerald-500 hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-900 hover:-translate-y-1 group-hover:border-l-8">
+            <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-emerald-700 hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-900 hover:-translate-y-1 group-hover:border-l-8">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-2xl text-slate-900 dark:text-white">
-                  <div className="p-2 bg-emerald-50 dark:bg-emerald-900/50 rounded-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
-                    <Gift className="w-6 h-6 text-emerald-600 dark:text-emerald-400 group-hover:text-white transition-colors" />
+                  <div className="p-2 bg-emerald-50 dark:bg-emerald-900/50 rounded-lg group-hover:bg-emerald-700 group-hover:text-white transition-colors duration-300">
+                    <Gift className="w-6 h-6 text-emerald-800 dark:text-emerald-400 group-hover:text-white transition-colors" />
                   </div>
                   Mission
                 </CardTitle>
                 <CardDescription className="text-base mt-1 text-slate-500 dark:text-slate-400">About KotsePedia</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                   This is an open-source initiative dedicated to free education. Learn why this project exists and how it stays free.
                 </p>
-                <div className="flex items-center text-emerald-600 font-bold group-hover:gap-3 gap-1 transition-all">
+                <div className="flex items-center text-emerald-800 dark:text-emerald-400 font-bold group-hover:gap-3 gap-1 transition-all">
                   Read Mission <ArrowRight className="w-4 h-4" />
                 </div>
               </CardContent>
