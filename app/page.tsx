@@ -55,8 +55,8 @@ export default function HomePage() {
           className="object-cover opacity-40 md:opacity-50 transition-transform duration-3000ms ease-in-out group-hover:scale-105 will-change-transform"
         />
         
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-900/40 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/50 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/70 to-slate-900/40 pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-r from-slate-950/90 via-slate-950/50 to-transparent pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center h-full min-h-[inherit] py-16 sm:py-20">
           <div className="flex flex-col items-start max-w-3xl space-y-6 sm:space-y-8">
@@ -67,7 +67,7 @@ export default function HomePage() {
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1] animate-in fade-in slide-in-from-left-6 duration-1000 delay-100 drop-shadow-2xl">
               Recognize the <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-amber-300">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-red-500 via-orange-400 to-amber-300">
                 Cars Around You
               </span>
             </h1>
@@ -159,7 +159,7 @@ export default function HomePage() {
             </div>
 
             <div className="lg:w-7/12 grid grid-cols-1 sm:grid-cols-2 gap-6">
-               <Card className="bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group">
+               <Card className="bg-white dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group">
                  <CardContent className="p-6 sm:p-8 flex flex-col items-start text-left h-full">
                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                      <Search className="w-6 h-6 sm:w-7 sm:h-7 text-orange-600 dark:text-orange-400" />
@@ -171,7 +171,7 @@ export default function HomePage() {
                  </CardContent>
                </Card>
 
-               <Card className="bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group sm:translate-y-12">
+               <Card className="bg-white dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group sm:translate-y-12">
                  <CardContent className="p-6 sm:p-8 flex flex-col items-start text-left h-full">
                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                      <BookOpen className="w-6 h-6 sm:w-7 sm:h-7 text-indigo-600 dark:text-indigo-400" />
@@ -183,7 +183,7 @@ export default function HomePage() {
                  </CardContent>
                </Card>
 
-               <Card className="bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group">
+               <Card className="bg-white dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group">
                  <CardContent className="p-6 sm:p-8 flex flex-col items-start text-left h-full">
                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-pink-50 dark:bg-pink-900/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                      <Trophy className="w-6 h-6 sm:w-7 sm:h-7 text-pink-600 dark:text-pink-400" />
@@ -195,7 +195,7 @@ export default function HomePage() {
                  </CardContent>
                </Card>
 
-               <Card className="bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group sm:translate-y-12">
+               <Card className="bg-white dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group sm:translate-y-12">
                  <CardContent className="p-6 sm:p-8 flex flex-col items-start text-left h-full">
                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300">
                      <Gauge className="w-6 h-6 sm:w-7 sm:h-7 text-teal-600 dark:text-teal-400" />
@@ -283,7 +283,7 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-r from-indigo-900/50 to-blue-900/50 border border-indigo-500/30 p-6 rounded-xl mt-2">
+                    <div className="bg-linear-to-r from-indigo-900/50 to-blue-900/50 border border-indigo-500/30 p-6 rounded-xl mt-2">
                       <p className="text-indigo-200 text-sm font-bold mb-2 uppercase tracking-wide">Did You Know?</p>
                       <p className="text-white italic">"{carOfDay.funFacts[0]}"</p>
                     </div>
@@ -316,7 +316,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link href="/learn?brand=Toyota&page=1" className="group">
-              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-red-900 to-red-950 text-white relative hover:-translate-y-1 ring-1 ring-red-900">
+              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-linear-to-br from-red-900 to-red-950 text-white relative hover:-translate-y-1 ring-1 ring-red-900">
                 <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-30 transition-opacity duration-500 transform group-hover:scale-110">
                   <Trophy className="w-32 h-32" />
                 </div>
@@ -340,7 +340,7 @@ export default function HomePage() {
             </Link>
 
             <Link href="/learn?brand=Mitsubishi&page=1" className="group">
-              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-zinc-800 to-zinc-900 text-white relative ring-1 ring-zinc-800 hover:-translate-y-1">
+              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-linear-to-br from-zinc-800 to-zinc-900 text-white relative ring-1 ring-zinc-800 hover:-translate-y-1">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity duration-500 transform group-hover:scale-110">
                   <Factory className="w-32 h-32" />
                 </div>
@@ -364,7 +364,7 @@ export default function HomePage() {
             </Link>
 
             <Link href="/learn?brand=Honda&page=1" className="group">
-              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-indigo-900 to-indigo-950 text-white relative ring-1 ring-indigo-900 hover:-translate-y-1">
+              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-linear-to-br from-indigo-900 to-indigo-950 text-white relative ring-1 ring-indigo-900 hover:-translate-y-1">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity duration-500 transform group-hover:scale-110">
                   <Zap className="w-32 h-32" />
                 </div>
@@ -388,7 +388,7 @@ export default function HomePage() {
             </Link>
 
             <Link href="/learn?brand=Ford&page=1" className="group">
-              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-blue-900 to-blue-950 text-white relative hover:-translate-y-1 ring-1 ring-blue-900">
+              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-linear-to-br from-blue-900 to-blue-950 text-white relative hover:-translate-y-1 ring-1 ring-blue-900">
                 <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-30 transition-opacity duration-500 transform group-hover:scale-110">
                   <Award className="w-32 h-32" />
                 </div>
@@ -434,9 +434,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
              <Link href="/learn?type=Sedan" className="group h-full">
                <Card className="h-full hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:-translate-y-2 group">
-                 <div className="h-56 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
+                 <div className="h-56 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
                     <CarIcon className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-blue-500/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
+                    <div className="absolute inset-0 bg-linear-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
                     <div className="absolute bottom-4 left-4 bg-white dark:bg-black/50 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-sm text-slate-900 dark:text-white">
                       Classic Layout
                     </div>
@@ -463,9 +463,9 @@ export default function HomePage() {
 
              <Link href="/learn?type=SUV" className="group h-full">
                <Card className="h-full hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:-translate-y-2 group">
-                 <div className="h-56 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
+                 <div className="h-56 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
                     <ShieldCheck className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-orange-500/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
+                    <div className="absolute inset-0 bg-linear-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
                     <div className="absolute bottom-4 left-4 bg-white dark:bg-black/50 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-sm text-slate-900 dark:text-white">
                       All-Terrain
                     </div>
@@ -489,9 +489,9 @@ export default function HomePage() {
 
              <Link href="/learn?type=Hatchback" className="group h-full">
                <Card className="h-full hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:-translate-y-2 group">
-                 <div className="h-56 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
+                 <div className="h-56 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative flex items-center justify-center overflow-hidden">
                     <Box className="w-28 h-28 text-slate-200 dark:text-slate-700 group-hover:text-emerald-500/20 transition-colors duration-500 transform group-hover:scale-110 group-hover:-rotate-6" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
+                    <div className="absolute inset-0 bg-linear-to-t from-white dark:from-slate-900 via-transparent to-transparent opacity-50" />
                     <div className="absolute bottom-4 left-4 bg-white dark:bg-black/50 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-sm text-slate-900 dark:text-white">
                       Compact King
                     </div>
