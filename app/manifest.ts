@@ -13,7 +13,7 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#000000",
     icons: [
       {
-        src: "/kotsepedia-icon-192,png",
+        src: "/kotsepedia-icon-192.png",
         sizes: "192x192",
         type: "image/png",
       },
