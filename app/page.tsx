@@ -35,7 +35,7 @@ export const revalidate = 3600
 export const metadata: Metadata = {
   metadataBase: new URL("https://kotsepedia.vercel.app"),
   title: "KotsePedia | The Pinoy Car Guide & Identification",
-  description: "Your guide to Philippine car culture. Identify cars, check specs, and master the local roads. From hatchbacks on EDSA to SUVs in the provinces.",
+  description: "The definitive Pinoy car guide for identification and Philippine car culture. Identify cars, check specs, and master the local roads from EDSA to the provinces.",
   keywords: [
     "car guide Philippines", 
     "car prices PH", 
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "KotsePedia | The Pinoy Car Guide",
-    description: "Your guide to identifying and understanding cars in the Philippines.",
+    description: "The ultimate guide to identifying and understanding cars in the Philippines.",
     url: "https://kotsepedia.vercel.app/",
     siteName: "KotsePedia",
     locale: "en_PH",
@@ -98,7 +98,7 @@ const brands = [
     icon: Compass,
     iconColor: "text-white/80",
     label: "Reliability",
-    desc: "The undisputed king of Philippine roads. Known for parts availability. Vios, Fortuner, Innova.",
+    desc: "The undisputed king of Philippine roads known for massive parts availability and models like the Vios, Fortuner, and Innova.",
     bgGradient: "from-red-900 to-red-950",
     ringColor: "ring-red-900",
     textColor: "text-red-100",
@@ -110,7 +110,7 @@ const brands = [
     icon: Factory,
     iconColor: "text-zinc-400",
     label: "Legacy",
-    desc: "Rugged engineering built for tropical terrain. Famous for the Montero Sport & Mirage.",
+    desc: " rugged engineering built specifically for our tropical terrain, most famous for the durable Montero Sport and the compact Mirage.",
     bgGradient: "from-zinc-800 to-zinc-900",
     ringColor: "ring-zinc-800",
     textColor: "text-zinc-300",
@@ -122,7 +122,7 @@ const brands = [
     icon: Zap,
     iconColor: "text-indigo-300",
     label: "Innovation",
-    desc: "Sporty dynamics and VTEC engines. The Civic and City are icons of driving engagement.",
+    desc: "Delivering sporty dynamics and VTEC engines, with the Civic and City standing as true icons of driving engagement.",
     bgGradient: "from-indigo-900 to-indigo-950",
     ringColor: "ring-indigo-900",
     textColor: "text-indigo-100",
@@ -134,7 +134,7 @@ const brands = [
     icon: Award,
     iconColor: "text-blue-300",
     label: "Power",
-    desc: "American muscle adapted for PH. Dominating pickup and SUV segments with Ranger & Everest.",
+    desc: "American muscle adapted for the Philippines, currently dominating the pickup and SUV segments with the Ranger and Everest.",
     bgGradient: "from-blue-900 to-blue-950",
     ringColor: "ring-blue-900",
     textColor: "text-blue-100",
@@ -147,7 +147,7 @@ const features = [
   {
     title: "Identify",
     icon: Search,
-    desc: "Spot a distinct grille or headlight shape? Use our visual database to put a name to the face.",
+    desc: "If you spot a distinct grille or headlight shape, use our visual database to instantly put a name to the face.",
     bg: "bg-orange-50 dark:bg-orange-900/20",
     text: "text-orange-700 dark:text-orange-300",
     groupHover: "group-hover:text-orange-700 dark:group-hover:text-orange-300"
@@ -155,7 +155,7 @@ const features = [
   {
     title: "Learn",
     icon: BookOpen,
-    desc: "Memorize specifications, common uses, and the history behind the most popular models.",
+    desc: "Take time to memorize specifications, understand common uses, and appreciate the history behind the most popular models.",
     bg: "bg-indigo-50 dark:bg-indigo-900/20",
     text: "text-indigo-700 dark:text-indigo-300",
     groupHover: "group-hover:text-indigo-700 dark:group-hover:text-indigo-300"
@@ -163,7 +163,7 @@ const features = [
   {
     title: "Quiz",
     icon: Trophy,
-    desc: "Challenge your visual memory with image-based tests ranging from easy to expert difficulty.",
+    desc: "Challenge your visual memory with interactive image-based tests that range from easy mode to expert difficulty.",
     bg: "bg-pink-50 dark:bg-pink-900/20",
     text: "text-pink-700 dark:text-pink-300",
     groupHover: "group-hover:text-pink-700 dark:group-hover:text-pink-300"
@@ -171,7 +171,7 @@ const features = [
   {
     title: "Master",
     icon: Gauge,
-    desc: "Become the person who knows every car on the block, from engine displacement to seating capacity.",
+    desc: "Become the person who knows every car on the block, from engine displacement details to total seating capacity.",
     bg: "bg-teal-50 dark:bg-teal-900/20",
     text: "text-teal-700 dark:text-teal-300",
     groupHover: "group-hover:text-teal-700 dark:group-hover:text-teal-300"
@@ -184,7 +184,7 @@ const bodyTypes = [
     icon: CarIcon,
     badge: "City Standard",
     overlay: "Classic Layout",
-    desc: "The classic 4-door configuration. Including icons like the Vios and City. Optimized for city driving.",
+    desc: "The classic 4-door configuration featuring icons like the Vios and City that are optimized for daily city driving.",
     colors: {
       icon: "group-hover:text-blue-700/20",
       badge: "bg-blue-700 group-hover:bg-blue-800",
@@ -198,7 +198,7 @@ const bodyTypes = [
     icon: ShieldCheck,
     badge: "Family Choice",
     overlay: "All-Terrain",
-    desc: "High ground clearance and rugged builds. Home to the Fortuner. Designed for floods and provincial trips.",
+    desc: "High ground clearance and rugged builds like the Fortuner that are specifically designed for floods and provincial trips.",
     colors: {
       icon: "group-hover:text-orange-700/20",
       badge: "bg-orange-700 group-hover:bg-orange-800",
@@ -212,7 +212,7 @@ const bodyTypes = [
     icon: Box,
     badge: "City Slicker",
     overlay: "Compact King",
-    desc: "Compact footprint with a rear liftgate. Featuring the Wigo and Brio. The ultimate choice for tight parking.",
+    desc: "A compact footprint with a rear liftgate, such as the Wigo and Brio, making them the ultimate choice for tight parking.",
     colors: {
       icon: "group-hover:text-emerald-700/20",
       badge: "bg-emerald-700 group-hover:bg-emerald-800",
@@ -227,7 +227,7 @@ const bottomNav = [
   {
     title: "Encyclopedia",
     sub: "Access the full database",
-    desc: `Dive into our comprehensive collection of ${carsData.length}+ vehicle profiles. Filter by price, year, and specifications.`,
+    desc: `Dive into our comprehensive collection of ${carsData.length}+ vehicle profiles where you can filter by price, year, and specifications.`,
     cta: "Browse Library",
     href: "/learn",
     icon: BookOpen,
@@ -242,7 +242,7 @@ const bottomNav = [
   {
     title: "Quiz Arena",
     sub: "Test your mastery",
-    desc: "Configure custom quizzes. Choose 'Image Only' mode for visual training or 'Specs' mode for technical mastery.",
+    desc: "Configure custom quizzes by choosing 'Image Only' mode for visual training or 'Specs' mode for technical mastery.",
     cta: "Start Challenge",
     href: "/test",
     icon: Trophy,
@@ -257,7 +257,7 @@ const bottomNav = [
   {
     title: "Mission",
     sub: "About KotsePedia",
-    desc: "This is an open-source initiative dedicated to free education. Learn why this project exists and how it stays free.",
+    desc: "This is an open-source initiative dedicated to free education, so learn why this project exists and how it stays free.",
     cta: "Read Mission",
     href: "/about",
     icon: Gift,
@@ -320,7 +320,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-slate-200 max-w-xl leading-relaxed font-light animate-in fade-in slide-in-from-left-8 duration-1000 delay-200">
-                Your guide to <strong>Philippine car culture</strong>. From hatchbacks on EDSA to SUVs in the provinces, we provide the specs, prices, and visual traits to help you <strong>identify every car</strong> on the road.
+                Welcome to <strong>KotsePedia</strong>, the definitive <strong>Pinoy car guide</strong> for vehicle <strong>identification</strong> and <strong>Philippine car culture</strong>. From hatchbacks on EDSA to SUVs in the provinces, we provide specs and visual traits to help you master the roads.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto animate-in fade-in slide-in-from-left-10 duration-1000 delay-300 pt-2">
@@ -530,7 +530,7 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {brands.map((brand) => (
-                <Link key={brand.name} href={`/learn?brand=${brand.name}&page=1`} className="group">
+                <Link key={brand.name} href={`/learn?brand=${brand.name}`} className="group">
                   <Card className={`h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500 bg-linear-to-br ${brand.bgGradient} text-white relative hover:-translate-y-1 ring-1 ${brand.ringColor}`}>
                     <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-30 transition-opacity duration-500 transform group-hover:scale-110">
                       <brand.bgIcon className="w-32 h-32" aria-hidden="true" />
