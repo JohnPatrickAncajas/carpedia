@@ -272,8 +272,10 @@ const bottomNav = [
 ]
 
 export default function HomePage() {
-  const today = new Date()
-  const dateIndex = (today.getFullYear() * 10000) + ((today.getMonth() + 1) * 100) + today.getDate()
+  const now = new Date()
+  const phDate = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }))
+  const dateIndex = (phDate.getFullYear() * 10000) + ((phDate.getMonth() + 1) * 100) + phDate.getDate()
+  
   const safeIndex = isNaN(dateIndex) ? 1 : dateIndex
   const randomIndex = safeIndex % (carsData.length || 1)
   const carOfDay = carsData[randomIndex] || carsData[0]
@@ -573,7 +575,7 @@ export default function HomePage() {
                    Don&apos;t know the model name? Start by identifying the shape. These are the most common vehicle categories in the Philippines.
                  </p>
                  <a href="https://en.wikipedia.org/wiki/Car_classification" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 mt-2 text-sm text-blue-600 hover:underline dark:text-blue-400">
-                    Learn more about vehicle classifications <ExternalLink className="w-3 h-3" aria-hidden="true" />
+                   Learn more about vehicle classifications <ExternalLink className="w-3 h-3" aria-hidden="true" />
                  </a>
               </div>
             </div>
